@@ -1,0 +1,98 @@
+{
+  "news_label": "Yangiliklar",
+  "single_news_label": "Yangilik",
+  "public_news_label": "Ommabop yangiliklar",
+  "photo_news_label": "Foto yangilik",
+  "share_label": "Ulashish",
+  "video_news_label": "Video yangilik",
+  "areas_label": "Hududlar",
+  "archive_label": "Arxiv",
+  "result_label": "Natija",
+  "select_application_type_label": "Murojaat turini tanlang",
+  "search_label": "Qidiruv",
+  "all_label": "Barchasi",
+  "contact_label": "Aloqa",
+  "contact_with_us_label": "Biz bilan bog'lanish",
+  "name_label": "Ism Familyangiz",
+  "search_engine": "Qidiruv Tizimi",
+  "mail_content": "Ism: $name\nTelefon raqam: $phoneNumber\nSavol/Taklif: $answers",
+  "send_label": "Yuborish",
+  "reception_number": "Qabulxona raqami",
+  "helpline_phone_number": "Ishonch telefon raqami",
+  "question_or_offer_label": "Savol / takliflar",
+  "enter_phone_number_placeholder": "Telefon raqamingizni kiriting",
+  "enter_question_or_offer_placeholder": "Savol/Taklifingizni kiriting",
+  "enter_first_and_last_name_placeholder": "Ism Familiyangizni kiriting",
+  "request_label": "Murojaat",
+  "select_area_placeholder": "Hududni tanlang...",
+  "phone_number_label": "Telefon raqam",
+  "email_label": "Elektron pochta",
+  "address_label": "Manzil",
+  "members_count_label": "A'zolar soni",
+  "loading_label": "Yuklanmoqda...",
+  "interactive_areas_label": "Interaktiv hududlar",
+  "our_addresses_label": "Manzillarimiz",
+  "select_area_label": "Hududni tanlang",
+  "useful_links_label": "Foydali havolalar",
+  "follow_label": "Obuna bo'ling",
+  "main_label": "Asosiy",
+  "document_label": "Hujjatlar",
+  "no_result_label": "Natijalar Yo'q",
+  "no_result_description": "Sizning so'rovingiz bo'yicha hech\nqanday natija topilmadi",
+  "contact_options": ["Savol", "Taklif", "Murojaat"],
+  "menu": {
+    "main": "Asosiy",
+    "contact": "Bog'lanish",
+    "news": "Yangiliklar",
+    "documents": "Hujjatlar",
+    "council": "Respublika kengashi"
+  },
+  "header": {
+    "description": "O‘zbekiston davlat muassasalari va jamoat\nxizmati xodimlari kasaba uyushmasi\nRespublika Kengashi"
+  },
+  "news_on_the_topic_label": "Mavzuga oid yangiliklar",
+  "news_types": {
+    "standard": "Standard",
+    "photo": "Foto",
+    "video": "Video"
+  },
+  "social_networks": {
+    "facebook": {
+      "title": "Respublika Kengashi Facebook sahifasi",
+      "description": "Facebook orqali bizni kutazatib boring. Va ijtimoiy va iqtisodiy yangiliklardan birinchilardan bo'lib habardor bo'ling."
+    },
+    "x": {
+      "title": "Respublika Kengashi X (Twitter) sahifasi",
+      "description": "X(Twitter) orqali bizni kutazatib boring. Va ijtimoiy va iqtisodiy yangiliklardan birinchilardan bo'lib habardor bo'ling."
+    },
+    "telegram": {
+      "title": "Respublika Kengashi Telegram sahifasi",
+      "description": "Telegram orqali bizni kutazatib boring. Va ijtimoiy va iqtisodiy yangiliklardan birinchilardan bo'lib habardor bo'ling."
+    },
+    "youtube": {
+      "title": "Respublika Kengashi YouTube sahifasi",
+      "description": "Youtube orqali bizni kuzatib boring. Va ijtimoiy va iqtisodiy yangiliklardan birinchilardan bo’lib habardor bo’ling"
+    },
+    "instagram": {
+      "title": "Respublika Kengashi Instagram sahifasi",
+      "description": "Instagram orqali bizni kutazatib boring. Va ijtimoiy va iqtisodiy yangiliklardan birinchilardan bo'lib habardor bo'ling."
+    }
+  },
+  "link_sections": {
+    "telegram": {
+      "title": "Bizni Telegram orqali kuzating",
+      "description": "Telegram kanalimizga obuna bo'lib yangiliklardan\nbirinchilardan bo'lib habar toping",
+      "connect_button": "Ulanish"
+    }
+  },
+  "concentration_label": "Ulashish",
+  "others_label": "Boshqalar",
+  "menus": {
+    "main": "Asosiy"
+  },
+  "footer": {
+    "copyright": "© Respublika Kengashi 2019-2025 Barcha huquglar himoyalangan",
+    "description": "Diqqat! Agar siz saytda xatoliklarni aniqlasangiz, ularni belgilab Ctrl + Enter tugmalarini bosing. © 2025 O'zbekiston davlat muassasalari va jamoat xizmati xodimlari kasaba uyushmasi Respublika kengashi saytidan olingan ma'lumotlardan foydalanilganda, saytning https://davlat.kasaba.uz manzili ko'rsatilishi shart.",
+    "address": "Toshkent sh, Buxoro ko'chasi, 24-uy"
+  }
+}

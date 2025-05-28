@@ -1,0 +1,98 @@
+{
+  "news_label": "News",
+  "single_news_label": "News",
+  "public_news_label": "Popular News",
+  "photo_news_label": "Photo News",
+  "share_label": "Share",
+  "video_news_label": "Video News",
+  "areas_label": "Regions",
+  "select_application_type_label": "Select application type",
+  "archive_label": "Archive",
+  "contact_options": ["Question", "Suggestion", "Request"],
+  "result_label": "Result",
+  "reception_number": "Reception number",
+  "helpline_phone_number": "Helpline number",
+  "search_label": "Search",
+  "all_label": "All",
+  "search_engine": "Search Engine",
+  "contact_label": "Contact",
+  "contact_with_us_label": "Contact Us",
+  "name_label": "Name",
+  "mail_content": "Name: $name\nPhone Number: $phoneNumber\nQuestion/Suggestion: $answers",
+  "send_label": "Send",
+  "question_or_offer_label": "Questions / Suggestions",
+  "enter_phone_number_placeholder": "Enter your phone number",
+  "enter_question_or_offer_placeholder": "Enter your question or suggestion",
+  "enter_first_and_last_name_placeholder": "Enter your first and last name",
+  "request_label": "Request",
+  "select_area_placeholder": "Select a region...",
+  "phone_number_label": "Phone Number",
+  "email_label": "Email",
+  "address_label": "Address",
+  "members_count_label": "Number of Members",
+  "loading_label": "Loading...",
+  "interactive_areas_label": "Interactive Regions",
+  "our_addresses_label": "Our Addresses",
+  "select_area_label": "Select a Region",
+  "useful_links_label": "Useful Links",
+  "follow_label": "Follow Us",
+  "main_label": "Home",
+  "document_label": "Documents",
+  "no_result_label": "No Results",
+  "no_result_description": "No results were found\nfor your query",
+  "menu": {
+    "main": "Home",
+    "contact": "Contact",
+    "news": "News",
+    "documents": "Documents",
+    "council": "Republican Council"
+  },
+  "header": {
+    "description": "Republican Council of Trade Unions of\nEmployees of State Institutions and\nPublic Services of Uzbekistan"
+  },
+  "news_on_the_topic_label": "Related News",
+  "news_types": {
+    "standard": "Standard",
+    "photo": "Photo",
+    "video": "Video"
+  },
+  "social_networks": {
+    "facebook": {
+      "title": "Republican Council Facebook Page",
+      "description": "Follow us on Facebook. Be the first to know about social and economic news."
+    },
+    "x": {
+      "title": "Republican Council X (Twitter) Page",
+      "description": "Follow us on X (Twitter). Be the first to know about social and economic news."
+    },
+    "telegram": {
+      "title": "Republican Council Telegram Page",
+      "description": "Follow us on Telegram. Be the first to know about social and economic news."
+    },
+    "youtube": {
+      "title": "Republican Council YouTube Page",
+      "description": "Follow us on YouTube. Be the first to know about social and economic news."
+    },
+    "instagram": {
+      "title": "Republican Council Instagram Page",
+      "description": "Follow us on Instagram. Be the first to know about social and economic news."
+    }
+  },
+  "link_sections": {
+    "telegram": {
+      "title": "Follow us on Telegram",
+      "description": "Subscribe to our Telegram channel\nand be the first to receive updates",
+      "connect_button": "Connect"
+    }
+  },
+  "concentration_label": "Share",
+  "others_label": "Others",
+  "menus": {
+    "main": "Home"
+  },
+  "footer": {
+    "copyright": "© Republican Council 2019-2025 All rights reserved",
+    "description": "Attention! If you find any errors on the site, highlight them and press Ctrl + Enter. © 2025 When using materials from the website of the Republican Council of Trade Unions of Employees of State Institutions and Public Services of Uzbekistan, the source https://davlat.kasaba.uz must be indicated.",
+    "address": "24 Bukhara Street, Tashkent city"
+  }
+}

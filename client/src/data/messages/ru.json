@@ -1,0 +1,98 @@
+{
+  "news_label": "Новости",
+  "single_news_label": "Новость",
+  "public_news_label": "Популярные новости",
+  "photo_news_label": "Фотоновости",
+  "share_label": "Поделиться",
+  "video_news_label": "Видеоновости",
+  "areas_label": "Регионы",
+  "archive_label": "Архив",
+  "select_application_type_label": "Выберите тип приложения",
+  "result_label": "Результат",
+  "search_label": "Поиск",
+  "all_label": "Все",
+  "contact_options": ["Вопрос", "Предложение", "Просьба"],
+  "contact_label": "Контакт",
+  "search_engine": "Поисковая система",
+  "reception_number": "Номер приема",
+  "helpline_phone_number": "Номер телефона горячей линии",
+  "contact_with_us_label": "Связаться с нами",
+  "name_label": "Имя",
+  "mail_content": "Имя: $name\nТелефон: $phoneNumber\nВопрос/Предложение: $answers",
+  "send_label": "Отправить",
+  "question_or_offer_label": "Вопросы / предложения",
+  "enter_phone_number_placeholder": "Введите ваш номер телефона",
+  "enter_question_or_offer_placeholder": "Введите ваш вопрос или предложение",
+  "enter_first_and_last_name_placeholder": "Введите ваше имя и фамилию",
+  "request_label": "Обращение",
+  "select_area_placeholder": "Выберите регион...",
+  "phone_number_label": "Телефон",
+  "email_label": "Электронная почта",
+  "address_label": "Адрес",
+  "members_count_label": "Количество участников",
+  "loading_label": "Загрузка...",
+  "interactive_areas_label": "Интерактивные регионы",
+  "our_addresses_label": "Наши адреса",
+  "select_area_label": "Выберите регион",
+  "useful_links_label": "Полезные ссылки",
+  "follow_label": "Подпишитесь",
+  "main_label": "Главная",
+  "document_label": "Документы",
+  "no_result_label": "Результатов нет",
+  "no_result_description": "По вашему запросу\nничего не найдено",
+  "menu": {
+    "main": "Главная",
+    "contact": "Контакты",
+    "news": "Новости",
+    "documents": "Документы",
+    "council": "Республиканский совет"
+  },
+  "header": {
+    "description": "Республиканский совет профсоюзов работников государственных учреждений и общественных услуг Узбекистана"
+  },
+  "news_on_the_topic_label": "Новости по теме",
+  "news_types": {
+    "standard": "Standard",
+    "photo": "Фото",
+    "video": "Видео"
+  },
+  "social_networks": {
+    "facebook": {
+      "title": "Республиканский совет страница Facebook",
+      "description": "Следите за нами в Facebook. Узнавайте первыми о социальных и экономических новостях."
+    },
+    "x": {
+      "title": "Республиканский совет страница X (Twitter)",
+      "description": "Следите за нами в X(Twitter). Узнавайте первыми о социальных и экономических новостях."
+    },
+    "telegram": {
+      "title": "Республиканский совет страница Telegram",
+      "description": "Следите за нами в Telegram. Узнавайте первыми о социальных и экономических новостях."
+    },
+    "youtube": {
+      "title": "Республиканский совет страница YouTube",
+      "description": "Следите за нами в Youtube. Узнавайте первыми о социальных и экономических новостях."
+    },
+    "instagram": {
+      "title": "Республиканский совет страница Instagram",
+      "description": "Следите за нами в Instagram. Узнавайте первыми о социальных и экономических новостях."
+    }
+  },
+  "link_sections": {
+    "telegram": {
+      "title": "Следите за нами в Telegram",
+      "description": "Подпишитесь на наш канал в Telegram\nи первыми получайте обновления",
+      "connect_button": "Подключиться"
+    }
+  },
+  "concentration_label": "Поделиться",
+  "others_label": "Другие",
+  "menus": {
+    "main": "Главная"
+  },
+  "footer": {
+    "copyright": "© Республиканский совет 2019-2025 Все права защищены",
+    "description": "Внимание! Если вы обнаружите ошибки на сайте, выделите их и нажмите Ctrl + Enter. © 2025 При использовании материалов с сайта Республиканского совета профсоюзов работников государственных учреждений и общественных услуг Узбекистана обязательна ссылка на источник https://davlat.kasaba.uz.",
+    "address": "г. Ташкент, ул. Бухара, дом 24"
+  }
+}

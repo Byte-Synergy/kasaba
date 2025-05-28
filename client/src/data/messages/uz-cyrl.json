@@ -1,0 +1,98 @@
+{
+  "news_label": "Янгиликлар",
+  "single_news_label": "Янгилик",
+  "public_news_label": "Оммабоп янгиликлар",
+  "photo_news_label": "Фото янгилик",
+  "share_label": "Улашиш",
+  "video_news_label": "Видео янгилик",
+  "areas_label": "Ҳудудлар",
+  "archive_label": "Архив",
+  "select_application_type_label": "Мурожаат турини танланг",
+  "result_label": "Натижа",
+  "search_label": "Қидирув",
+  "all_label": "Барчаси",
+  "contact_label": "Aлоқа",
+  "contact_with_us_label": "Биз билан боғланиш",
+  "name_label": "Исм Фамилиянгиз",
+  "search_engine": "Қидирув Тизими",
+  "contact_options": ["Савол", "Таклиф", "Мурожаат"],
+  "reception_number": "Қабулхона рақами",
+  "helpline_phone_number": "Ишонч телефон рақами",
+  "mail_content": "Исми: $name\nТелефон рақам: $phoneNumber\nСавол/Таклиф: $answers",
+  "send_label": "Юбориш",
+  "question_or_offer_label": "Савол / таклифлар",
+  "enter_phone_number_placeholder": "Телефон рақамингизни киритинг",
+  "enter_question_or_offer_placeholder": "Савол/Таклифингизни киритинг",
+  "enter_first_and_last_name_placeholder": "Исми Фамилиянгизини киритинг",
+  "request_label": "Мурожаат",
+  "select_area_placeholder": "Ҳудудни танланг...",
+  "phone_number_label": "Телефон рақам",
+  "email_label": "Электрон почта",
+  "address_label": "Манзил",
+  "members_count_label": "Аъзолар сони",
+  "loading_label": "Юкланмоқда...",
+  "interactive_areas_label": "Интерактив ҳудудлар",
+  "our_addresses_label": "Манзилларимиз",
+  "select_area_label": "Ҳудудни танланг",
+  "useful_links_label": "Фойдали ҳаволалар",
+  "follow_label": "Обуна бўлинг",
+  "main_label": "Асосий",
+  "document_label": "Ҳужжатлар",
+  "no_result_label": "Натижалар Йўқ",
+  "no_result_description": "Сизнинг сўровингиз бўйича ҳеч\nқандай натижа топилмади",
+  "menu": {
+    "main": "Асосий",
+    "contact": "Боғланиш",
+    "news": "Янгиликлар",
+    "documents": "Ҳужжатлар",
+    "council": "Республика кенгаши"
+  },
+  "header": {
+    "description": "Ўзбекистон давлат муассасалари ва жамоат\nхизмати ходимлари касаба уюшмаси\nРеспублика Кенгаши"
+  },
+  "news_on_the_topic_label": "Мавзуга оид янгиликлар",
+  "news_types": {
+    "standard": "Стандарт",
+    "photo": "Фото",
+    "video": "Видео"
+  },
+  "social_networks": {
+    "facebook": {
+      "title": "Республика Кенгаши Facebook саҳифаси",
+      "description": "Facebook орқали бизни кузатиб боринг. Ва ижтимоий ва иқтисодий янгиликлардан биринчилардан бўлиб хабардор бўлинг."
+    },
+    "x": {
+      "title": "Республика Кенгаши X (Twitter) саҳифаси",
+      "description": "X(Twitter) орқали бизни кузатиб боринг. Ва ижтимоий ва иқтисодий янгиликлардан биринчилардан бўлиб хабардор бўлинг."
+    },
+    "telegram": {
+      "title": "Республика Кенгаши Telegram саҳифаси",
+      "description": "Telegram орқали бизни кузатиб боринг. Ва ижтимоий ва иқтисодий янгиликлардан биринчилардан бўлиб хабардор бўлинг."
+    },
+    "youtube": {
+      "title": "Республика Кенгаши YouTube саҳифаси",
+      "description": "Youtube орқали бизни кузатиб боринг. Ва ижтимоий ва иқтисодий янгиликлардан биринчилардан бўлиб хабардор бўлинг"
+    },
+    "instagram": {
+      "title": "Республика Кенгаши Instagram саҳифаси",
+      "description": "Instagram орқали бизни кузатиб боринг. Ва ижтимоий ва иқтисодий янгиликлардан биринчилардан бўлиб хабардор бўлинг."
+    }
+  },
+  "link_sections": {
+    "telegram": {
+      "title": "Бизни Телеграм орқали кузатинг",
+      "description": "Телеграм каналига обуна бўлиб янгиликлардан\nбиринчилардан бўлиб хабар топинг",
+      "connect_button": "Уланиш"
+    }
+  },
+  "concentration_label": "Улашиш",
+  "others_label": "Бошқалар",
+  "menus": {
+    "main": "Асосий"
+  },
+  "footer": {
+    "copyright": "© Республика Кенгаши 2019-2025 Барча ҳуқуқлар ҳимояланган",
+    "description": "Диққат! Агар сиз сайтда хатоликларни аниқласангиз, уларни белгилаб Ctrl + Enter тугмаларини босинг. © 2025 Ўзбекистон давлат муассасалари ва жамоат хизмати ходимлари касаба уюшмаси Республика кенгаши сайтидан олинган маълумотлардан фойдаланилганда, сайтнинг https://davlat.kasaba.uz манзили кўрсатилиши шарт.",
+    "address": "Тошкент ш, Бухоро кўчаси, 24-уй"
+  }
+}

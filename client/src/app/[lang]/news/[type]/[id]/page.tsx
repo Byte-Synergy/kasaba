@@ -73,7 +73,7 @@ const SingleNewsPage = async ({
         <Container>
           <div className="flex gap-9">
             <div className="w-3/4 max-md:w-full">
-              <h1 className=" font-montserrat font-semibold text-2xl capitalize max-md:text-base max-md:text-center max-md:mt-5">
+              <h1 className=" font-montserrat font-semibold text-2xl max-md:text-base max-md:text-center max-md:mt-5">
                 {currentNews.title}
               </h1>
               <div className="flex items-center justify-start gap-6 mt-2 max-md:hidden">

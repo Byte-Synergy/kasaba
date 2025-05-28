@@ -48,7 +48,6 @@ export default function LanguageSwitcher() {
             <h5 className="text-sm">
               {languages[lang as keyof typeof languages]?.name}
             </h5>
-            <Languages />
           </button>
         </MenubarTrigger>
         <MenubarContent className="bg-white border-none">

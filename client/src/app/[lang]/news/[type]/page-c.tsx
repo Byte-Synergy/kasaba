@@ -51,7 +51,7 @@ export default function PageC({
       >
         <div className="flex items-start gap-3 flex-wrap">
           {data.map((item, key) => (
-            <div className="w-[24%]" key={key}>
+            <div className="w-[24%] max-md:w-full" key={key}>
               <StandardNewsCard data={item} key={item.title} />
             </div>
           ))}

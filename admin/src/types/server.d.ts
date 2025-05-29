@@ -5,15 +5,16 @@ export declare const app: Elysia<"", {
     derive: {};
     resolve: {};
 }, {
+    typebox: {};
     error: {
         readonly Unauthorized: import("./utils/error").Unauthorized;
         readonly AccessDenied: import("./utils/error").AccessDenied;
         readonly Conflict: import("./utils/error").Conflict;
         readonly ValidationError: import("./utils/error").ValidationError;
     };
-    typebox: import("@sinclair/typebox").TModule<{}, {}>;
 }, {
     schema: {};
+    standaloneSchema: {};
     macro: {};
     macroFn: {};
     parser: {};
@@ -108,24 +109,22 @@ export declare const app: Elysia<"", {
                     };
                     response: {
                         200: {
-                            files?: {
-                                name: string;
-                                mimeType: string;
-                                extension: string;
-                                href: string;
-                            }[] | undefined;
-                            languageCode?: string | undefined;
-                            type: "standard" | "photo" | "video" | "area";
-                            content: {
-                                [x: string]: any;
-                            }[];
-                            title: string;
-                            description: string;
-                            tags: string[];
-                            path: string;
                             id: number;
+                            path: string;
+                            content: any;
+                            title: string;
+                            languageCode: string | undefined;
+                            description: string;
+                            authorId: number | null;
+                            type: import("@prisma/client").$Enums.NewsTypeEnum;
+                            tags: string[];
                             createdAt: string;
-                            authorId: number;
+                            files: {
+                                extension: string;
+                                mimeType: string;
+                                name: string;
+                                href: string;
+                            }[];
                         };
                         422: {
                             type: "validation";
@@ -168,7 +167,7 @@ export declare const app: Elysia<"", {
                                 content: any;
                                 title: string;
                                 description: string;
-                                authorId: number;
+                                authorId: number | null;
                                 type: import("@prisma/client").$Enums.NewsTypeEnum;
                                 tags: string[];
                                 createdAt: string;
@@ -223,8 +222,8 @@ export declare const app: Elysia<"", {
                                 id: number;
                                 createdAt: Date;
                                 updatedAt: Date | null;
-                                authorId: number;
                                 languageCode: string | null;
+                                authorId: number | null;
                                 isArchived: boolean;
                                 isCheck: boolean;
                                 archivedAt: Date | null;
@@ -254,25 +253,23 @@ export declare const app: Elysia<"", {
                         headers: unknown;
                         response: {
                             200: {
-                                files?: {
-                                    name: string;
-                                    mimeType: string;
-                                    extension: string;
-                                    href: string;
-                                }[] | undefined;
-                                languageCode?: string | undefined;
-                                type: "standard" | "photo" | "video" | "area";
-                                content: {
-                                    [x: string]: any;
-                                }[];
-                                title: string;
-                                description: string;
-                                tags: string[];
-                                isTop: boolean;
-                                path: string;
                                 id: number;
+                                path: string;
+                                content: any;
+                                title: string;
+                                languageCode: string | undefined;
+                                description: string;
+                                authorId: number | null;
+                                type: import("@prisma/client").$Enums.NewsTypeEnum;
+                                isTop: boolean;
+                                tags: string[];
                                 createdAt: string;
-                                authorId: number;
+                                files: {
+                                    extension: string;
+                                    mimeType: string;
+                                    name: string;
+                                    href: string;
+                                }[];
                             };
                             422: {
                                 type: "validation";
@@ -310,29 +307,27 @@ export declare const app: Elysia<"", {
                     headers: unknown;
                     response: {
                         200: {
-                            data: {
-                                files?: {
-                                    name: string;
-                                    mimeType: string;
-                                    extension: string;
-                                    href: string;
-                                }[] | undefined;
-                                languageCode?: string | undefined;
-                                type: "standard" | "photo" | "video" | "area";
-                                content: {
-                                    [x: string]: any;
-                                }[];
-                                title: string;
-                                description: string;
-                                tags: string[];
-                                isTop: boolean;
-                                path: string;
-                                id: number;
-                                createdAt: string;
-                                authorId: number;
-                            }[];
                             count: number;
                             totals: number;
+                            data: {
+                                id: number;
+                                path: string;
+                                title: string;
+                                isTop: boolean;
+                                description: string;
+                                content: any;
+                                type: import("@prisma/client").$Enums.NewsTypeEnum;
+                                languageCode: string | undefined;
+                                tags: string[];
+                                createdAt: string;
+                                authorId: number | null;
+                                files: {
+                                    extension: string;
+                                    mimeType: string;
+                                    name: string;
+                                    href: string;
+                                }[];
+                            }[];
                         };
                         422: {
                             type: "validation";
@@ -1195,38 +1190,7 @@ export declare const app: Elysia<"", {
                         };
                         headers: unknown;
                         response: {
-                            200: {
-                                type?: "photo" | "text" | "news" | "document" | "member" | undefined;
-                                files?: {
-                                    type?: "photo" | "text" | "news" | "document" | "member" | undefined;
-                                    path?: string | undefined;
-                                    newsType?: "standard" | "photo" | "video" | "area" | undefined;
-                                    isPin?: boolean | undefined;
-                                    isVisible?: boolean | undefined;
-                                    name: string;
-                                    id: number;
-                                }[] | undefined;
-                                path?: string | undefined;
-                                languageCode?: string | undefined;
-                                newsType?: "standard" | "photo" | "video" | "area" | undefined;
-                                isPin?: boolean | undefined;
-                                isVisible?: boolean | undefined;
-                                parent?: {
-                                    type?: "photo" | "text" | "news" | "document" | "member" | undefined;
-                                    path?: string | undefined;
-                                    newsType?: "standard" | "photo" | "video" | "area" | undefined;
-                                    isPin?: boolean | undefined;
-                                    isVisible?: boolean | undefined;
-                                    name: string;
-                                    id: number;
-                                } | undefined;
-                                children?: /*elided*/ any[] | undefined;
-                                name: string;
-                                content: {
-                                    [x: string]: any;
-                                }[];
-                                id: number;
-                            }[];
+                            200: any[];
                             422: {
                                 type: "validation";
                                 on: string;
@@ -1433,16 +1397,11 @@ export declare const app: Elysia<"", {
     derive: {};
     resolve: {};
     schema: {};
+    standaloneSchema: {};
 }, {
     derive: {};
     resolve: {};
-    schema: {
-        body: unknown;
-        headers: unknown;
-        query: unknown;
-        params: {};
-        cookie: unknown;
-        response: {};
-    };
+    schema: {};
+    standaloneSchema: {};
 }>;
 export type AppType = typeof app;

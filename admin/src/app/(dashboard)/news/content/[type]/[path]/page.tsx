@@ -7,10 +7,10 @@ export default async function Page({
   params: Promise<{ path: string; type: string }>;
 }) {
   const { path, type } = await params;
-  
+
   const { data } = await getSingleNews(decodeURIComponent(path));
   const { data: categoriesData } = await getNewsCategories();
-  
+
   console.log(data);
   console.log(decodeURIComponent(path));
 
@@ -23,7 +23,7 @@ export default async function Page({
           path={path}
           data={{
             ...data,
-            content: data.content.map((content) => {
+            content: data.content.map((content: any) => {
               if ("fileId" in content) {
                 return {
                   ...content,

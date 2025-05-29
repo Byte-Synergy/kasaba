@@ -12,12 +12,12 @@ export default function PageC({
   data: initialData,
 }: {
   type: string;
-  data: AppType["_routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"];
+  data: AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"];
 }) {
   const limit = 50; // max 50
   const [data, setData] =
     useState<
-      AppType["_routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"]
+      AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"]
     >(initialData);
   const [page, setPage] = useState(2);
   const [hasMore, setHasMore] = useState(true);

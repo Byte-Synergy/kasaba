@@ -21,8 +21,8 @@ export default function PageView({
   fitBanner,
   fullBanner,
 }: {
-  fitBanner: AppType["_routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
-  fullBanner: AppType["_routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
+  fitBanner: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
+  fullBanner: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
 }) {
   const router = useRouter();
 

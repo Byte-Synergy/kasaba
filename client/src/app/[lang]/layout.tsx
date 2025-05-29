@@ -44,8 +44,8 @@ export type MenuItem = {
   path: string;
   docCount?: number;
   sub_menu: MenuItem[];
-  type?: AppType["_routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["type"];
-  newsType?: AppType["_routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["newsType"];
+  type?: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["type"];
+  newsType?: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["newsType"];
 };
 
 export default async function RootLayout({
@@ -70,7 +70,7 @@ export default async function RootLayout({
   });
 
   function mapMenuTree(
-    menu: AppType["_routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]
+    menu: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]
   ): MenuItem {
     return {
       type: menu.type,

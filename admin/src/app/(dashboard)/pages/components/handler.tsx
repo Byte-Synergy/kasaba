@@ -30,7 +30,7 @@ import { PageApi } from "@/utils/api/page";
 import { deleteMenu } from "@/actions/menu";
 
 type PageHandlerDataType =
-  AppType["_routes"]["api"]["rest"]["menus"][":menuId"]["get"]["response"]["200"];
+  AppType["~Routes"]["api"]["rest"]["menus"][":menuId"]["get"]["response"]["200"];
 
 type Type = {
   name: string;

@@ -3,7 +3,7 @@ import { AppType } from "@/types/server";
 
 export const BannerApi = {
   create: async (
-    data: AppType["_routes"]["api"]["rest"]["banner"]["post"]["body"],
+    data: AppType["~Routes"]["api"]["rest"]["banner"]["post"]["body"],
   ) => {
     try {
       const token = await getSessionData();

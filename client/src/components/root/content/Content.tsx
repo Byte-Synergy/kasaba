@@ -19,7 +19,7 @@ const Content = ({
   files,
 }: {
   content: ContentType;
-  files: AppType["_routes"]["api"]["rest"]["news"][":newsPath"]["get"]["response"]["200"]["files"];
+  files: AppType["~Routes"]["api"]["rest"]["news"][":newsPath"]["get"]["response"]["200"]["files"];
 }) => {
   const renderFn = (content: ContentType) => {
     switch (content.type) {

@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function getPlaces(
-  query: AppType["_routes"]["api"]["rest"]["places"]["get"]["query"],
+  query: AppType["~Routes"]["api"]["rest"]["places"]["get"]["query"],
   fetch?: Omit<RequestInit, "headers" | "method">,
   fetcher: typeof eden = eden,
 ) {
@@ -30,7 +30,7 @@ export async function getPlace(
   return { data, error, status };
 }
 export async function getInteractiveAreas(
-  query: AppType["_routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["query"],
+  query: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["query"],
   placeId: number,
   fetch?: Omit<RequestInit, "headers" | "method">,
   fetcher: typeof eden = eden,

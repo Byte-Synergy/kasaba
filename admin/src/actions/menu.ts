@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export async function getMenus(
-  query: AppType["_routes"]["api"]["rest"]["menus"]["get"]["query"],
+  query: AppType["~Routes"]["api"]["rest"]["menus"]["get"]["query"],
   fetch?: Omit<RequestInit, "headers" | "method">,
   fetcher: typeof eden = eden,
 ) {
@@ -31,7 +31,7 @@ export async function getMenu(
 }
 export async function updateMenu(
   menuId: number,
-  menuData: AppType["_routes"]["api"]["rest"]["menus"][":menuId"]["put"]["body"],
+  menuData: AppType["~Routes"]["api"]["rest"]["menus"][":menuId"]["put"]["body"],
   fetch?: Omit<RequestInit, "headers" | "method">,
   fetcher: typeof eden = eden,
 ) {
@@ -51,7 +51,7 @@ export async function updateMenu(
 }
 
 export async function createMenu(
-  menuData: AppType["_routes"]["api"]["rest"]["menus"]["post"]["body"],
+  menuData: AppType["~Routes"]["api"]["rest"]["menus"]["post"]["body"],
   fetch?: Omit<RequestInit, "headers" | "method">,
   fetcher: typeof eden = eden,
 ) {

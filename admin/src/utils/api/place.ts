@@ -5,7 +5,7 @@ import { AppType } from "@/types/server";
 export const PlaceApi = {
   create: async (
     data: WithOut<
-      AppType["_routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["post"]["body"],
+      AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["post"]["body"],
       "chairmanPhoto"
     > & { chairmanPhoto: File },
     placeId: number,

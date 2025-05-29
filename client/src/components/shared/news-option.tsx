@@ -22,7 +22,7 @@ const NewsOption = ({
   search_label: string;
   areas_label: string;
   archive_label: string;
-  ads: AppType["_routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
+  ads: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
 }) => {
   const params = useParams<{ lang: string }>();
   const [places, setPlaces] = useState<

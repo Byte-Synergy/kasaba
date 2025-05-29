@@ -50,8 +50,8 @@ const HomePage = ({
   share_label: string;
   video_news_label: string;
   lang: Locale;
-  ads: AppType["_routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
-  areas: AppType["_routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"];
+  ads: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
+  areas: AppType["~Routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"];
   topNewsData: NewsDataType[];
   standardNews: NewsDataType[];
   news_label: string;

@@ -29,7 +29,7 @@ function SearchPageClient({
 }) {
   const [query, setQuery] = useState("");
   const [items, setItems] = useState<
-    AppType["_routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"]
+    AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"]
   >([]);
   const [loading, setLoading] = useState(false);
 

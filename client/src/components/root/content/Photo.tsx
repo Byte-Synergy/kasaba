@@ -9,7 +9,7 @@ function Photo({
   files,
 }: {
   data: string;
-  files: AppType["_routes"]["api"]["rest"]["news"][":newsPath"]["get"]["response"]["200"]["files"];
+  files: AppType["~Routes"]["api"]["rest"]["news"][":newsPath"]["get"]["response"]["200"]["files"];
 }) {
   const image = files?.find((file) => file.href.includes(data));
 

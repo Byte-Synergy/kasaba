@@ -18,7 +18,7 @@ const TopNews = ({
   news,
   ads,
 }: {
-  ads: AppType["_routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
+  ads: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
   news: NewsDataType[];
 }) => {
   const { lang } = useParams<{ lang: Locale }>();

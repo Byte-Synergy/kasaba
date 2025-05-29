@@ -18,7 +18,7 @@ export default function NewsCard({
     title: string;
     description: string;
     content: Record<string, any>[];
-    authorId: number;
+    authorId?: number|null;
   };
 }) {
   return (

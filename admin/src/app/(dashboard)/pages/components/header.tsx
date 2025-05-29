@@ -37,13 +37,13 @@ export default function PageViewHeader({
   buttonChildren?: React.ReactNode;
   title: string;
   currentMenu?: NonNullable<
-    AppType["_routes"]["api"]["rest"]["menus"][":menuId"]["get"]["response"]["200"]["parent"]
+    AppType["~Routes"]["api"]["rest"]["menus"][":menuId"]["get"]["response"]["200"]["parent"]
   >;
   menus?: NonNullable<
-    AppType["_routes"]["api"]["rest"]["menus"][":menuId"]["get"]["response"]["200"]["parent"]
+    AppType["~Routes"]["api"]["rest"]["menus"][":menuId"]["get"]["response"]["200"]["parent"]
   >[];
   parent?: NonNullable<
-    AppType["_routes"]["api"]["rest"]["menus"][":menuId"]["get"]["response"]["200"]["parent"]
+    AppType["~Routes"]["api"]["rest"]["menus"][":menuId"]["get"]["response"]["200"]["parent"]
   >;
 }) {
   const router = useRouter();

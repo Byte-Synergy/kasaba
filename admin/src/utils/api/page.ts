@@ -3,7 +3,7 @@ import { AppType } from "@/types/server";
 
 export const PageApi = {
   createMenu: async (
-    data: AppType["_routes"]["api"]["rest"]["menus"]["post"]["body"],
+    data: AppType["~Routes"]["api"]["rest"]["menus"]["post"]["body"],
   ): Promise<any> => {
     try {
       const token = await getSessionData();
@@ -76,7 +76,7 @@ export const PageApi = {
   },
   updateMenu: async (
     menuId: number,
-    data: AppType["_routes"]["api"]["rest"]["menus"][":menuId"]["put"]["body"],
+    data: AppType["~Routes"]["api"]["rest"]["menus"][":menuId"]["put"]["body"],
   ): Promise<any> => {
     try {
       const token = await getSessionData();

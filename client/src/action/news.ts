@@ -4,7 +4,7 @@ import eden from "@/libs/eden";
 import { AppType } from "@/types/server";
 
 export async function getNews(
-  query: AppType["_routes"]["api"]["rest"]["news"]["get"]["query"] = {
+  query: AppType["~Routes"]["api"]["rest"]["news"]["get"]["query"] = {
     page: 1,
     limit: 10,
   },

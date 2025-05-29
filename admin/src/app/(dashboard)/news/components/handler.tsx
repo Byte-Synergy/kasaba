@@ -48,7 +48,7 @@ type Type = {
   content: ContentType[];
 };
 type PageHandlerDataType =
-  AppType["_routes"]["api"]["rest"]["news"][":newsPath"]["get"]["response"]["200"];
+  AppType["~Routes"]["api"]["rest"]["news"][":newsPath"]["get"]["response"]["200"];
 
 type BaseProps = {
   title: string;

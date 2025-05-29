@@ -2,7 +2,7 @@ import eden from "@/libs/eden";
 import { AppType } from "@/types/server";
 
 export async function getMenus(
-  query: AppType["_routes"]["api"]["rest"]["menus"]["get"]["query"],
+  query: AppType["~Routes"]["api"]["rest"]["menus"]["get"]["query"],
   fetch?: Omit<RequestInit, "headers" | "method">,
   fetcher: typeof eden = eden
 ) {

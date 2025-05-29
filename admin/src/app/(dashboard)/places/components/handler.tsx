@@ -38,8 +38,8 @@ export default function InteractiveAreaHandler({
   interactiveAreas,
 }: {
   placeId: number;
-  placeData: AppType["_routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"][number];
-  interactiveAreas?: AppType["_routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"];
+  placeData: AppType["~Routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"][number];
+  interactiveAreas?: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"];
 }) {
   const router = useRouter();
   const {

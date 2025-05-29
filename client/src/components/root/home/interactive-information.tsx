@@ -21,14 +21,14 @@ const InteractiveInformation = ({
   email_label: string;
   our_addresses_label: string;
   selectedPlace: string;
-  data: AppType["_routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"];
+  data: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"];
 }) => {
   const [place, setPlace] = useState(selectedPlace);
   const [information, setInformation] = useState<string[] | null>(null);
 
   const choosePlaceHandler = useCallback(
     (
-      _: AppType["_routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"][number]
+      _: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"][number]
     ) => {
       setInformation([
         _.chairmanFullName,

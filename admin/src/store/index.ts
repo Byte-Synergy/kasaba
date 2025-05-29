@@ -2,7 +2,7 @@
 // import { create } from "zustand";
 
 // export type StoreType = {
-//   pages: AppType["_routes"]["api"]["rest"]["menus"]["get"]["response"]["200"]["data"];
+//   pages: AppType["~Routes"]["api"]["rest"]["menus"]["get"]["response"]["200"]["data"];
 //   createPageData: {
 //     languageCode?: string;
 //     name?: string;

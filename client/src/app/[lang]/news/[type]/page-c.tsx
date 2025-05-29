@@ -14,14 +14,14 @@ export default function PageC({
 }: {
   lang: Locale;
   type: string;
-  data: AppType["_routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"];
+  data: AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"];
 }) {
   const limit = 20; // max 50
   const [page, setPage] = useState(2);
   const [hasMore, setHasMore] = useState(true);
   const [data, setData] =
     useState<
-      AppType["_routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"]
+      AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"]
     >(initialData);
 
   useEffect(() => {

@@ -35,13 +35,13 @@ const InteractivePlaces = ({
   phone_number_label: string;
   interactive_areas_label: string;
   lang: Locale;
-  data: AppType["_routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"];
+  data: AppType["~Routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"];
 }) => {
   const [selectPlace, setSelectPlace] = useState<string | null>(
     data[0]?.name || null
   );
   const [areas, setAreas] = useState<
-    | AppType["_routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"]
+    | AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"]
     | null
   >(null);
 

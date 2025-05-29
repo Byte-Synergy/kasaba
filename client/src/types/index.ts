@@ -15,7 +15,7 @@ export interface ChildrenProps {
 }
 
 export type NewsDataType =
-  AppType["_routes"]["api"]["rest"]["news"][":newsPath"]["get"]["response"]["200"];
+  AppType["~Routes"]["api"]["rest"]["news"][":newsPath"]["get"]["response"]["200"];
 //  & {
 //   content: ContentType[];
 // };

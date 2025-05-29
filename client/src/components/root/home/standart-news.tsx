@@ -24,7 +24,7 @@ const StandardNews = ({
   all_label:string,
   archive_label: string;
   news: NewsDataType[];
-  ads: AppType["_routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
+  ads: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
 }) => {
   return (
     <Container>

@@ -101,7 +101,7 @@ const SingleNewsPage = async ({
                 ))}
               </div>
               <ShareCopy
-                text={`https://kasaba.uz/news/${currentNews.type}/${currentNews.path}`}
+                text={`https://davlat.kasaba.uz/news/${currentNews.type}/${currentNews.path}`}
               />
             </div>
             <div className=" w-1/4 max-md:hidden">

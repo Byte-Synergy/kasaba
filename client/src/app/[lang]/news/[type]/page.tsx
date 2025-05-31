@@ -18,6 +18,7 @@ const NewsPage = async ({
 
   const { data } = await eden.news.get({
     query: {
+      sort: "desc",
       limit: 50,
       page: 1,
       filter: {

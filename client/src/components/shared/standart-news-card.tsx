@@ -29,12 +29,12 @@ const CardVariant = (variant: string): CardStyles => {
           "w-full bg-white shadow-lg border border-[#e6e6e6] hover:shadow-[0_4px_12px_#1717170d,0_24px_46px_#17171714,0_47px_60px_#17171721] hover:-translate-y-3 transition-all",
         image: "w-full h-48",
         informationDiv:
-          "relative py-4 px-[16px] flex flex-col items-start gap-y-[8px]",
+          "relative py-4 px-[16px] flex flex-col items-start gap-y-[8px] mad-md:py-1 max-md:px-[12px]",
         titleParent: "absolute bottom-[100%] left-0",
         title:
-          "relative py-[7px] px-[10px] text-[#01075c] text-[12px] font-extrabold z-10 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-white/60 after:backdrop-blur-xs after:-z-10 font-montserrat max-md:text-md",
+          "relative py-[7px] px-[10px] text-[#01075c] text-[12px] font-extrabold z-10 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-white/60 after:backdrop-blur-xs after:-z-10 font-montserrat max-md:text-md line-clamp-2 break-normal",
         options: "justify-between",
-        description: "text-[#01075c] text-sm font-medium",
+        description: "text-[#01075c] text-sm font-medium break-normal",
         badge:
           "bg-[#2f348d] inline-flex py-[6px] px-[14px] justify-center items-center gap-x-1 rounded text-white text-[10px] font-medium font-raleway",
       };

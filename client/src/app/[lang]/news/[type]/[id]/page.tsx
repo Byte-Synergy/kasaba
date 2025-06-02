@@ -73,7 +73,7 @@ const SingleNewsPage = async ({
         <Container>
           <div className="flex gap-9">
             <div className="w-3/4 max-md:w-full">
-              <h1 className=" font-montserrat font-semibold text-2xl max-md:text-base max-md:text-center max-md:mt-5">
+              <h1 className=" font-montserrat font-semibold text-2xl max-md:text-md max-md:text-center max-md:mt-5">
                 {currentNews.title}
               </h1>
               <div className="flex items-center justify-start gap-6 mt-2 max-md:hidden">
@@ -122,6 +122,7 @@ const SingleNewsPage = async ({
       <section id="related-news" className="max-w-[1440px] w-full mx-auto">
         {otherNews?.data.length && (
           <RelatedNews
+            lang={lang}
             all_label={t.all_label}
             news_on_the_topic_label={t.news_on_the_topic_label}
             data={otherNews.data}

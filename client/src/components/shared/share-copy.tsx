@@ -45,7 +45,7 @@ const ShareCopy = memo(({ text }: { text: string }) => {
     );
   };
   return (
-    <div className=" flex items-center justify-between mt-6">
+    <div className=" flex items-center justify-between mt-6 max-md:mt-2 max-md:flex-col max-md:items-start max-md:gap-y-2">
       <div className="flex items-center justify-center gap-3">
         <p className=" font-raleway font-semibold text-xl">Ulashish</p>
         <button
@@ -75,7 +75,7 @@ const ShareCopy = memo(({ text }: { text: string }) => {
       </div>
       <div
         className={cn(
-          "py-2 px-3 border flex items-center justify-center gap-3",
+          "py-2 px-3 border flex items-center justify-center gap-3 max-md:w-full",
           copied
             ? "border-green-500 bg-green-100"
             : "border-orange-500 bg-orange-100",

@@ -9,6 +9,7 @@ import React, { memo } from "react";
 import Link from "../link";
 import { Locale } from "@/configs/i18n";
 import { useParams } from "next/navigation";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 const PhotoNewsVariants = (variant: string) => {
   switch (variant) {
@@ -16,22 +17,22 @@ const PhotoNewsVariants = (variant: string) => {
       return {
         card: "w-full h-[361px]",
         p: "py-1 px-6 rounded bg-white/15 font-medium text-sm text-white",
-        link: "font-semibold text-xl text-white hover:text-orange-500 duration-200 ",
-        blurBox: " gap-4 p-5 ",
+        link: "font-semibold text-xl text-white hover:text-orange-500 duration-200 max-md:text-md",
+        blurBox: "gap-4 p-5 max-md:p-2 max-md:gap-2",
       };
     case "small":
       return {
         card: "h-[225px]",
         p: "py-1 px-6 rounded bg-white/15 font-medium text-[10px] text-white",
-        link: "font-semibold text-xs text-white hover:text-orange-500 duration-200 ",
-        blurBox: "gap-y-2 py-3 px-6 ",
+        link: "font-semibold text-xs text-white hover:text-orange-500 duration-200 max-md:text-xs",
+        blurBox: "gap-y-2 py-3 px-6 max-md:py-1 max-md:px-3 max-md:gap-2",
       };
     default:
       return {
         card: "w-full h-[361px]",
         p: "py-1 px-6 rounded bg-white/15 font-medium text-sm text-white",
-        link: "font-semibold text-xl text-white hover:text-orange-500 duration-200 ",
-        blurBox: "gap-4 p-5",
+        link: "font-semibold text-xl text-white hover:text-orange-500 duration-200 max-md:text-xs",
+        blurBox: "gap-4 p-5 max-md:px-3",
       };
   }
 };
@@ -45,6 +46,7 @@ const PhotoNewsCard = memo(
     variant?: string;
   }) => {
     const { lang } = useParams<{ lang: Locale }>();
+    const {width} = useWindowSize()
     return (
       <Link
         lang={lang}
@@ -78,12 +80,19 @@ const PhotoNewsCard = memo(
               >
                 <p>{formatDateToDateTime(data?.createdAt)}</p>
               </div>
-              <button className="p-2 rounded-sm hover:bg-white/15 translate-x-40 group-hover:translate-x-0 transition-all">
+              {/* <button className="p-2 rounded-sm hover:bg-white/15 translate-x-40 group-hover:translate-x-0 transition-all">
                 <EllipsisVertical className="w-5 h-5 text-white" />
-              </button>
+              </button> */}
             </div>
-            <h3 className={PhotoNewsVariants(variant)?.link}>
-              {FormateToTitle(data?.title, 100)}
+            <h3 className={cn(PhotoNewsVariants(variant)?.link, "line-clamp-2")}>
+              {/* {
+                width && width < 450 ? (
+                  FormateToTitle(data?.title, 50)
+                ) : (
+                  FormateToTitle(data?.title, 100)
+                )
+              } */}
+              {data.title}
             </h3>
             {/* <div className=" w-full h-full absolute top-0 left-0 bg-black/55 -z-10"></div> */}
           </div>

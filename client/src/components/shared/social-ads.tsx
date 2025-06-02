@@ -43,7 +43,7 @@ const SocialAds = ({
             </button>
           </a>
         </div>
-        <div className=" bg-white border-4 max-md:border-8 border-orange-900/20 rounded-sm overflow-hidden">
+        <div className=" bg-white border-4 max-md:border-8 border-white rounded-sm overflow-hidden">
           {/* <Suspense
             fallback={<p className="text-black text-center">loading...</p>}
           >

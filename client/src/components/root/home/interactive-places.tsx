@@ -59,6 +59,7 @@ const InteractivePlaces = ({
     }
     getData();
   }, [selectPlace]);
+
   return (
     <Container className="">
       <ScrollAnimation>
@@ -71,7 +72,7 @@ const InteractivePlaces = ({
               onValueChange={(value) => setSelectPlace(value)}
               defaultValue={data[0]?.name}
             >
-              <SelectTrigger className="w-[300px] py-[15px] px-[25px] bg-[#ff8400] text-white text-xl font-bold mb-5">
+              <SelectTrigger className="w-[300px] py-[15px] px-[25px] bg-[#ff8400] text-white text-xl font-bold mb-5 max-md:w-full">
                 <SelectValue
                   placeholder={select_area_placeholder}
                   className="text-2xl placeholder:text-white text-white"

@@ -39,12 +39,12 @@ const CopyContext = ({
         {copied ? (
           <IoCopy
             className={cn(
-              "w-5 h-5 text-green-500 inline-flex ",
+              "w-5 h-5 text-green-500 inline-flex max-md:w-4 max-md:h-4",
               copied ? "scale-120" : "scale-100",
             )}
           />
         ) : (
-          <IoCopyOutline className=" w-5 h-5 inline-flex " />
+          <IoCopyOutline className=" w-5 h-5 inline-flex max-md:w-4 max-md:h-4" />
         )}
       </div>
     </div>

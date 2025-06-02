@@ -8,6 +8,7 @@ import { NewsDataType } from "@/types";
 import { ChevronRight } from "lucide-react";
 import Link from "@/components/link";
 import { Locale } from "@/configs/i18n";
+import NewsTitle from "@/components/news/title";
 
 const PhotoNews = ({
   data,
@@ -23,17 +24,13 @@ const PhotoNews = ({
   return (
     <>
       <ScrollAnimation>
-        <div className="flex w-full justify-between items-center gap-x-4 my-10 max-md:my-4 bg-[#ff8400] max-md:bg-transparent py-2 px-7 max-md:px-0 max-md:gap-2 uppercase">
-          <div className=" hidden max-md:block w-4! h-4 bg-orange-500!"></div>
-          <h3 className="text-[#fff] text-4xl font-bold">{photo_news_label}</h3>
-          <div className="flex-auto h-1 bg-[#ff8400] max-md:h-[1px] max-md:bg-white/15"></div>
-          <Link lang={lang} href="/news/photo">
-            <button className="flex items-center gap-x-1 text-[#fff] group cursor-pointer">
-              <span className="text-base font-bold uppercase">{all_label}</span>
-              <ChevronRight className="group-hover:translate-x-1 transition-transform" />
-            </button>
-          </Link>
-        </div>
+        <NewsTitle
+          lang={lang}
+          title={photo_news_label}
+          button={all_label}
+          href="/news/photo"
+          className="max-md:text-[#fff]"
+        />
       </ScrollAnimation>
       <div className="flex flex-col gap-y-10">
         <div className="flex items-center justify-between gap-x-10 max-md:flex-col gap-10 max-md:gap-5">
@@ -41,7 +38,7 @@ const PhotoNews = ({
             <PhotoNewsCard data={data[0]} />
           </ScrollAnimation>
           <ScrollAnimation idx={1} className="w-1/2 max-md:w-full">
-            <PhotoNewsCard  data={data[1]} />
+            <PhotoNewsCard data={data[1]} />
           </ScrollAnimation>
         </div>
         <div className="">

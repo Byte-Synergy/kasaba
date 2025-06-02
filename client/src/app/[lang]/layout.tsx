@@ -106,7 +106,7 @@ export default async function RootLayout({
         <AOSProviderDynamic>
           <Header header_desc={t.header.description} lang={lang} />
           <Navbar menu={(menu.data || []).map(mapMenuTree)} lang={lang} />
-          <main className="py-5 max-md:p-0">{children}</main>
+          <main className="py-5 max-md:p-0 ">{children}</main>
           <Footer lang={lang} />
         </AOSProviderDynamic>
       </body>

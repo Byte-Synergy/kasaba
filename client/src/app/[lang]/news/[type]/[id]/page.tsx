@@ -59,6 +59,7 @@ const SingleNewsPage = async ({
     photo: t.photo_news_label,
     video: t.video_news_label,
   };
+  
   return (
     <div className="">
       <section className="max-w-[1440px] w-full mx-auto">

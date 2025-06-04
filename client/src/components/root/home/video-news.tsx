@@ -7,8 +7,10 @@ import { Locale } from "@/configs/i18n";
 import { cn } from "@/libs/utils";
 import { NewsDataType } from "@/types";
 import { formatDate } from "@/utils";
+import { formatDateToNumber } from "@/utils/formatDate";
 import { FormateToTitle } from "@/utils/formateTitle";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { RiPlayFill } from "react-icons/ri";
 
@@ -81,12 +83,12 @@ const VideoNews = ({
                       {selectedData.tags?.[0]}
                     </p>
                     <p className="py-1 px-6 rounded bg-white/15 font-medium text-sm text-white max-md:px-3">
-                      {formatDate(selectedData.createdAt || new Date())}
+                      {formatDateToNumber(selectedData.createdAt)}
                     </p>
                   </div>
                   <button className="rounded bg-white/15  text-white flex">
                     <CopyContext
-                      text={`https://davlat.kasaba.uz/news/${selectedData.path}`}
+                      text={`https://davlat.kasaba.uz/news/video/${selectedData.path}`}
                     >
                       <span className="capitalize text-md">
                         {/* Ulashish */}
@@ -95,9 +97,9 @@ const VideoNews = ({
                     </CopyContext>
                   </button>
                 </div>
-                <div className="font-semibold text-2xl text-white duration-200 hover:text-orange-500 max-md:text-xl">
+                <Link href={`/news/video/${selectedData.path}`} className="font-semibold text-2xl text-white duration-200 hover:text-orange-500 max-md:text-xl line-clamp-2">
                   {selectedData.title}
-                </div>
+                </Link>
               </>
             )}
           </div>
@@ -137,15 +139,15 @@ const VideoNews = ({
                         "text-[#fff]/50"
                       )}
                     >
-                      {formatDate(item.createdAt || new Date())}
+                      {formatDateToNumber(item.createdAt)}
                     </p>
                     <h3
                       className={cn(
                         "text-start font-bold text-base  duration-200  max-md:text-sm",
-                        "text-white"
+                        "text-white line-clamp-2"
                       )}
                     >
-                      {FormateToTitle(item.title, 50)}
+                      {item.title}
                     </h3>
                   </div>
                 </div>

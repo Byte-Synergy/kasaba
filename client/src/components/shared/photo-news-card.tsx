@@ -17,15 +17,15 @@ const PhotoNewsVariants = (variant: string) => {
       return {
         card: "w-full h-[361px]",
         p: "py-1 px-6 rounded bg-white/15 font-medium text-sm text-white",
-        link: "font-semibold text-xl text-white hover:text-orange-500 duration-200 max-md:text-md",
+        link: "font-semibold text-xl text-white hover:text-orange-500 duration-200 max-md:text-md line-clamp-1",
         blurBox: "gap-4 p-5 max-md:p-2 max-md:gap-2",
       };
     case "small":
       return {
         card: "h-[225px]",
         p: "py-1 px-6 rounded bg-white/15 font-medium text-[10px] text-white",
-        link: "font-semibold text-xs text-white hover:text-orange-500 duration-200 max-md:text-xs",
-        blurBox: "gap-y-2 py-3 px-6 max-md:py-1 max-md:px-3 max-md:gap-2",
+        link: "font-semibold text-xs text-white hover:text-orange-500 duration-200 max-md:text-xs line-clamp-1",
+        blurBox: "gap-y-2 py-3 px-6 max-md:py-2 max-md:px-3 max-md:gap-2",
       };
     default:
       return {
@@ -47,6 +47,10 @@ const PhotoNewsCard = memo(
   }) => {
     const { lang } = useParams<{ lang: Locale }>();
     const {width} = useWindowSize()
+
+    const thumblPhoto = data.files?.find(d => data.content[0].fileId === d.name)
+    console.log(thumblPhoto);
+    
     return (
       <Link
         lang={lang}
@@ -60,7 +64,7 @@ const PhotoNewsCard = memo(
           width={594}
           height={350}
           className=" w-full h-full object-cover group-hover:scale-105 transition-transform"
-          src={`${data?.files?.[0]?.href || "/img/image 4.png"}`}
+          src={`${thumblPhoto?.href || "/img/image 4.png"}`}
           alt="Photo"
           loading="lazy"
         />
@@ -84,14 +88,7 @@ const PhotoNewsCard = memo(
                 <EllipsisVertical className="w-5 h-5 text-white" />
               </button> */}
             </div>
-            <h3 className={cn(PhotoNewsVariants(variant)?.link, "line-clamp-2")}>
-              {/* {
-                width && width < 450 ? (
-                  FormateToTitle(data?.title, 50)
-                ) : (
-                  FormateToTitle(data?.title, 100)
-                )
-              } */}
+            <h3 className={cn(PhotoNewsVariants(variant)?.link, "line-clamp-1 max-md:line-clamp-1")}>
               {data.title}
             </h3>
             {/* <div className=" w-full h-full absolute top-0 left-0 bg-black/55 -z-10"></div> */}

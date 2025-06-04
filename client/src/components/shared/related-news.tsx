@@ -1,9 +1,7 @@
 import React from "react";
 import Container from "./container";
 import StandardNewsCard from "./standart-news-card";
-import { ChevronRight } from "lucide-react";
 import { NewsDataType } from "@/types";
-import Title from "../ui/title";
 import NewsTitle from "../news/title";
 import { Locale } from "@/configs/i18n";
 

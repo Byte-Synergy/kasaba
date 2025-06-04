@@ -46,3 +46,13 @@ export const formatDateToDateTime = (date: string) => {
       : dateObj.getMinutes();
   return `${day}-${MONTHS[month]} ${year}, ${hour}:${minute}`;
 };
+
+export const formatDateToNumber = (date: string) => {
+  const d = new Date(date)
+
+  const year = d.getFullYear()
+  const month = String(d.getMonth()).padStart(2, "0")
+  const day = String(d.getDate()).padStart(2, "0")
+
+  return `${day}.${month}.${year}`
+}

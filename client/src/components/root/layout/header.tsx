@@ -15,6 +15,8 @@ import { Search } from "lucide-react";
 import { CurrencyType } from "@/types/currency";
 import Link from "@/components/link";
 import { Locale } from "@/configs/i18n";
+import Weather from "./weather";
+// import Weather from "./weather";
 
 const Clock = dynamic(() => import("./clock"), { ssr: false });
 
@@ -84,7 +86,7 @@ const Header = ({
               <Curreny currency={[currencies[2], currencies[3]]} />
             </>
           )}
-          {/* <Weather /> */}
+          <Weather />
           <Clock />
           <div className="flex items-center gap-x-1">
             <LanguageSwitcher />
@@ -98,7 +100,7 @@ const Header = ({
             </Link>
           </div>
         </div>
-        <div className=" hidden max-md:flex max-md:items-center max-md:justify-center max-md:gap-1">
+        <div className="hidden max-md:flex max-md:items-center max-md:justify-center max-md:gap-1">
           <button className="p-2 bg-white/15 rounded-full border border-white/15">
             <Image
               src={"/icon/weather.svg"}

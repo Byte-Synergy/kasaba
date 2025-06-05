@@ -95,7 +95,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={lang} className="scroll-smooth">
+    <html lang={lang} className="">
       <body
         className={cn(
           "antialiased flex flex-col min-h-screen",

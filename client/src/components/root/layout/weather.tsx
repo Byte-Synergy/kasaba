@@ -1,126 +1,187 @@
-// import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select'
-// import { ChevronDown } from 'lucide-react'
-// import React, { useCallback, useEffect, useState } from 'react'
+import {
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+} from '@/components/ui/dialog'
+import { ChevronDown, CloudSun, Cloudy, Sun } from 'lucide-react'
+import Image from 'next/image'
+import React from 'react'
 
-// export const regions = [
-//     {
-//         id: 1,
-//         region: "Toshkent shahar",
-//     },
-//     {
-//         id: 2,
-//         region: "Toshkent viloyat",
-//     },
-//     {
-//         id: 3,
-//         region: "Jizzax ",
-//     },
-//     {
-//         id: 4,
-//         region: "Sirdaryo ",
-//     },
-//     {
-//         id: 5,
-//         region: "Andijon",
-//     },
-//     {
-//         id: 6,
-//         region: "Namangan ",
-//     },
-//     {
-//         id: 7,
-//         region: "Farg'ona ",
-//     },
-//     {
-//         id: 8,
-//         region: "Samarqand",
-//     },
-//     {
-//         id: 9,
-//         region: "Qashqadaryo",
-//     },
-//     {
-//         id: 10,
-//         region: "Surxondaryo",
-//     },
-//     {
-//         id: 11,
-//         region: "Navoi",
-//     },
-//     {
-//         id: 12,
-//         region: "Xorazm",
-//     },
-//     {
-//         id: 13,
-//         region: "Buxoro",
-//     },
-//     {
-//         id: 14,
-//         region: "Qoraqalpog'iston",
-//     },
-// ]
+const regions = [
+    { id: 'tashkent', region: 'Toshkent' },
+    { id: 'andijan', region: 'Andijon' },
+    { id: 'fergana', region: 'Farg‘ona' },
+    { id: 'namangan', region: 'Namangan' },
+    { id: 'samarkand', region: 'Samarqand' },
+    { id: 'bukhara', region: 'Buxoro' },
+    { id: 'navoiy', region: 'Navoiy' },
+    { id: 'khorezm', region: 'Xorazm' },
+    { id: 'kashkadarya', region: 'Qashqadaryo' },
+    { id: 'surkhandarya', region: 'Surxondaryo' },
+    { id: 'jizzakh', region: 'Jizzax' },
+    { id: 'syrdarya', region: 'Sirdaryo' },
+    { id: 'karakalpakstan', region: 'Qoraqalpog‘iston' },
+    { id: 'tashkent_r', region: 'Toshkent v' },
+];
 
-// const fetchWeather = async (city: string) => {
-//     try {
-//         const res = await fetch(
-//             `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=uz&appid=1f80edf7f90a7c1e663f06d287d50a64`
-//         );
-//         const data = await res.json();
-//         return data
-//     } catch (error) {
-//         console.error("Ob-havo ma’lumotlarini olishda xatolik:", error);
-//     }
-// };
 
-// const Weather = () => {
-//     const [selectPlace, setSelectPlace] = useState<string>("toshkent shahar")
-//     const [weather, setWeather] = useState<any>(null);
+const Weather = () => {
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <div className='inline-flex items-center justify-start gap-x-2' role='button'>
+                    <div className='w-12 h-12 flex items-center justify-center p-2 rounded-full border-2 border-[#ffffff4e] bg-[#ffffff4e]'>
+                        <Image
+                            src='/icon/weather.svg'
+                            alt='weather icon'
+                            width={24}
+                            height={24}
+                            objectFit='contain'
+                        />
+                    </div>
+                    <div className='inline-flex flex-col'>
+                        <div className='row-span-1 col-span-1'>
+                            <span className='text-white text-sm font-bold leading-tight'>28 </span>
+                            <span className='text-white text-sm font-normal leading-tight'>°C</span>
+                        </div>
+                        <div className='row-span-1 col-span-1 inline-flex justify-start items-center gap-x-1'>
+                            <span className='justify-start text-white/50 text-sm font-bold leading-none'>Тошкент </span>
+                            <ChevronDown className='justify-start text-white/50 w-4 h-4 font-medium leading-none' />
+                        </div>
+                    </div>
+                </div>
+            </DialogTrigger>
 
-//     useEffect(() => {
-//         const value = selectPlace.match(/^\S+/)
-//         if (value) {
-//             setSelectPlace(value[0])
-//             setWeather(fetchWeather(selectPlace))
-//         }
-//     }, [])
+            <DialogContent className="min-w-4xl w-full bg-white rounded-xl px-6 py-3 shadow-xl">
+                <div className='flex items-start gap-x-4'>
+                    <div className='w-4/6 flex flex-col'>
+                        {/*  Currency weather box */}
+                        <div className='flex items-center justify-between mb-4'>
+                            <div className='w-1/2'>
+                                <div className=''>
+                                    <h3 className='text-xl font-bold'>Toshkent shahar</h3>
+                                    <p className='text-sm font-medium'>Chorshanba, 04 - iyun</p>
+                                </div>
+                                <h1 className='text-7xl font-bold mt-2 text-[#FF8400]'>+33°C</h1>
+                            </div>
+                            <div className='w-1/2'>
+                                <Sun className='w-36 h-36 float-end' />
+                            </div>
+                        </div>
+                        {/* Today weather box */}
+                        <ul className='flex gap-x-8 p-3 bg-[#f9f9f9] rounded-2xl overflow-x-auto text-[#051769]'>
+                            <li className=''>
+                                <h5 className='font-medium'>Hozir</h5>
+                                <p className='my-1 text-lg'>+33°C</p>
+                                <Cloudy className='w-6 h-6 text-[#29303f]' />
+                            </li>
+                            <li className=''>
+                                <h5>Hozir</h5>
+                                <p className='my-1'>+33°C</p>
+                                <Cloudy className='w-5 h-5' />
+                            </li>
+                            <li className=''>
+                                <h5>Hozir</h5>
+                                <p className='my-1'>+33°C</p>
+                                <Cloudy className='w-5 h-5' />
+                            </li>
+                            <li className=''>
+                                <h5>Hozir</h5>
+                                <p className='my-1'>+33°C</p>
+                                <Cloudy className='w-5 h-5' />
+                            </li>
+                            <li className=''>
+                                <h5>Hozir</h5>
+                                <p className='my-1'>+33°C</p>
+                                <Cloudy className='w-5 h-5' />
+                            </li>
+                            <li className=''>
+                                <h5>Hozir</h5>
+                                <p className='my-1'>+33°C</p>
+                                <Cloudy className='w-5 h-5' />
+                            </li>
+                            <li className=''>
+                                <h5>Hozir</h5>
+                                <p className='my-1'>+33°C</p>
+                                <Cloudy className='w-5 h-5' />
+                            </li>
+                            <li className=''>
+                                <h5>Hozir</h5>
+                                <p className='my-1'>+33°C</p>
+                                <Cloudy className='w-5 h-5' />
+                            </li>
+                        </ul>
 
-//     const onChangeRegionHandler = useCallback((e: string) => {
-//         const value = e.match(/^\S+/)
-//         if (value) {
-//             setSelectPlace(value[0])
-//             setWeather(fetchWeather(e))
-//         }
-//     }, [])
+                        {/* weekends weather box */}
+                        <div className="mt-4 text-center text-gray-700 p-3 px-0 bg-[#f9f9f9] rounded-2xl ">
+                            {/* <h3 className='text-xl '>Haftalik ob-havo</h3> */}
+                            <ul className="relative h-36 flex flex-col flex-wrap gap-y-2 gap-x-0 after:absolute after:w-[1px] after:h-full after:content-[''] after:top-0 after:left-1/2 after:bg-[#e7e7e7]">
+                                <li className='w-1/2 flex justify-evenly items-center'>
+                                    <p>Payshanba, 05</p>
+                                    <div className='flex items-center gap-x-1'>
+                                        <CloudSun className='w-6 h-6' />
+                                        <b className='text-xl'>+33°C</b>
+                                    </div>
+                                </li>
+                                <li className='w-1/2 flex justify-evenly items-center'>
+                                    <p>Payshanba, 05</p>
+                                    <div className='flex items-center gap-x-1'>
+                                        <CloudSun className='w-6 h-6' />
+                                        <b className='text-xl'>+33°C</b>
+                                    </div>
+                                </li>
+                                <li className='w-1/2 flex justify-evenly items-center'>
+                                    <p>Payshanba, 05</p>
+                                    <div className='flex items-center gap-x-1'>
+                                        <CloudSun className='w-6 h-6' />
+                                        <b className='text-xl'>+33°C</b>
+                                    </div>
+                                </li>
+                                <li className='w-1/2 flex justify-evenly items-center'>
+                                    <p>Payshanba, 05</p>
+                                    <div className='flex items-center gap-x-1'>
+                                        <CloudSun className='w-6 h-6' />
+                                        <b className='text-xl'>+33°C</b>
+                                    </div>
+                                </li>
+                                <li className='w-1/2 flex justify-evenly items-center'>
+                                    <p>Payshanba, 05</p>
+                                    <div className='flex items-center gap-x-1'>
+                                        <CloudSun className='w-6 h-6' />
+                                        <b className='text-xl'>+33°C</b>
+                                    </div>
+                                </li>
+                                <li className='w-1/2 flex justify-evenly items-center'>
+                                    <p>Payshanba, 05</p>
+                                    <div className='flex items-center gap-x-1'>
+                                        <CloudSun className='w-6 h-6' />
+                                        <b className='text-xl'>+33°C</b>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <form className='w-2/6 p-3 bg-[#f9f9f9] rounded-xl'>
+                        <h3 className='text-xl font-bold'>Hududlar</h3>
+                        {regions.map((r, i) => (
+                            <label htmlFor={`region-${r.id}`} className='flex justify-between text-md my-1'>
+                                <span>{r.region}</span>
+                                <input
+                                    type="radio"
+                                    id={`region-${r.id}`}
+                                    name="region"
+                                    value={r.region}
+                                    // onChange={handleChange}
+                                    // checked={tanlanganViloyat === viloyat}
+                                    className="mr-2"
+                                />
+                            </label>
+                        ))}
+                    </form>
+                </div>
+            </DialogContent>
+        </Dialog>
+    )
+}
 
-//     return (
-//         <div className='flex items-center'>
-//             <div className='w-9 h-9 p-2 bg-white/10 rounded-3xl border border-white/10 backdrop-blur-[20px] justify-center items-center inline-flex'>
-//                 <img src="/icon/weather.svg" alt="weather-icon" className='w-full h-full object-contain' />
-//             </div>
-//             <div className='flex flex-col items-start'>
-//                 <span className='text-white text-sm font-bold ml-2'>28 °C</span>
-//                 <Select onValueChange={(e) => onChangeRegionHandler(e)}>
-//                     <SelectTrigger className='flex items-center gap-x-2 w-[86px] p-0 text-white text-xs font-medium outline-hidden border-none '>
-//                         <span className='text-white px-2 capitalize'>{selectPlace}</span>
-//                         <ChevronDown className='w-5 h-5' />
-//                     </SelectTrigger>
-//                     <SelectContent className='w-[320px] rounded-none border-none'>
-//                         <h3 className='text-center py-3 px-4 bg-[#ff8400]/80 text-white'>Hududni Tanlang</h3>
-//                         <div className='flex flex-wrap border-none'>
-//                             {
-//                                 regions.map(({ id, region }) => (
-//                                     <SelectItem key={region} value={region} className="w-1/2 inline-flex items-center gap-x-2 py-3 px-4 bg-[#ff8400]/80 first-letter:relative after:absolute after:w-full after:h-full after:top-0 after:left-0 after:content-[''] after:-z-0 rounded-none hover:after:bg-white/15 border border-[1px]">
-//                                         <span className='text-white'>{region}</span>
-//                                     </SelectItem>
-//                                 ))
-//                             }
-//                         </div>
-//                     </SelectContent>
-//                 </Select>
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default Weather
+export default Weather

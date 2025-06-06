@@ -22,8 +22,8 @@ const TopNewsCard = memo(
           height={1080}
           className="size-full object-cover group-hover:scale-75 group-hover:w-[50%] group-hover:rounded-xl transition smooth-line-x"
         />
-        <div className="absolute bottom-0 left-0 w-full h-[200px] max-md:h-60 group-hover:static group-hover:h-full group-hover:w-[50%] group-hover:top-0 transition-[width]">
-          <div className="relative w-full h-full inline-flex flex-col gap-y-2 max-md:gap-5 py-[25px] px-[75px] max-md:p-5 z-10 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-[#000573]/60 after:blur-sm after:-z-10 group-hover:justify-center group-hover:gap-y-4">
+        <div className="absolute bottom-0 left-0 w-full h-[200px] group-hover:static group-hover:h-full group-hover:w-[50%] group-hover:top-0 transition-[width] max-md:h-20">
+          <div className="relative w-full h-full inline-flex flex-col gap-y-2 max-md:gap-5 py-[25px] px-[75px] max-md:p-5 z-10 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-[#000573]/80 hover:after:bg-[#000573]/60 transition-all after:blur-sm after:-z-10 group-hover:justify-center group-hover:gap-y-4 max-md:py-4 max-md:px-5">
             <h3 className="w-[85%] text-white text-3xl max-md:text-xl font-bold group-hover:w-full">
               {data.title}
             </h3>

@@ -14,6 +14,8 @@ import { i18n, Locale } from "@/configs/i18n";
 import { AppType } from "@/types/server";
 import { getDictionary } from "@/utils/directory";
 import eden from "@/libs/eden";
+import Sidebar from "@/components/root/layout/sidebar";
+import { TranslationsProvider } from "@/utils/translation-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -79,18 +81,7 @@ export default async function RootLayout({
       path: menu.path || "",
       newsType: menu.newsType,
       docCount: menu.type === "document" ? menu.files?.length : undefined,
-      sub_menu:
-        // menu.type === "news" && menu.newsType === "area"
-        //   ? [
-        //       {
-        //         title: "Hudud",
-        //         id: "asdasds",
-        //         path: "",
-        //         sub_menu: [],
-        //       },
-        //     ]
-        //   :
-        (menu.children || []).map(mapMenuTree),
+      sub_menu: (menu.children || []).map(mapMenuTree),
     };
   }
 
@@ -104,10 +95,13 @@ export default async function RootLayout({
         )}
       >
         <AOSProviderDynamic>
-          <Header header_desc={t.header.description} lang={lang} />
-          <Navbar menu={(menu.data || []).map(mapMenuTree)} lang={lang} />
-          <main className="py-5 max-md:p-0 ">{children}</main>
-          <Footer lang={lang} />
+          <TranslationsProvider dictionary={t}>
+            <Header header_desc={t.header.description} lang={lang} menu={(menu.data || []).map(mapMenuTree)} />
+            <Navbar menu={(menu.data || []).map(mapMenuTree)} lang={lang} />
+            <Sidebar lang={lang} menu={(menu.data || [])?.map(mapMenuTree)} />
+            <main className="py-5 max-md:p-0 ">{children}</main>
+            <Footer lang={lang} />
+          </TranslationsProvider>
         </AOSProviderDynamic>
       </body>
     </html>

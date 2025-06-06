@@ -101,3 +101,13 @@ export interface NewsFilter {
   sortBy?: "date" | "title" | "views";
   sortOrder?: "asc" | "desc";
 }
+
+export type MenuItem = {
+  id: string;
+  title: string;
+  path: string;
+  docCount?: number;
+  sub_menu: MenuItem[];
+  type?: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["type"];
+  newsType?: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["newsType"];
+};

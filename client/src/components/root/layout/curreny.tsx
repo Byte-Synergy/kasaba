@@ -19,7 +19,7 @@ const Curreny = ({ currency }: { currency: CurrencyType[] }) => {
   }, [currency]);
 
   return (
-    <div className="relative w-max h-[40px] flex items-center overflow-hidden">
+    <div className="relative w-max h-[40px] flex items-center overflow-hidden max-md:w-1/2">
       <AnimatePresence mode="wait">
         {currency.map((item, i) =>
           i === index ? (
@@ -41,7 +41,7 @@ const Curreny = ({ currency }: { currency: CurrencyType[] }) => {
                 />
               </div>
               <div>
-                <p className="text-white text-sm font-bold leading-[18.20px]">
+                <p className="text-white text-sm font-bold leading-[18.20px] max-md:text-black">
                   {item.Rate}
                 </p>
                 {+item.Diff > 0 ? (

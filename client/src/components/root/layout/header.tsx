@@ -1,91 +1,43 @@
 "use client";
 
-import { DateTime } from "luxon";
-import React, { useEffect, useState } from "react";
 import Container from "../../shared/container";
 import Logo from "./logo";
-import Curreny from "./curreny";
 import dynamic from "next/dynamic";
 import LanguageSwitcher from "./language";
 import Image from "next/image";
 import { FiSearch } from "react-icons/fi";
-import { RiMenu3Fill } from "react-icons/ri";
-import { useNavbarStore } from "@/store/navbar-store";
 import { Search } from "lucide-react";
-import { CurrencyType } from "@/types/currency";
 import Link from "@/components/link";
 import { Locale } from "@/configs/i18n";
 import Weather from "./weather";
-// import Weather from "./weather";
+import { MenuItem } from "@/types";
+import CurrencyBox from "./currency-box";
+import { RiMenu3Fill } from "react-icons/ri";
+import { useSidebarStore } from "@/hooks/useSidebar";
 
 const Clock = dynamic(() => import("./clock"), { ssr: false });
-
-const fetchData = async ({
-  currency,
-  date,
-}: {
-  currency: string;
-  date: string;
-}): Promise<CurrencyType[] | null> => {
-  try {
-    const res = await fetch(
-      `https://cbu.uz/uz/arkhiv-kursov-valyut/json/${currency}/${date}`
-    );
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error("Ma’lumotlarini olishda xatolik:", err);
-    return null;
-  }
-};
 
 const Header = ({
   lang,
   header_desc,
+  menu
 }: {
   header_desc: string;
   lang: Locale;
+  menu: MenuItem[]
 }) => {
-  // const router = useRouter();
+  const openSidebar = useSidebarStore((state) => state.open)
 
-  const setNavbarMenu = useNavbarStore((state) => state.setNavbarMenu);
-  const [currencies, setCurrencies] = useState<CurrencyType[] | null>(null);
-
-  const getCurrencyData = async () => {
-    try {
-      const date = DateTime.now();
-      const formatted = date.toFormat("yyyy-MM-dd");
-
-      const usdData =
-        (await fetchData({ currency: "USD", date: formatted })) || [];
-      const rubData =
-        (await fetchData({ currency: "RUB", date: formatted })) || [];
-      const eurData =
-        (await fetchData({ currency: "EUR", date: formatted })) || [];
-      const cnyData =
-        (await fetchData({ currency: "CNY", date: formatted })) || [];
-
-      setCurrencies([...usdData, ...eurData, ...rubData, ...cnyData]);
-    } catch (error) {
-      console.error("Ma'lumotlarini olishda xatolik:", error);
-    }
+  const handleOpenSidebar = () => {
+    openSidebar();
   };
-
-  useEffect(() => {
-    getCurrencyData();
-  }, []);
 
   return (
     <section className="w-full bg-[url(/img/BG.png)] bg-cover bg-no-repeat py-[20px] overflow-hidden relative z-10 after:w-full after:h-full after:absolute after:top-0 after:left-0 after:bg-linear-to-r after:from-[#141348] after:to-[#030239] after:blur-[40px] after:-z-10 max-md:bg-linear-to-r max-md:from-[#000674] max-md:to-[#000BDA]">
       <Container className="flex items-center justify-between">
         <Logo lang={lang} header_desc={header_desc} />
         <div className="flex items-center gap-x-[20px] max-md:hidden">
-          {currencies && (
-            <>
-              <Curreny currency={[currencies[0], currencies[1]]} />
-              <Curreny currency={[currencies[2], currencies[3]]} />
-            </>
-          )}
+          <CurrencyBox />
           <Weather />
           <Clock />
           <div className="flex items-center gap-x-1">
@@ -115,11 +67,12 @@ const Header = ({
               <FiSearch className=" object-contain w-5 h-5 text-white" />
             </button>
           </Link>
+          {/* MenuSidebar button */}
           <button
-            onClick={setNavbarMenu}
             className="p-2 bg-white/15 rounded-full border border-white/15"
+            onClick={handleOpenSidebar}
           >
-            <RiMenu3Fill className=" object-contain w-5 h-5 text-white" />
+            <RiMenu3Fill className="w-5 h-5 text-white" />
           </button>
         </div>
       </Container>

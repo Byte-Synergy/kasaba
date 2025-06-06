@@ -1,19 +1,21 @@
+'use client'
 import { MenuItem } from "@/app/[lang]/layout";
 import Link from "@/components/link";
 import { Locale } from "@/configs/i18n";
 import { cn } from "@/libs/utils";
-import { getDictionary } from "@/utils/directory";
+import { useTranslations } from "@/utils/translation-provider";
 
-export default async function Navbar({
+export default function Navbar({
   lang,
   menu,
 }: {
   menu: MenuItem[];
-  lang: Locale;
+  lang: Locale | string;
 }) {
   const c =
     "flex relative h-full text-nowrap items-center space-x-2 text-[#141348] text-lg font-semibold uppercase max-md:p-4";
-  const t = await getDictionary(lang);
+
+  const t = useTranslations()
 
   const render = (menu: MenuItem[], level = 0) => {
     return (
@@ -43,7 +45,7 @@ export default async function Navbar({
             item.type === "news"
               ? `/news/${item.newsType}`
               : item.type === "document" &&
-                  !(item.docCount && item.docCount > 1)
+                !(item.docCount && item.docCount > 1)
                 ? `/documents/${item.id}`
                 : `/p/${item.id}`;
 
@@ -55,9 +57,9 @@ export default async function Navbar({
                   href={href}
                   className={cn(
                     c,
-                    
+
                     level > 0
-                      ? "text-white text-base hover:bg-white hover:text-[#ff7a00] px-4 py-2"
+                      ? "text-white text-base hover:bg-white hover:text-[#ff7a00] px-4 py-2 cursor-pointer"
                       : "hover:text-[#ff7a00]"
                   )}
                 >
@@ -69,9 +71,9 @@ export default async function Navbar({
                 <div
                   className={cn(
                     c,
-                    
+
                     level > 0
-                      ? "text-white text-base hover:bg-white hover:text-[#ff7a00] px-4 py-2 relative"
+                      ? "text-white text-base hover:bg-white hover:text-[#ff7a00] px-4 py-2 relative cursor-pointer"
                       : "hover:text-[#ff7a00]"
                   )}
                 >
@@ -83,9 +85,8 @@ export default async function Navbar({
 
               {hasSub && (
                 <div
-                  className={`absolute z-20 bg-[#ff7a00] flex-col hidden ${gHF[level]} ${
-                    level === 0 ? "top-full left-0" : "top-0 left-full"
-                  }`}
+                  className={`absolute z-20 bg-[#ff7a00] flex-col hidden cursor-pointer ${gHF[level]} ${level === 0 ? "top-full left-0" : "top-0 left-full"
+                    }`}
                 >
                   {render(item.sub_menu, level + 1)}
                 </div>
@@ -105,7 +106,7 @@ export default async function Navbar({
           href={"/"}
           lang={lang}
         >
-          {t.menu.main}
+          {t("menu.main")}
         </Link>
         {render(menu)}
         <Link
@@ -113,7 +114,7 @@ export default async function Navbar({
           href={"/contact"}
           lang={lang}
         >
-          {t.menu.contact}
+          {t("menu.contact")}
         </Link>
       </nav>
     </>

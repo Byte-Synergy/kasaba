@@ -10,7 +10,7 @@ export default async function Page({
   params: Promise<{ lang: Locale }>;
 }) {
   const { lang } = await params;
-  const t = await getDictionary(lang);
+  const t = await getDictionary(lang as Locale);
 
   const { data: areasData } = await eden.places.get({
     query: {

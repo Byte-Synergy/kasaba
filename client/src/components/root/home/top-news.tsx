@@ -43,63 +43,6 @@ const TopNews = ({
               ))}
             </Swiper>
             {Boolean(ads.length) && (
-              // <div className="grid gap-3 min-w-[300px]">
-              //   <ScrollAnimation className="max-w-[300px]">
-              //     <Swiper
-              //       modules={[Autoplay]}
-              //       autoplay={{
-              //         delay: 3000,
-              //         disableOnInteraction: false,
-              //       }}
-              //       loop={true}
-              //       className="size-full"
-              //     >
-              //       {[{ url: "", p: "img/banners/120uz.jpg" }].map(
-              //         (ad, key) => (
-              //           <SwiperSlide key={key}>
-              //             <a href={ad.url} target="_blank">
-              //               <Image
-              //                 alt="Ad"
-              //                 src={ad.p}
-              //                 width={1080}
-              //                 height={1080}
-              //               />
-              //             </a>
-              //           </SwiperSlide>
-              //         )
-              //       )}
-              //     </Swiper>
-              //   </ScrollAnimation>
-              //   <ScrollAnimation className="max-w-[300px]">
-              //     <Swiper
-              //       modules={[Autoplay]}
-              //       autoplay={{
-              //         delay: 3000,
-              //         disableOnInteraction: false,
-              //       }}
-              //       loop={true}
-              //       className="size-full"
-              //     >
-              //       {[
-              //         {
-              //           url: "https://www.oromgohlar.uz/uz",
-              //           p: "img/banners/banner_uz_m.png",
-              //         },
-              //       ].map((ad, key) => (
-              //         <SwiperSlide key={key}>
-              //           <a href={ad.url} target="_blank">
-              //             <Image
-              //               alt="Ad"
-              //               src={ad.p}
-              //               width={1080}
-              //               height={1080}
-              //             />
-              //           </a>
-              //         </SwiperSlide>
-              //       ))}
-              //     </Swiper>
-              //   </ScrollAnimation>
-              // </div>
               <div className="flex px-5 md:px-0 flex-col gap-3 w-full md:max-w-[400px]">
                 <Image
                   className="size-full object-cover"

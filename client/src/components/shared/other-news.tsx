@@ -34,15 +34,15 @@ const OtherContent = async ({
             className="flex flex-col gap-2 items-start group"
           >
             <div className="flex items-center justify-center gap-1 border rounded-full border-gray-300 py-1 px-2">
-              <CiCalendar className=" w-4 h-4 text-gray-400" />
-              <p className=" font-raleway font-medium text-xs text-gray-400 ">
+              <CiCalendar className=" w-4 h-4 text-gray-400 group-hover:text-gray-700" />
+              <p className=" font-raleway font-medium text-xs text-gray-400 group-hover:text-gray-700">
                 {item.createdAt && formatDateToDateTime(item?.createdAt)}
               </p>
             </div>
-            <h3 className=" font-montserrat font-semibold text-base group-hover:text-[#FF8500]">
-              {FormateToTitle(item.title, 70)}
+            <h3 className=" font-montserrat font-semibold text-base group-hover:text-[#FF8500] line-clamp-2">
+              {item.title}
             </h3>
-            <p className="text-sm">{FormateToTitle(item.description, 120)}</p>
+            <p className="text-sm line-clamp-3">{item.description}</p>
           </Link>
         ))}
       </div>

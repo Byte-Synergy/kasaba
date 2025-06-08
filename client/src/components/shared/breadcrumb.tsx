@@ -11,11 +11,13 @@ const Breadcrumb = memo(
     const { lang } = useParams<{ lang: Locale }>();
 
     return (
-      <div className="flex items-center justify-start gap-2">
-        <Image src={"/icon/home.svg"} width={16} height={16} alt="icon" />
-        <Link lang={lang} href={"/"} className=" font-medium text-xs">
-          {main_label}
-        </Link>
+      <ul className="flex items-center justify-start gap-2">
+        <li className="">
+          <Link lang={lang} href={"/"} className="flex items-center gap-2 font-medium text-xs">
+            <Image src={"/icon/home.svg"} width={16} height={16} alt="icon" />
+            {main_label}
+          </Link>
+        </li>
         {data.map((item, idx) => (
           <div
             key={idx}
@@ -25,7 +27,7 @@ const Breadcrumb = memo(
             <p className=" font-medium text-xs text-zinc-500">{item}</p>
           </div>
         ))}
-      </div>
+      </ul>
     );
   }
 );

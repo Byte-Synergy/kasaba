@@ -16,7 +16,6 @@ const RelatedNews = ({
   data: NewsDataType[];
   lang: Locale
 }) => {
-  console.log(news_on_the_topic_label);
   
   return (
     <Container className=" py-16 max-md:py-5">

@@ -24,7 +24,7 @@ const TopNews = ({
   const { lang } = useParams<{ lang: Locale }>();
   return (
     Boolean(news.length) && (
-      <Container className="relative max-md:w-full my-5">
+      <Container className="relative max-md:w-full my-5 max-md:m-0">
         <ScrollAnimation>
           <div className="relative flex md:flex-row flex-col gap-3">
             <Swiper

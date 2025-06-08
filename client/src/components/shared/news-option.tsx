@@ -41,7 +41,6 @@ const NewsOption = ({
             const hasCategory = data.some((category) =>
               place.title.toLowerCase().includes(category.name.toLowerCase())
             );
-
             return {
               ...place,
               isdisabled: !hasCategory,
@@ -51,6 +50,13 @@ const NewsOption = ({
     }
     getCategories();
   }, []);
+
+  const sortPlaces = places.sort((a, b) => {
+    if (a.isdisabled && !b.isdisabled) return 1;
+    if (!a.isdisabled && b.isdisabled) return -1;
+    return a.title.localeCompare(b.title);
+  });
+  
   return (
     <div className="flex items-start flex-col gap-y-4 max-md:gap-5 ">
       <div className=" w-full">
@@ -59,7 +65,7 @@ const NewsOption = ({
             {areas_label}
           </h2>
         </ScrollAnimation>
-        {places.map((section, idx) => (
+        {sortPlaces.map((section, idx) => (
           <ScrollAnimation key={section.title + idx} idx={idx} className="grid">
             <Link
               lang={!section.isdisabled ? params.lang : undefined}

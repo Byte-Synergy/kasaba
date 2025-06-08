@@ -49,7 +49,6 @@ const PhotoNewsCard = memo(
     const {width} = useWindowSize()
 
     const thumblPhoto = data.files?.find(d => data.content[0].fileId === d.name)
-    console.log(thumblPhoto);
     
     return (
       <Link

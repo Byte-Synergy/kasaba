@@ -2,8 +2,6 @@
 import { cn } from "@/libs/utils";
 import { NewsDataType } from "@/types";
 import { formatDateToDateTime } from "@/utils/formatDate";
-import { FormateToTitle } from "@/utils/formateTitle";
-import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import React, { memo } from "react";
 import Link from "../link";

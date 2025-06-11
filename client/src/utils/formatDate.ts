@@ -13,6 +13,16 @@ const MONTHS = [
   "dekabr",
 ];
 
+const WEEKDAYS = [
+  "yakshanba",
+  "dushanba",
+  "seshanba",
+  "chorshanba",
+  "payshanba",
+  "juma",
+  "shanba",
+];
+
 export const formatDate = (date: string | Date): string => {
   const d = new Date(date);
 
@@ -56,3 +66,11 @@ export const formatDateToNumber = (date: string) => {
 
   return `${day}.${month}.${year}`
 }
+
+export const formatDateToWeekday = (date: string | Date): string => {
+  const d = new Date(date);
+  const w = WEEKDAYS[d.getDay()];
+  const month = MONTHS[d.getMonth()];
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${w}, ${day}-${month}`;
+};

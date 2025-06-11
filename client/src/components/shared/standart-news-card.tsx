@@ -27,14 +27,14 @@ const CardVariant = (variant: string): CardStyles => {
       return {
         parentDiv:
           "w-full bg-white shadow-lg border border-[#e6e6e6] hover:shadow-[0_4px_12px_#1717170d,0_24px_46px_#17171714,0_47px_60px_#17171721] hover:-translate-y-3 transition-all",
-        image: "w-full h-48",
+        image: "w-full h-56 max-md:h-48",
         informationDiv:
           "relative py-4 px-[16px] flex flex-col items-start gap-y-[8px] mad-md:py-1 max-md:px-[12px]",
         titleParent: "absolute bottom-[100%] left-0",
         title:
-          "relative py-[7px] px-[10px] text-[#01075c] text-[12px] font-extrabold z-10 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-white/60 after:backdrop-blur-xs after:-z-10 font-montserrat max-md:text-md line-clamp-2 break-normal",
+          "relative py-[5px] px-[10px] text-[#01075c] text-[12px] font-bold z-10 after:absolute after:top-0 after:left-0 after:w-full after:h-full after:bg-white/60 after:backdrop-blur-xs after:-z-10 font-montserrat max-md:text-md line-clamp-2",
         options: "justify-between",
-        description: "text-[#01075c] text-sm font-medium break-normal",
+        description: "text-[#01075c] h-[40px] text-sm font-medium break-normal line-clamp-2",
         badge:
           "bg-[#2f348d] inline-flex py-[6px] px-[14px] justify-center items-center gap-x-1 rounded text-white text-[10px] font-medium font-raleway",
       };
@@ -45,7 +45,7 @@ const CardVariant = (variant: string): CardStyles => {
         informationDiv:
           "absolute w-full bottom-0 left-0 py-[20px] px-[12px] bg-[#000573]/60 inline-flex items-start flex-col-reverse gap-y-[8px]",
         titleParent: "w-[466.64px] max-md:w-full ",
-        title: "w-full h-full text-white text-xl font-semibold",
+        title: "w-full h-full text-white text-xl font-bold",
         description: "hidden",
         options: "justify-start gap-x-4",
         badge:
@@ -74,7 +74,7 @@ const StandardNewsCard = memo(
         lang={lang}
         href={`/news/${data.type}/${data.path}`}
         className={cn(
-          "border inline-block relative overflow-hidden group h-full",
+          "border inline-block relative overflow-hidden group h-full rounded-sm",
           styles?.parentDiv,
           className
         )}
@@ -112,11 +112,9 @@ const StandardNewsCard = memo(
         </div>
         <div className={cn("py-5", styles.informationDiv)}>
           <div
-            className={cn("transition-all duration-300", styles.titleParent)}
+            className={cn("w-full transition-all duration-300", styles.titleParent)}
           >
-            <h3 className={cn(styles.title)}>
-              {FormateToTitle(data.title, 70)}
-            </h3>
+            <h3 className={cn(styles.title, "line-clamp-2")}>{data.title}</h3>
           </div>
           <div className={cn("w-full flex items-center", styles.options)}>
             <p className={cn(styles.badge)}>
@@ -126,15 +124,9 @@ const StandardNewsCard = memo(
                 )}
               </span>
             </p>
-            {/* <button role="button" className="py-1 px-1 rounded-sm border flex items-center justify-center">
-              <span className="w-5 h-5 border block relative after:absolute after:w-4 after:h-4 after:top-0 after:left-0 after:content-[''] after:bg-[#01075c]"></span>
-
-            </button> */}
           </div>
           <p className={cn(styles.description)}>
-            {data.description?.length && data.description?.length > 100
-              ? data.description?.slice(0, 100) + "..."
-              : data.description}
+            {data.description}
           </p>
         </div>
       </Link>

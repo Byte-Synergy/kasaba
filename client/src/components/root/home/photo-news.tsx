@@ -5,8 +5,6 @@ import { Autoplay } from "swiper/modules";
 import PhotoNewsCard from "@/components/shared/photo-news-card";
 import ScrollAnimation from "@/components/ui/scroll-animation";
 import { NewsDataType } from "@/types";
-import { ChevronRight } from "lucide-react";
-import Link from "@/components/link";
 import { Locale } from "@/configs/i18n";
 import NewsTitle from "@/components/news/title";
 
@@ -62,28 +60,6 @@ const PhotoNews = ({
               </SwiperSlide>
             ))}
           </Swiper>
-
-          {/* <Carousel
-            opts={{
-              align: "start",
-            }}
-            className="w-full"
-          >
-            <CarouselContent className="pb-4">
-              {data.slice(2).map((data, index) => (
-                <CarouselItem
-                  key={index}
-                  className="basis-1/3 max-md:basis-1/2"
-                >
-                  <ScrollAnimation idx={index / 2} key={data.id}>
-                    <PhotoNewsCard data={data} variant="small" />
-                  </ScrollAnimation>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="left-2 bg-[#01075ce7] text-white hover:bg-[#01075c] hover:text-white border-[#01075c]" />
-            <CarouselNext className="right-2 bg-[#01075ce7] text-white hover:bg-[#01075c] hover:text-white border-[#01075c]" />
-          </Carousel> */}
         </div>
       </div>
     </>

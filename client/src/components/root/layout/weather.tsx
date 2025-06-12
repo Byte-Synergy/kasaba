@@ -31,6 +31,7 @@ const regions = [
 const Weather = () => {
     const {
         selectedRegion,
+        fetchWeatherWithCoordinates,
         setRegion,
         fetchWeather,
         current,
@@ -41,14 +42,44 @@ const Weather = () => {
     } = useWeatherStore();
 
     const data: [any, any][] = []
+    const lantLong = {
+        lat: 0,
+        lon: 0
+    }
 
+    const getCoordinates = async () => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                return {
+                    lat: position.coords.latitude,
+                    lon: position.coords.longitude
+                }
+                // Bu yerda ob-havo API chaqirishingiz mumkin
+            },
+            (error) => {
+                console.log("Geolokatsiya xatosi:", error.message);
+            }
+        );
+    }
 
     useEffect(() => {
-        // Fetch initial weather data for the default region
-        fetchWeather("Tashkent");
+        console.log(lantLong);
+
+        if (Object.keys(getCoordinates()).length === 0) {
+            fetchWeather()
+            console.log("Geolokatsiya ma'lumotlari mavjud emas");
+        }
+        fetchWeatherWithCoordinates(lantLong.lat, lantLong.lon);
     }, [])
 
-    console.log(hourly);
+    const handleRegionChange = (region: string) => {
+        setRegion(region);
+        fetchWeather(region);
+    };
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedRegion = e.target.value;
+        handleRegionChange(selectedRegion);
+    };
 
     return (
         <Dialog>
@@ -69,21 +100,23 @@ const Weather = () => {
                             <span className='text-white text-sm font-normal'>°C</span>
                         </div>
                         <div className='row-span-1 col-span-1 inline-flex justify-start items-center gap-x-1 max-md:flex-row-reverse'>
-                            <span className='justify-start text-white/50 text-sm font-bold leading-none'>Тошкент</span>
+                            <span className='justify-start text-white/50 text-sm font-bold leading-none'>{selectedRegion}</span>
                             <ChevronDown className='justify-start text-white/50 w-4 h-4 font-medium leading-none' />
                         </div>
                     </div>
                 </div>
             </DialogTrigger>
 
-            <DialogContent className="min-w-4xl w-full bg-white rounded-xl px-6 py-3 shadow-xl max-md:min-w-full max-md:h-full max-md:rounded-none max-md:px-3 max-md:overflow-y-auto">
-                <div className='flex items-start gap-x-4 max-md:flex-col-reverse'>
-                    <div className='w-4/6 flex flex-col max-md:w-full'>
+            <DialogContent className="max-w-4xl w-full bg-white rounded-xl px-6 py-3 shadow-xl 
+ max-md:h-full max-md:rounded-none max-md:px-3 max-md:overflow-y-auto border">
+
+                <div className='flex items-start gap-x-4 max-md:flex-col-reverse border'>
+                    <div className='w-5/6 flex flex-col max-md:w-full '>
                         {/*  Currency weather box */}
                         <div className='flex items-center justify-between mb-4 max-md:flex-col max-md:items-start'>
                             <div className='w-3/4'>
                                 <div className=''>
-                                    <h3 className='text-xl font-bold'>Toshkent shahar</h3>
+                                    <h3 className='text-xl font-bold'>{selectedRegion}</h3>
                                     <p className='text-sm font-medium'>{formatDateToWeekday(current?.time)}</p>
                                 </div>
                                 <h1 className='text-7xl font-bold mt-2 text-[#FF8400]'>{current?.temperature} °C</h1>
@@ -134,7 +167,7 @@ const Weather = () => {
                             </ul>
                         </div>
                     </div>
-                    <form className='w-2/6 p-3 bg-[#f9f9f9] rounded-xl max-md:w-full'>
+                    <div className='w-5/6 p-3 bg-[#f9f9f9] rounded-xl max-md:w-full'>
                         <h3 className='text-xl font-bold'>Hududlar</h3>
                         <form className='max-md:hidden'>
                             {regions.map((r, i) => (
@@ -145,14 +178,13 @@ const Weather = () => {
                                         id={`region-${r.id}`}
                                         name="region"
                                         value={r.region}
-                                        // onChange={handleChange}
-                                        // checked={tanlanganViloyat === viloyat}
+                                        onChange={handleChange}
                                         className="mr-2"
                                     />
                                 </label>
                             ))}
                         </form>
-                    </form>
+                    </div>
                 </div>
             </DialogContent>
         </Dialog>

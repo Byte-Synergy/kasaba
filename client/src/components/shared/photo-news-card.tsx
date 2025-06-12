@@ -53,7 +53,7 @@ const PhotoNewsCard = memo(
         lang={lang}
         href={`/news/${data?.type}/${data?.path}`}
         className={cn(
-          "w-full relative block group overflow-hidden custom-glow group ",
+          "w-full relative block group overflow-hidden custom-glow group rounded-sm",
           PhotoNewsVariants(variant).card
         )}
       >

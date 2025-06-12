@@ -14,31 +14,35 @@ import { useTranslations } from '@/utils/translation-provider'
 import { ChevronDown, Search } from 'lucide-react'
 import { Locale } from '@/configs/i18n'
 
-const Render = ({ menu, level = 0, lang }: { menu: MenuItem[], level: number, lang: Locale }) => {
-    const [open, setOpen] = useState(false)
-
-    const handleOpenMenu = () => {
-        setOpen(!open)
-    }
-    const c =
-        "flex relative h-full text-nowrap space-x-2 text-[#141348] text-lg font-semibold uppercase max-md:p-4";
-
+const Render = ({
+    menu,
+    level = 0,
+    lang,
+    handleOpenMenu,
+    activeMenuMap
+}: {
+    menu: MenuItem[],
+    level: number,
+    lang: Locale,
+    handleOpenMenu: (id: string) => void,
+    activeMenuMap: Record<string, boolean>
+}) => {
     return (
         <>
-            {menu.map((item, key) => {
-                const hasSub =
-                    Array.isArray(item.sub_menu) && item.sub_menu.length > 0;
+            {menu.map((item) => {
+                const hasSub = Array.isArray(item.sub_menu) && item.sub_menu.length > 0;
 
                 const href =
                     item.type === "news"
                         ? `/news/${item.newsType}`
-                        : item.type === "document" &&
-                            !(item.docCount && item.docCount > 1)
+                        : item.type === "document" && !(item.docCount && item.docCount > 1)
                             ? `/documents/${item.id}`
                             : `/p/${item.id}`;
 
+                const isOpen = activeMenuMap[item.id];
+
                 return (
-                    <li key={item.id} className={cn(`relative`, level > 0 && `ml-[${level * 10}px] border-l-[1px]`)} style={{ marginLeft: `${level * 15}px` }}>
+                    <li key={item.id} style={{ marginLeft: `${level * 15}px` }}>
                         {!hasSub ? (
                             <Link
                                 lang={lang}
@@ -50,20 +54,26 @@ const Render = ({ menu, level = 0, lang }: { menu: MenuItem[], level: number, la
                                 </span>
                             </Link>
                         ) : (
-                            <div
-                                className={cn("overflow-hidden ", open ? "h-full" : "h-[50px]", "transition-all duration-300 ease-in-out")}
-                                onClick={() => handleOpenMenu()}
-                            >
-                                <span className={cn('flex items-center justify-between space-x-2 text-[#141348] text-lg font-semibold hover:text-[#ff7a00] uppercase p-4')}>
-                                    {item.title}
-                                    <ChevronDown className='w-5 h-5 text-black' />
-                                </span>
-                                <ul
-                                    className={`cursor-pointer w-full ${level === 0 ? "top-full left-0" : "top-full"
-                                        }`}
+                            <div>
+                                <div
+                                    className='flex items-center justify-between space-x-2 text-[#141348] text-lg font-semibold hover:text-[#ff7a00] uppercase p-4 cursor-pointer'
+                                    onClick={() => handleOpenMenu(item.id)}
                                 >
-                                    <Render menu={item.sub_menu} level={level + 1} lang={lang} />
-                                </ul>
+                                    {item.title}
+                                    <ChevronDown className={`w-5 h-5 text-black transform transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+                                </div>
+
+                                {isOpen && (
+                                    <ul className="pl-4 border-l border-gray-200">
+                                        <Render
+                                            menu={item.sub_menu}
+                                            level={level + 1}
+                                            lang={lang}
+                                            activeMenuMap={activeMenuMap}
+                                            handleOpenMenu={handleOpenMenu}
+                                        />
+                                    </ul>
+                                )}
                             </div>
                         )}
                     </li>
@@ -80,6 +90,15 @@ const Sidebar = ({
     menu: MenuItem[]
 }) => {
     const { isOpen } = useSidebarStore()
+    const [activeMenuMap, setActiveMenuMap] = useState<Record<string, boolean>>({});
+
+    const handleOpenMenu = (id: string) => {
+        setActiveMenuMap(prev => ({
+            ...prev,
+            [id]: !prev[id]  // toggle holat
+        }));
+    };
+
     const t = useTranslations()
 
     return (
@@ -123,7 +142,15 @@ const Sidebar = ({
                 >
                     {t("menu.main")}
                 </Link>
-                <Render menu={menu} level={0} lang={lang} />
+                <Render
+                    menu={menu}
+                    level={0}
+                    lang={lang}
+                    activeMenuMap={activeMenuMap}
+                    handleOpenMenu={handleOpenMenu}
+                />
+
+
                 <Link
                     className="flex items-center space-x-2 text-[#141348] text-lg font-semibold hover:text-[#ff7a00] uppercase p-4"
                     href={"/contact"}

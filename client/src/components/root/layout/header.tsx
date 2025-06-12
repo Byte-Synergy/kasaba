@@ -14,6 +14,7 @@ import { MenuItem } from "@/types";
 import CurrencyBox from "./currency-box";
 import { RiMenu3Fill } from "react-icons/ri";
 import { useSidebarStore } from "@/hooks/useSidebar";
+import WeatherHeader from "@/components/shared/weather/weather-header";
 
 const Clock = dynamic(() => import("./clock"), { ssr: false });
 
@@ -38,11 +39,12 @@ const Header = ({
         <Logo lang={lang} header_desc={header_desc} />
         <div className="flex items-center gap-x-[20px] max-md:hidden">
           <CurrencyBox />
-          <Weather />
+          {/* <Weather /> */}
+          <WeatherHeader />
           <Clock />
           <div className="flex items-center gap-x-1">
             <LanguageSwitcher />
-            <Link lang={lang} href="/search">
+            <Link lang={lang} href="/search" prefetch={false} >
               <button
                 role="button"
                 className="hover:bg-white/15 transition-colors p-2 rounded-sm"
@@ -53,16 +55,8 @@ const Header = ({
           </div>
         </div>
         <div className="hidden max-md:flex max-md:items-center max-md:justify-center max-md:gap-1">
-          <button className="p-2 bg-white/15 rounded-full border border-white/15">
-            <Image
-              src={"/icon/weather.svg"}
-              width={21}
-              height={21}
-              alt="icon"
-              className=" object-contain"
-            />
-          </button>
-          <Link lang={lang} href="/search">
+          
+          <Link lang={lang} href="/search" prefetch={false} className="cursor-pointer">
             <button className="p-2 bg-white/15 rounded-full border border-white/15">
               <FiSearch className=" object-contain w-5 h-5 text-white" />
             </button>

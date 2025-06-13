@@ -13,6 +13,7 @@ import { useState } from 'react'
 import { useTranslations } from '@/utils/translation-provider'
 import { ChevronDown, Search } from 'lucide-react'
 import { Locale } from '@/configs/i18n'
+import WeatherHeader from '@/components/shared/weather/weather-header'
 
 const Render = ({
     menu,
@@ -103,7 +104,7 @@ const Sidebar = ({
 
     return (
         <section id="sidebar" className={cn("min-h-[100vh] fixed inset-0 z-10 w-full bg-white hidden max-md:block top-0 overflow-hidden", isOpen ? "left-[0%]" : "-left-[100%]", "transition-transform duration-300 ease-in-out")}>
-            <div id="sidebar__header" className=' max-md:bg-linear-to-r max-md:from-[#000674] max-md:to-[#000BDA] py-5 px-5'>
+            <div id="sidebar__header" className='py-5 px-5 overflow-hidden relative z-10  after:w-full after:h-full after:absolute after:top-0 after:left-0 after:bg-linear-to-r after:from-[#141348] after:to-[#030239] after:blur-[40px] after:-z-10 max-md:bg-linear-to-r max-md:from-[#000674] max-md:to-[#000BDA]'>
                 <div className="text-xl font-bold flex justify-between items-center">
                     <Image
                         width={100}
@@ -112,7 +113,7 @@ const Sidebar = ({
                         alt="logo"
                         className=" object-contain max-md:w-14 max-md:h-11"
                     />
-                    <Weather />
+                    <WeatherHeader />
                     <button
                         className='p-2 bg-white/15 rounded-full border border-white/15'
                         onClick={() => useSidebarStore.getState().close()}

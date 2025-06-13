@@ -8,7 +8,7 @@ const Logo = ({ header_desc, lang }: { lang: Locale; header_desc: string }) => {
     <Link
       lang={lang}
       href={"/"}
-      className=" flex items-center justify-start gap-4"
+      className="flex items-center justify-start gap-4"
     >
       <Image
         width={90}

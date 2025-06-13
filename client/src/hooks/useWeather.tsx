@@ -9,7 +9,7 @@ interface WeatherData {
     selectedRegion: string;
     setRegion: (region: string) => void;
     fetchWeather: (region?: string) => Promise<void>;
-    fetchWeatherWithCoordinates: (lat: number, lon: number) => Promise<void>;
+    fetchWeatherByCoordinates: (lat: number, lon: number) => Promise<void>;
 }
 
 export const useWeatherStore = create<WeatherData>((set, get) => ({
@@ -18,7 +18,7 @@ export const useWeatherStore = create<WeatherData>((set, get) => ({
     hourly: null,
     loading: false,
     error: null,
-    selectedRegion: 'Toshkent', // Default region
+    selectedRegion: 'Toshkent',
 
     setRegion: (region) => set({ selectedRegion: region }),
 
@@ -27,7 +27,6 @@ export const useWeatherStore = create<WeatherData>((set, get) => ({
         set({ loading: true, error: null });
 
         try {
-            // 1. Get coordinates using Nominatim
             const geoRes = await fetch(
                 `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(region)}&format=json`
             );
@@ -38,33 +37,28 @@ export const useWeatherStore = create<WeatherData>((set, get) => ({
             const lat = geoData[0].lat;
             const lon = geoData[0].lon;
 
-            console.log("location:", lat, lon);
-
-
-            // 2. Fetch weather data from Open-Meteo
-            const weatherRes = await fetch(
-                `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,precipitation&daily=temperature_2m_max,temperature_2m_min&timezone=auto`
-            );
-            const weatherData = await weatherRes.json();
-
-            set({
-                current: weatherData.current_weather,
-                daily: weatherData.daily,
-                hourly: weatherData.hourly,
-                loading: false,
-            });
+            await get().fetchWeatherByCoordinates(Number(lat), Number(lon)); // ✅ Shunday qilib ishlatilsa bo‘ladi
         } catch (error: any) {
             set({ error: error.message, loading: false });
         }
     },
 
-    fetchWeatherWithCoordinates: async (lat: number, lon: number) => {
+    fetchWeatherByCoordinates: async (lat: number = 41.311081, lon: number = 69.240562) => {
+        set({ loading: true, error: null });
+        console.log("📍 Coordinatalar bilan ob-havo olinmoqda:", lat, lon);
+        
         try {
             const weatherRes = await fetch(
                 `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,precipitation&daily=temperature_2m_max,temperature_2m_min&timezone=auto`
             );
             const weatherData = await weatherRes.json();
     
+            console.log("🌤 Weather API response:", weatherData);
+    
+            if (!weatherData.current_weather) {
+                throw new Error("Joriy ob-havo ma'lumotlari topilmadi.");
+            }
+            
             set({
                 current: weatherData.current_weather,
                 daily: weatherData.daily,
@@ -72,7 +66,8 @@ export const useWeatherStore = create<WeatherData>((set, get) => ({
                 loading: false,
             });
         } catch (error: any) {
+            console.error("❌ Weather fetch error:", error);
             set({ error: error.message, loading: false });
         }
-    },
+    },    
 }));

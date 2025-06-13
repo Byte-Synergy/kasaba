@@ -9,7 +9,6 @@ import { NewsDataType } from "@/types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { AppType } from "@/types/server";
-import Ads from "@/components/shared/ads";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { Locale } from "@/configs/i18n";
@@ -24,7 +23,7 @@ const TopNews = ({
   const { lang } = useParams<{ lang: Locale }>();
   return (
     Boolean(news.length) && (
-      <Container className="relative max-md:w-full my-5 max-md:m-0">
+      <Container className="relative max-md:w-full my-5">
         <ScrollAnimation>
           <div className="relative flex md:flex-row flex-col gap-3">
             <Swiper
@@ -37,7 +36,7 @@ const TopNews = ({
               className="w-full"
             >
               {news.map((data) => (
-                <SwiperSlide key={data.id}>
+                <SwiperSlide key={data.id} className="max-md:px-5">
                   <TopNewsCard lang={lang} data={data} />
                 </SwiperSlide>
               ))}

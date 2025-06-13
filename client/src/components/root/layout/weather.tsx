@@ -31,7 +31,7 @@ const regions = [
 const Weather = () => {
     const {
         selectedRegion,
-        fetchWeatherWithCoordinates,
+        fetchWeatherByCoordinates,
         setRegion,
         fetchWeather,
         current,
@@ -69,7 +69,7 @@ const Weather = () => {
             fetchWeather()
             console.log("Geolokatsiya ma'lumotlari mavjud emas");
         }
-        fetchWeatherWithCoordinates(lantLong.lat, lantLong.lon);
+        fetchWeatherByCoordinates(lantLong.lat, lantLong.lon);
     }, [])
 
     const handleRegionChange = (region: string) => {

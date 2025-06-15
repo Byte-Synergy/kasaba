@@ -37,51 +37,6 @@ const LoginForm = () => {
   };
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-indigo-50 to-purple-100 md:flex-row">
-      {/* Left side - Illustration (visible only on md and above) */}
-      {/* <div className="hidden md:flex md:w-1/2 bg-indigo-600 text-white p-8 flex-col justify-center items-center">
-                <div className="max-w-md mx-auto">
-                    <div className="mb-8 flex justify-center">
-                        <Image
-                            src="/next.svg"
-                            alt="Logo"
-                            width={80}
-                            height={80}
-                            className="h-20 w-auto"
-                        />
-                    </div>
-                    <h1 className="text-4xl font-bold mb-6">Xush kelibsiz!</h1>
-                    <p className="text-indigo-200 text-lg mb-8">
-                        Bizning platformada o'z hisobingizga kiring va barcha imkoniyatlardan foydalaning.
-                    </p>
-                    <div className="space-y-4">
-                        <div className="flex items-center">
-                            <div className="bg-indigo-500 rounded-full p-2 mr-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <span>Ko'p funksional boshqaruv paneli</span>
-                        </div>
-                        <div className="flex items-center">
-                            <div className="bg-indigo-500 rounded-full p-2 mr-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <span>Xavfsiz va ishonchli platforma</span>
-                        </div>
-                        <div className="flex items-center">
-                            <div className="bg-indigo-500 rounded-full p-2 mr-4">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <span>24/7 mijozlarni qo'llab-quvvatlash</span>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
-
       {/* Right side - Login form */}
       <div className="flex h-screen w-full items-center justify-center p-4 sm:p-8 md:p-12">
         <div className="w-full max-w-md space-y-8 rounded-xl bg-white p-6 shadow-lg sm:p-10">

@@ -35,7 +35,7 @@ export default async function Page({
     50,
     1,
   );
-
+  
   return (
     <section className="h-full">
       <div className="container min-h-full p-5">

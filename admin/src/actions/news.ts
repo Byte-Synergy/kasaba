@@ -52,8 +52,6 @@ export async function getSingleNews(
   const { data, error, status } = await fetcher.news({ newsPath: path }).get({
     fetch,
   });
-  console.log("Single: ", path);
-  
 
   return { data, error, status };
 }

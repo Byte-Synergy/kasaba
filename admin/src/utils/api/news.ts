@@ -1,19 +1,5 @@
-// "use server";
-// utils/api.ts
-// import axios from "axios";
-// import { redirect } from "next/navigation";
-// import { userApi } from "./auth";
-// import { cookies } from "next/headers";
-// import { getUserSession } from "../session";
 import { getSessionData } from "@/actions/session";
 import { ContentType } from "@/types/content";
-
-// function getCookieValue(name: string): string | null {
-//   if (typeof document === "undefined") return null;
-
-//   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
-//   return match ? match[2] : null;
-// }
 
 // API URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -34,6 +20,7 @@ interface NewsFilter {
   tags?: string[];
   sortBy?: "date" | "title" | "views";
   sortOrder?: "asc" | "desc";
+  languageCode?: string;
 }
 
 export const NewsApi = {
@@ -49,6 +36,7 @@ export const NewsApi = {
   }): Promise<any> => {
     try {
       const token = await getSessionData();
+      console.log(newsData);
 
       if (!token) {
         throw new Error("Autentifikatsiya tokeni topilmadi");
@@ -57,14 +45,16 @@ export const NewsApi = {
       // FormData obyektini yaratish
       const formData = new FormData();
 
-      if (newsData.languageCode)
-        formData.append("languageCode", newsData.languageCode);
+      
       if (newsData.type) formData.append("type", newsData.type);
+      
       if (newsData.title) formData.append("title", newsData.title);
-      if (newsData.description)
-        formData.append("description", newsData.description);
+      
+      if (newsData.description) formData.append("description", newsData.description);
+      
+      if (newsData.languageCode)  formData.append("languageCode", newsData.languageCode);
 
-      formData.append("tags", JSON.stringify(newsData.categories || []));
+      if(newsData.categories) formData.append("tags", JSON.stringify(newsData.categories || []));
 
       if (newsData.isTop) formData.append("isTop", String(newsData.isTop));
 
@@ -91,7 +81,6 @@ export const NewsApi = {
         },
       );
 
-      // Javobni tekshirish
       // Javobni tekshirish
       if (!response.ok) {
         let errorMessage = `Yangilik yaratishda xatolik: ${response.status}`;
@@ -135,6 +124,7 @@ export const NewsApi = {
   ): Promise<any> => {
     try {
       const token = await getSessionData();
+      console.log(newsData);
 
       if (!token) {
         throw new Error("Autentifikatsiya tokeni topilmadi");
@@ -145,8 +135,12 @@ export const NewsApi = {
 
       if (newsData.title)
         if (newsData.title) formData.append("title", newsData.title);
+
       if (newsData.description)
         formData.append("description", newsData.description);
+
+      if (newsData.languageCode)
+        formData.append("languageCode", newsData.languageCode);
 
       if (newsData.categories)
         formData.append("tags", JSON.stringify(newsData.categories));

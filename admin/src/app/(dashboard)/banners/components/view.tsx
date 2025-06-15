@@ -56,7 +56,7 @@ export default function PageView({
       <section className="h-full">
         <div className="container flex min-h-full flex-col gap-5 p-5 md:flex-row">
           <div className="h-full w-full max-w-[350px] rounded-lg bg-white p-5 shadow-lg shadow-slate-200">
-            <PageViewHeader title="Bannerlar" />
+            <PageViewHeader type="fit" />
             <div className="mt-10 flex flex-col gap-5">
               <Dialog
                 open={fitBannerModalOpen}
@@ -156,7 +156,7 @@ export default function PageView({
             </div>
           </div>
           <div className="h-full w-full rounded-lg bg-white p-5 shadow-lg shadow-slate-200">
-            <PageViewHeader title="Bannerlar" />
+            <PageViewHeader type="full"/>
             <div className="mt-10 flex flex-col gap-5">
               <Dialog
                 open={fullBannerModalOpen}

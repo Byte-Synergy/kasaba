@@ -1,7 +1,7 @@
 'use client';
 import { useWeatherStore } from '@/hooks/useWeather';
 import { cn } from '@/libs/utils';
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const regions = [
     { id: 'tashkent', region: 'Toshkent' },
@@ -17,17 +17,21 @@ const regions = [
     { id: 'jizzakh', region: 'Jizzax' },
     { id: 'syrdarya', region: 'Sirdaryo' },
     { id: 'karakalpakstan', region: 'Qoraqalpog‘iston' },
-    { id: 'tashkent_r', region: 'Toshkent v' },
+    { id: 'tashkent_region', region: 'Toshkent v' },
 ];
 
 const WeatherRegions = () => {
-    const { setRegion, selectedRegion } = useWeatherStore();
+    const { setRegion, selectedRegion, fetchWeather } = useWeatherStore();
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedRegion = e.target.value;
         if (selectedRegion.trim() === "") return
         setRegion(selectedRegion);
     };
+
+    useEffect(() => {
+        fetchWeather(selectedRegion)
+    }, [selectedRegion])
 
     return (
         <div className='w-full'>
@@ -43,8 +47,8 @@ const WeatherRegions = () => {
                         <input
                             type="radio"
                             id={`region-${r.id}`}
-                            name="region"
-                            value={r.region}
+                            name={`regions}`}
+                            value={r.id}
                             onChange={handleChange}
                             className="mr-2"
                         />

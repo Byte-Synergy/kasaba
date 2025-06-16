@@ -16,6 +16,7 @@ import { getDictionary } from "@/utils/directory";
 import eden from "@/libs/eden";
 import Sidebar from "@/components/root/layout/sidebar";
 import { TranslationsProvider } from "@/utils/translation-provider";
+import { ModalProvider } from "@/providers/modal-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -95,13 +96,15 @@ export default async function RootLayout({
         )}
       >
         <AOSProviderDynamic>
-          <TranslationsProvider dictionary={t}>
-            <Header header_desc={t.header.description} lang={lang} menu={(menu.data || []).map(mapMenuTree)} />
-            <Navbar menu={(menu.data || []).map(mapMenuTree)} lang={lang} />
-            <Sidebar lang={lang} menu={(menu.data || [])?.map(mapMenuTree)} />
-            <main className="py-5 max-md:p-0 ">{children}</main>
-            <Footer lang={lang} />
-          </TranslationsProvider>
+          <ModalProvider>
+            <TranslationsProvider dictionary={t}>
+              <Header header_desc={t.header.description} lang={lang} menu={(menu.data || []).map(mapMenuTree)} />
+              <Navbar menu={(menu.data || []).map(mapMenuTree)} lang={lang} />
+              <Sidebar lang={lang} menu={(menu.data || [])?.map(mapMenuTree)} />
+              <main className="py-5 max-md:p-0 ">{children}</main>
+              <Footer lang={lang} />
+            </TranslationsProvider>
+          </ModalProvider>
         </AOSProviderDynamic>
       </body>
     </html>

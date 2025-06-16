@@ -1260,7 +1260,7 @@ export declare const app: Elysia<"", {
             banner: {
                 post: {
                     body: {
-                        type: "fit" | "full";
+                        type: "horizontal" | "link" | "hero1" | "hero2" | "fit" | "full"; 
                         file: File;
                         url: string;
                     };
@@ -1271,7 +1271,7 @@ export declare const app: Elysia<"", {
                     };
                     response: {
                         200: {
-                            type: "fit" | "full";
+                            type: "horizontal" | "link" | "hero1" | "hero2" | "fit" | "full";
                             id: number;
                             file: {
                                 name: string;
@@ -1310,7 +1310,7 @@ export declare const app: Elysia<"", {
                                 createdAt: Date;
                                 updatedAt: Date | null;
                                 fileId: number;
-                                url: string;
+                                url?: string;
                             };
                             422: {
                                 type: "validation";
@@ -1337,7 +1337,7 @@ export declare const app: Elysia<"", {
                         headers: unknown;
                         response: {
                             200: {
-                                type: "fit" | "full";
+                                type: "horizontal" | "link" | "hero1" | "hero2" | "fit" | "full";
                                 id: number;
                                 file: {
                                     name: string;
@@ -1369,7 +1369,7 @@ export declare const app: Elysia<"", {
                     headers: unknown;
                     response: {
                         200: {
-                            type: "fit" | "full";
+                            type: "horizontal" | "link" | "hero1" | "hero2" | "fit" | "full";
                             id: number;
                             file: {
                                 name: string;

@@ -8,9 +8,9 @@ import WeatherRegions from './weather-regions'
 const Weather = () => {
   return (
     <Fragment>
-        <WeatherHeader />
+        {/* <WeatherHeader /> */}
         {/* body */}
-        <div className='flex items-start gap-x-4 max-md:flex-col-reverse'>
+        <div className='w-full flex items-start gap-x-4 max-md:flex-col-reverse bg-white p-5 rounded-xl'>
             {/* weather information */}
             <div className='w-5/6 flex flex-col max-md:w-full'>
                 <WeatherCurrently />

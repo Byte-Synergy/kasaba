@@ -12,32 +12,6 @@ import RelatedNews from "@/components/shared/related-news";
 import { getDictionary } from "@/utils/directory";
 import { Locale } from "@/configs/i18n";
 
-// const Content = dynamic(() => import("@/components/root/content/Content"), {
-//   ssr: false,
-// });
-
-// const fetchNews = async (title: string) => {
-//   try {
-//     const res = await NewsApi.getSingleNews(title);
-//     return res;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// const fetchOtherNews = async (type: string[]) => {
-//   try {
-//     const res = await NewsApi.getNewsList({
-//       page: 1,
-//       limit: 4,
-//       filter: { type },
-//     });
-//     return res.data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
 const SingleNewsPage = async ({
   params,
 }: {
@@ -47,8 +21,11 @@ const SingleNewsPage = async ({
   const t = await getDictionary(lang);
 
   const { data: currentNews } = await eden.news({ newsPath: id }).get();
+
   const { data: otherNews } = await eden.news.get({
-    query: { limit: 4, page: 1 },
+    query: { limit: 4, page: 1, filter: {
+      lang
+    }},
   });
 
   if (!currentNews) redirect("/");

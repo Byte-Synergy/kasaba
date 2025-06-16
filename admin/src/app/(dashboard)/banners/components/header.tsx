@@ -1,29 +1,41 @@
 "use client";
 
 const Banners = {
-  "fit": {
+  "link": {
     label: "Link banner",
     size: {
       y: 300,
       x: 250
     }
   },
-  "full": {
+  "horizontal": {
     label: "Gorizontal banner",
     size: {
       y: 120,
       x: 1240
     }
-  }
+  },
+  "hero-1": {
+    label: "Hero-1 banner",
+    size: {
+      y: 400,
+      x: 250
+    }
+  },
+  "hero-2": {
+    label: "Hero-2 banner",
+    size: {
+      y: 400,
+      x: 250
+    }
+  },
 }
 
 export default function PageViewHeader({
-  // title,
   buttonChildren,
   type
 }: {
   buttonChildren?: React.ReactNode;
-  // title: string;
   type: keyof typeof Banners
 }) {
   return (

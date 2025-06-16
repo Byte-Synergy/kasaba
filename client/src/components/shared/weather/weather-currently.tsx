@@ -1,23 +1,34 @@
 'use client'
 import { useWeatherStore } from '@/hooks/useWeather'
 import { formatDateToWeekday } from '@/utils/formatDate'
-import { Sun } from 'lucide-react'
+import { useTranslations } from '@/utils/translation-provider'
+import Image from 'next/image'
 import React from 'react'
 
 const WeatherCurrently = () => {
-    const {selectedRegion, current} = useWeatherStore()
+    const { selectedRegion, current } = useWeatherStore()
+    const t = useTranslations()
 
     return (
         <div className='flex items-center justify-between mb-4 max-md:flex-col max-md:items-start'>
             <div className='w-3/4'>
                 <div className=''>
-                    <h3 className='text-xl font-bold'>{selectedRegion}</h3>
+                    <h3 className='text-xl font-bold'>
+                    {t(`regions[${selectedRegion}]`)}
+                    </h3>
                     <p className='text-sm font-medium'>{formatDateToWeekday(current?.time)}</p>
                 </div>
                 <h1 className='text-7xl font-bold mt-2 text-[#FF8400]'>{current?.temperature} °C</h1>
             </div>
             <div className='w-1/4'>
-                <Sun className='w-36 h-36 float-end' />
+                {/* <Sun className='w-36 h-36 float-end' /> */}
+                <Image
+                    src='/icon/weather.svg'
+                    alt='weather icon'
+                    width={128}
+                    height={128}
+                    objectFit='contain'
+                />
             </div>
         </div>
     )

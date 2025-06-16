@@ -101,5 +101,37 @@
     "copyright": "© Republican Council 2019-2025 All rights reserved",
     "description": "Attention! If you find any errors on the site, highlight them and press Ctrl + Enter. © 2025 When using materials from the website of the Republican Council of Trade Unions of Employees of State Institutions and Public Services of Uzbekistan, the source https://davlat.kasaba.uz must be indicated.",
     "address": "24 Bukhara Street, Tashkent city"
-  }
+  },
+  "month": {
+    "1": "January",
+    "2": "February",
+    "3": "March",
+    "4": "April",
+    "5": "May",
+    "6": "June",
+    "7": "July",
+    "8": "August",
+    "9": "September",
+    "10": "October",
+    "11": "November",
+    "12": "December"
+  },
+  "regions": {
+    "tashkent": "Tashkent",
+    "tashkent_region": "Tashkent Region",
+    "andijan": "Andijan",
+    "bukhara": "Bukhara",
+    "fergana": "Fergana",
+    "jizzakh": "Jizzakh",
+    "namangan": "Namangan",
+    "navoiy": "Navoi",
+    "kashkadarya": "Kashkadarya",
+    "karakalpakstan": "Karakalpakstan",
+    "samarkand": "Samarkand",
+    "surkhandarya": "Surkhandarya",
+    "syrdarya": "Syrdarya",
+    "khorezm": "Khorezm"
+  },
+  "tashkent_region": "Tashkent Region"
+  
 }

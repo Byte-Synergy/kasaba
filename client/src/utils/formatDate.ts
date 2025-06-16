@@ -23,14 +23,16 @@ const WEEKDAYS = [
   "shanba",
 ];
 
-export const formatDate = (date: string | Date): string => {
+export const formatDate = (date: string | Date): Object => {
   const d = new Date(date);
 
   const year = d.getFullYear();
   const month = d.getMonth();
   const day = String(d.getDate()).padStart(2, "0");
 
-  return `${day}-${MONTHS[month]}, ${year}`;
+  return {
+    day, month, year
+  };
 };
 
 export const formatTime = (data: string | Date): string => {

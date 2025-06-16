@@ -18,11 +18,11 @@ export const useWeatherStore = create<WeatherData>((set, get) => ({
     hourly: null,
     loading: false,
     error: null,
-    selectedRegion: 'Toshkent',
+    selectedRegion: 'tashkent',
 
     setRegion: (region) => set({ selectedRegion: region }),
 
-    fetchWeather: async (regionName = "Termiz") => {
+    fetchWeather: async (regionName) => {
         const region = regionName || get().selectedRegion;
         set({ loading: true, error: null });
 
@@ -45,15 +45,12 @@ export const useWeatherStore = create<WeatherData>((set, get) => ({
 
     fetchWeatherByCoordinates: async (lat: number = 41.311081, lon: number = 69.240562) => {
         set({ loading: true, error: null });
-        console.log("📍 Coordinatalar bilan ob-havo olinmoqda:", lat, lon);
         
         try {
             const weatherRes = await fetch(
                 `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,precipitation&daily=temperature_2m_max,temperature_2m_min&timezone=auto`
             );
             const weatherData = await weatherRes.json();
-    
-            console.log("🌤 Weather API response:", weatherData);
     
             if (!weatherData.current_weather) {
                 throw new Error("Joriy ob-havo ma'lumotlari topilmadi.");

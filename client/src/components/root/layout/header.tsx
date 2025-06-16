@@ -41,7 +41,7 @@ const Header = ({
           <CurrencyBox />
           {/* <Weather /> */}
           <WeatherHeader />
-          <Clock />
+          <Clock lang={lang} />
           <div className="flex items-center gap-x-1">
             <LanguageSwitcher />
             <Link lang={lang} href="/search" prefetch={false} >
@@ -57,12 +57,6 @@ const Header = ({
         {/* <div className="flex-1 "></div> */}
         <div className="flex-1/3 hidden max-md:flex max-md:items-center max-md:justify-between max-md:gap-1">
           <WeatherHeader />
-          {/* <Link lang={lang} href="/search" prefetch={false} className="cursor-pointer">
-            <button className="p-2 bg-white/15 rounded-full border border-white/15">
-              <FiSearch className=" object-contain w-5 h-5 text-white" />
-            </button>
-          </Link> */}
-          {/* MenuSidebar button */}
           <div className="border border-red-400">
             <button
               className=" w-auto p-2 bg-white/15 rounded-full border border-white/15 float-end"

@@ -101,5 +101,36 @@
     "copyright": "© Respublika Kengashi 2019-2025 Barcha huquglar himoyalangan",
     "description": "Diqqat! Agar siz saytda xatoliklarni aniqlasangiz, ularni belgilab Ctrl + Enter tugmalarini bosing. © 2025 O'zbekiston davlat muassasalari va jamoat xizmati xodimlari kasaba uyushmasi Respublika kengashi saytidan olingan ma'lumotlardan foydalanilganda, saytning https://davlat.kasaba.uz manzili ko'rsatilishi shart.",
     "address": "Toshkent sh, Buxoro ko'chasi, 24-uy"
-  }
+  },
+  "month": {
+    "1": "Yanvar",
+    "2": "Fevral",
+    "3": "Mart",
+    "4": "Aprel",
+    "5": "May",
+    "6": "Iyun",
+    "7": "Iyul",
+    "8": "Avgust",
+    "9": "Sentabr",
+    "10": "Oktabr",
+    "11": "Noyabr",
+    "12": "Dekabr"
+  },
+  "regions": {
+    "tashkent": "Toshkent",
+    "tashkent_region": "Toshkent viloyati",
+    "andijan": "Andijon",
+    "bukhara": "Buxoro",
+    "fergana": "Farg‘ona",
+    "jizzakh": "Jizzax",
+    "namangan": "Namangan",
+    "navoiy": "Navoiy",
+    "kashkadarya": "Qashqadaryo",
+    "karakalpakstan": "Qoraqalpog‘iston",
+    "samarkand": "Samarqand",
+    "surkhandarya": "Surxondaryo",
+    "syrdarya": "Sirdaryo",
+    "khorezm": "Xorazm"
+  },
+  "tashkent_region": "Toshkent viloyati"
 }

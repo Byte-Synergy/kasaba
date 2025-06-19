@@ -7,37 +7,34 @@ import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 
 const InteractiveInformation = ({
-  data,
   selectedPlace,
-  our_addresses_label,
-  address_label,
-  phone_number_label,
-  email_label,
-  members_count_label,
+  data
 }: {
-  address_label: string;
-  members_count_label: string;
-  phone_number_label: string;
-  email_label: string;
-  our_addresses_label: string;
-  selectedPlace: string;
+  selectedPlace: {
+    id: number;
+    name?: string;
+    areasCount: number;
+    title: string;
+  };
   data: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"];
 }) => {
   const [place, setPlace] = useState(selectedPlace);
   const [information, setInformation] = useState<string[] | null>(null);
 
+  console.log("Places filter by selected region: ", data);
+
   const choosePlaceHandler = useCallback(
     (
-      _: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"][number]
+      data: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"][number]
     ) => {
       setInformation([
-        _.chairmanFullName,
-        _.address,
-        _.phoneNumber || "",
-        _.email || "",
-        _.address,
-        _.chairmanPhoto,
-        _.membersCount.toString(),
+        data.chairmanFullName,
+        data.address,
+        data.phoneNumber || "",
+        data.email || "",
+        data.address,
+        data.chairmanPhoto,
+        data.membersCount.toString(),
       ]);
     },
     []
@@ -63,7 +60,7 @@ const InteractiveInformation = ({
             <ChevronLeft className="text-white w-8 h-8" />
           </button>
           <h4 className="w-full text-[#000573] uppercase py-[18px] text-center font-bold">
-            {information ? "" : our_addresses_label}
+            {information ? "" : selectedPlace.name}
           </h4>
         </div>
       </ScrollAnimation>
@@ -74,51 +71,53 @@ const InteractiveInformation = ({
         )}
       >
         {place && information && (
-          <ScrollAnimation className="w-full h-full">
-            <div className="h-full bg-white rounded-xl flex flex-col gap-y-4 shadow-[0px_4px_8.199999809265137px_1px_rgba(0,0,0,0.25)] p-4">
-              <div className="flex itmes-center gap-x-4 max-md:flex-col">
-                <Image
-                  src={information[5]}
-                  alt=""
-                  width={150}
-                  height={200}
-                  objectFit="cover"
-                  loading="lazy"
-                  className="object-contain max-md:w-full"
-                />
-                <div className="">
-                  <h5 className="text-[#000573] text-2xl font-extrabold py-2 border-b border-[#000573]">
-                    {information[0]}
-                  </h5>
-                  <p className="text-[#ff8400] text-xl font-extrabold my-1">
-                    {information[1]}
+          data.map(p => (
+            <ScrollAnimation className="w-full h-full">
+              <div className="h-full bg-white rounded-xl flex flex-col gap-y-4 shadow-[0px_4px_8.199999809265137px_1px_rgba(0,0,0,0.25)] p-4">
+                <div className="flex itmes-center gap-x-4 max-md:flex-col">
+                  <Image
+                    src={information[5]}
+                    alt=""
+                    width={150}
+                    height={200}
+                    objectFit="cover"
+                    loading="lazy"
+                    className="object-contain max-md:w-full"
+                  />
+                  <div className="">
+                    <h5 className="text-[#000573] text-2xl font-extrabold py-2 border-b border-[#000573]">
+                      {p.chairmanFullName}
+                    </h5>
+                    <p className="text-[#ff8400] text-xl font-extrabold my-1">
+                      {p.address}
+                    </p>
+                    <ul className="flex flex-col gap-y-2 text-sm my-4">
+                      <li className="flex items-center gap-x-1">
+                        <strong>Tel raqam:</strong>
+                        <span>{p.phoneNumber}</span>
+                      </li>
+                      <li className="flex items-center gap-x-1">
+                        <strong>Email:</strong>
+                        <span>{p.email}</span>
+                      </li>
+                      <li className="flex items-start gap-x-1">
+                        <strong>Manzil:</strong>
+                        <span>{p.address}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div className=" max-md:flex">
+                  <h4 className="py-4 px-5 bg-[#000573] max-md:text-lg text-center text-white max-md:w-full">
+                    {/* {data.members_count_label} */}
+                  </h4>
+                  <p className="text-8xl max-md:text-lg max-md:p-4 max-md:border font-extrabold  text-[#ff8400] py-5 text-center">
+                    {p.membersCount}
                   </p>
-                  <ul className="flex flex-col gap-y-2 text-sm my-4">
-                    <li className="flex items-center gap-x-1">
-                      <span>{phone_number_label}:</span>
-                      <strong>{information[2]}</strong>
-                    </li>
-                    <li className="flex items-center gap-x-1">
-                      <span>{email_label}:</span>
-                      <strong>{information[3]}</strong>
-                    </li>
-                    <li className="flex items-center gap-x-1">
-                      <span>{address_label}:</span>
-                      <strong>{information[4]}</strong>
-                    </li>
-                  </ul>
                 </div>
               </div>
-              <div className=" max-md:flex">
-                <h4 className="py-4 px-5 bg-[#000573] max-md:text-lg text-center text-white max-md:w-full">
-                  {members_count_label}
-                </h4>
-                <p className="text-8xl max-md:text-lg max-md:p-4 max-md:border font-extrabold  text-[#ff8400] py-5 text-center">
-                  {information[6]}
-                </p>
-              </div>
-            </div>
-          </ScrollAnimation>
+            </ScrollAnimation>
+          ))
         )}
         {place &&
           !information &&
@@ -128,6 +127,7 @@ const InteractiveInformation = ({
                 className="flex items-center justify-between gap-x-4 rounded-lg hover:shadow-xl cursor-pointer"
                 onClick={() => choosePlaceHandler(_)}
               >
+                <div className="flex gap-x-4 items-center">
                 <div className=" bg-[#000573] py-4 px-4 rounded-lg">
                   <Building2 className="w-12 h-12 text-white" />
                 </div>
@@ -138,7 +138,8 @@ const InteractiveInformation = ({
                   </div>
                   <div className="text-sm">{_.address}</div>
                 </div>
-                <div>
+                </div>
+                <div className="">
                   <button className="p-3">
                     <EllipsisVertical />
                   </button>

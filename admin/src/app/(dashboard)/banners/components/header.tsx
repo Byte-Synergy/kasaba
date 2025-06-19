@@ -2,7 +2,7 @@
 
 const Banners = {
   "link": {
-    label: "Link banner",
+    label: "Arxiv ostidagi banner",
     size: {
       y: 300,
       x: 250
@@ -16,14 +16,14 @@ const Banners = {
     }
   },
   "hero-1": {
-    label: "Hero-1 banner",
+    label: "Top-1 banner",
     size: {
       y: 400,
       x: 250
     }
   },
   "hero-2": {
-    label: "Hero-2 banner",
+    label: "Top-2 banner",
     size: {
       y: 400,
       x: 250
@@ -41,8 +41,8 @@ export default function PageViewHeader({
   return (
     <>
       <div className="flex items-center justify-between">
-        <h1 className="text-lg font-bold capitalize">{Banners[type].label}</h1>
-        <p>
+        <h1 className="text-md font-bold capitalize">{Banners[type].label}</h1>
+        <p className="text-xs p-1 bg-amber-500 rounded-sm text-white">
           <span>{Banners[type].size.y}px</span> - 
           <span> {Banners[type].size.x}px</span>
         </p>

@@ -20,7 +20,8 @@ const HomePage = ({
   interactive_areas_label,
   news_label,
   standardNews,
-  areas,
+  // areas,
+  places,
   areas_label,
   lang,
   archive_label,
@@ -31,18 +32,8 @@ const HomePage = ({
   public_news_label,
   video_news_label,
   select_area_placeholder,
-  phone_number_label,
-  address_label,
-  email_label,
-  members_count_label,
-  our_addresses_label,
 }: {
-  address_label: string;
-  email_label: string;
-  members_count_label: string;
-  our_addresses_label: string;
   select_area_placeholder: string;
-  phone_number_label: string;
   all_label: string;
   public_news_label: string;
   photo_news_label: string;
@@ -51,7 +42,8 @@ const HomePage = ({
   video_news_label: string;
   lang: Locale;
   ads: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
-  areas: AppType["~Routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"];
+  // areas: AppType["~Routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"];
+  places: {id: number, name?: string, areasCount: number, title: string}[] | []
   topNewsData: NewsDataType[];
   standardNews: NewsDataType[];
   news_label: string;
@@ -59,6 +51,9 @@ const HomePage = ({
   archive_label: string;
   areas_label: string;
 }) => {
+
+  
+
   return (
     <>
       <TopNews ads={ads} news={topNewsData} />
@@ -117,15 +112,10 @@ const HomePage = ({
       </section>
       <section id="interactive-informations" className="w-full ">
         <InteractivePlaces
-          address_label={address_label}
-          email_label={email_label}
-          members_count_label={members_count_label}
-          our_addresses_label={our_addresses_label}
-          phone_number_label={phone_number_label}
           select_area_placeholder={select_area_placeholder}
           interactive_areas_label={interactive_areas_label}
           lang={lang}
-          data={areas}
+          places={places}
         />
       </section>
     </>

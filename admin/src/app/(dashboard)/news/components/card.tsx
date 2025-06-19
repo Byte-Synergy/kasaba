@@ -75,8 +75,8 @@ export default function NewsCard({
           )}
         </div>
         <div className="p-5">
-          <h3 className="mb-2 text-base font-semibold">{data.title}</h3>
-          <p className="text-sm font-medium">{data.description}</p>
+          <h3 className="mb-2 text-base font-semibold line-clamp-1">{data.title}</h3>
+          <p className="text-sm font-medium line-clamp-3">{data.description}</p>
         </div>
       </div>
     </>

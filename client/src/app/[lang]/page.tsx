@@ -3,6 +3,7 @@ import HomePage from "./page-client";
 import UsefulLinks from "@/components/root/home/useful-links";
 import { Locale } from "@/configs/i18n";
 import { getDictionary } from "@/utils/directory";
+import {getAreas, getInteractiveAreas, getPlace, getPlaces } from "@/action/place";
 
 export default async function Page({
   params,
@@ -12,15 +13,12 @@ export default async function Page({
   const { lang } = await params;
   const t = await getDictionary(lang as Locale);
 
-  const { data: areasData } = await eden.places.get({
-    query: {
-      limit: 50,
-      page: 1,
-      filter: {
-        orderBy: "asc",
-        languageCode: lang,
-      },
-    },
+  const { data: places } = await getPlaces({
+    limit: 50,
+    page: 1,
+    filter: {
+      languageCode: lang || "uz"
+    }
   });
 
   const { data: adsData } = await eden.banner.get();
@@ -48,11 +46,6 @@ export default async function Page({
   return (
     <>
       <HomePage
-        address_label={t.address_label}
-        email_label={t.email_label}
-        members_count_label={t.members_count_label}
-        our_addresses_label={t.our_addresses_label}
-        phone_number_label={t.phone_number_label}
         select_area_placeholder={t.select_area_placeholder}
         search_label={t.search_label}
         lang={lang}
@@ -62,7 +55,7 @@ export default async function Page({
         photo_news_label={t.photo_news_label}
         share_label={t.share_label}
         video_news_label={t.video_news_label}
-        areas={areasData?.data || []}
+        places={places?.data || []}
         archive_label={t.archive_label}
         areas_label={t.areas_label}
         news_label={t.news_label}

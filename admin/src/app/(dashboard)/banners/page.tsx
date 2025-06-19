@@ -3,9 +3,7 @@ import PageView from "./components/view";
 
 export default async function Page() {
   const { data } = await getBanners();
-
-  console.log(data);
-
+  
   const fitBanner = data?.filter((data) => data.type === "fit");
   const fullBanner = data?.filter((data) => data.type === "full");
   const hero1Banner = data?.filter((data) => data.type === "hero1")

@@ -27,6 +27,7 @@ import { AppType } from "@/types/server";
 import { cn } from "@/libs/utils";
 import { PageApi } from "@/utils/api/page";
 import { parseAsInteger, useQueryState } from "nuqs";
+import { useLangStore } from "@/hooks/useLang";
 
 export default function PageViewHeader({
   title,
@@ -47,6 +48,7 @@ export default function PageViewHeader({
   >;
 }) {
   const router = useRouter();
+  const {lang, setLang} = useLangStore()
 
   const [parentId, setParentId] = useQueryState("parentId", {
     ...parseAsInteger,

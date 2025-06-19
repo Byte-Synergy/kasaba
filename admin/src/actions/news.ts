@@ -27,12 +27,15 @@ export async function getNews(
     isTop?: boolean;
     isArchived?: boolean;
     q?: string;
+    lang?: string | undefined
   },
   limit: number = 10,
   page: number = 1,
   fetch?: Omit<RequestInit, "headers" | "method">,
   fetcher: typeof eden = eden,
 ) {
+  console.log("server lang:", filter.lang);
+  
   const { data, error, status } = await fetcher.news.get({
     query: {
       limit,

@@ -2,7 +2,7 @@
 
 import { Container } from "@/components/shared";
 import InteractiveMap from "@/components/shared/interactive-map";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import InteractiveInformation from "./interactive-information";
 import ScrollAnimation from "@/components/ui/scroll-animation";
 import {
@@ -15,50 +15,71 @@ import {
 import NewsTitle from "@/components/news/title";
 import { AppType } from "@/types/server";
 import { Locale } from "@/configs/i18n";
+import { getInteractiveAreasByFetch } from "@/utils/placesApi";
+// import { getAreasFromClient } from "@/utils/placesApi";
 
 const InteractivePlaces = ({
   data,
   interactive_areas_label,
   lang,
   select_area_placeholder,
-  address_label,
-  email_label,
-  members_count_label,
-  our_addresses_label,
-  phone_number_label,
+  places
 }: {
   select_area_placeholder: string;
-  address_label: string;
-  email_label: string;
-  members_count_label: string;
-  our_addresses_label: string;
-  phone_number_label: string;
   interactive_areas_label: string;
   lang: Locale;
-  data: AppType["~Routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"];
+  data?: AppType["~Routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"];
+  places: {id: number, name?: string, areasCount: number, title: string}[] | []
 }) => {
-  const [selectPlace, setSelectPlace] = useState<string | null>(
-    data[0]?.name || null
-  );
-  const [areas, setAreas] = useState<
-    | AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"]
-    | null
-  >(null);
+  const [selectPlace, setSelectPlace] = useState<string | null>(null);
+  const [placesInRegion, setPlacesInRegion] = useState<
+  | AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"]
+  | any[]
+>([])
+
+  const findSelectedRegion = places.find(r => r.name === selectPlace)
 
   useEffect(() => {
-    async function getData() {
-      const id = data.find((d) => d.name === selectPlace);
-      if (id) {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/rest/places/${id.id}/interactive_areas`
-        );
-        const data = await response.json();
+    const getPlacesByRegion = async () => {
+      if (!findSelectedRegion?.id) {
+        console.log("Siz izlayotgan viloyat bo'yicha ma'lumot topilmadi...");
+        setPlacesInRegion([]); // Clear the state if no region is found
+        return;
+      }
 
-        if (data) setAreas((data as any).data);
-      } else setAreas(null);
+      try {
+        const {data: places} = await getInteractiveAreasByFetch(
+          { limit: 50, page: 1 },
+          findSelectedRegion.id
+        );
+        if (Array.isArray(places.data)) {
+          console.log(places.data, Array.isArray(places.data));
+          setPlacesInRegion(() => ([...places.data])); 
+        } else {
+          console.log("Ma'lumot olishda xatolik: ", places.error);
+          setPlacesInRegion([]); 
+        }
+      } catch (error) {
+        console.error(
+          "Viloyat bo'yicha hududlar ma'lumotini olishda xatolik:",
+          error
+        );
+        setPlacesInRegion([]);
+      }
+    };
+
+    getPlacesByRegion();
+  }, [selectPlace, findSelectedRegion?.id]);
+
+  useEffect(() => {
+    if (selectPlace === null && places.length > 0) {
+      setSelectPlace("tashkent_region");
     }
-    getData();
-  }, [selectPlace]);
+  });
+
+  const changeSelectRegionFn = useCallback((place: string) => {
+    setSelectPlace(place)
+  }, [selectPlace])
 
   return (
     <Container className="">
@@ -69,17 +90,18 @@ const InteractivePlaces = ({
         <div className={"w-[55%] max-md:w-full"}>
           <ScrollAnimation>
             <Select
-              onValueChange={(value) => setSelectPlace(value)}
-              defaultValue={data[0]?.name}
+              onValueChange={(value) => changeSelectRegionFn(value === selectPlace ? selectPlace : value)}
+              defaultValue={selectPlace ? selectPlace : "tashkent_region"}
             >
               <SelectTrigger className="w-[300px] py-[15px] px-[25px] bg-[#ff8400] text-white text-xl font-bold mb-5 max-md:w-full">
                 <SelectValue
                   placeholder={select_area_placeholder}
+                  defaultValue={selectPlace ? selectPlace : "tashkent_region"}
                   className="text-2xl placeholder:text-white text-white"
                 />
               </SelectTrigger>
               <SelectContent className="bg-white border-none">
-                {data.map((item, key) => (
+                {places?.map((item, key) => (
                   <SelectItem key={key} value={item.name || item.title}>
                     {item.title}
                   </SelectItem>
@@ -89,22 +111,18 @@ const InteractivePlaces = ({
             <InteractiveMap
               selectPlace={selectPlace}
               onChangeSelectPlace={(value) => {
-                setSelectPlace(value === selectPlace ? null : value);
+                changeSelectRegionFn(value === selectPlace ? selectPlace : value);
               }}
             />
           </ScrollAnimation>
         </div>
 
         <div className="w-[45%] max-md:w-full">
-          {selectPlace && (
+          {selectPlace && findSelectedRegion && (
             <InteractiveInformation
-              address_label={address_label}
-              email_label={email_label}
-              members_count_label={members_count_label}
-              our_addresses_label={our_addresses_label}
-              phone_number_label={phone_number_label}
-              selectedPlace={selectPlace}
-              data={areas || []}
+              
+              selectedPlace={findSelectedRegion}
+              data={placesInRegion || []}
             />
           )}
         </div>

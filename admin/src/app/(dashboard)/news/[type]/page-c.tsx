@@ -6,41 +6,73 @@ import NewsCard from "../components/card";
 import { AppType } from "@/types/server";
 import { getNews } from "@/actions/news";
 import InfiniteScroll from "react-infinite-scroll-component";
+// import { redirect } from "next/navigation";
+import { useLangStore } from "@/hooks/useLang";
 
 export default function PageC({
   type,
-  data: initialData,
 }: {
   type: string;
-  data: AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"];
+  // data: AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"];
 }) {
   const limit = 50; // max 50
   const [data, setData] =
     useState<
-      AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"]
-    >(initialData);
-  const [page, setPage] = useState(2);
+      AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"] | []
+    >([]);
+  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  // const [lang, setLang] = useState<"uz" | "uz-cryl" | "ru" | "en">("uz");
+  const { lang } = useLangStore()
+
 
   useEffect(() => {
+    const loadFirstPage = async () => {
+      setData([]);          // eski ma'lumotni tozalaymiz
+      setPage(1);           // page-ni 1 ga o‘rnatamiz
+      setHasMore(true);     // infinite scroll holatini reset qilamiz
+  
+      const newsData = await getNews(
+        {
+          type: [type as any],
+          lang: lang, // yangilangan til
+        },
+        limit,
+        1 // albatta 1-sahifadan yuklaymiz
+      );
+  
+      const newItems = newsData.data?.data || [];
+      setData(newItems);
+      if (newItems.length < limit) setHasMore(false);
+    };
+  
+    loadFirstPage();
+  }, [lang]);  
+
+  useEffect(() => {
+    if (page === 1) return; // 1-sahifa allaqachon lang-effectda yuklangan
+  
     const fetchData = async () => {
       const newsData = await getNews(
         {
           type: [type as any],
+          lang: lang,
         },
         limit,
-        page,
+        page
       );
+  
       const newItems = newsData.data?.data || [];
       setData((prev) => [...prev, ...newItems]);
       if (newItems.length < limit) setHasMore(false);
     };
+  
     fetchData();
   }, [page]);
 
   return (
     <InfiniteScroll
-      dataLength={data.length}
+      dataLength={data?.length}
       next={() => setPage((prev) => prev + 1)}
       hasMore={hasMore}
       scrollableTarget="main-scroll"

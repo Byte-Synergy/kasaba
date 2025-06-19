@@ -1,10 +1,11 @@
-import { getNews } from "@/actions/news";
+// 'use client'
 import Link from "@/components/link";
 import { cn } from "@/libs/utils";
-import { NewsApi } from "@/utils/api/news";
 import React from "react";
 import NewsCard from "./news/components/card";
 import eden from "@/libs/eden";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default async function Page() {
   const [
@@ -89,12 +90,15 @@ export default async function Page() {
             },
           ].map((card, key) => (
             <div
-              className="rounded-2xl bg-white p-5 shadow-lg shadow-slate-200"
+              className="relative rounded-2xl bg-white shadow-lg shadow-slate-200 last:col-span-1 max-h-[950px] overflow-y-scroll"
               key={key}
             >
-              <h2 className="mb-5 font-bold capitalize">{card.title}</h2>
+              <div className="w-14/15 sticky left-auto top-2 font-bold capitalize mx-auto z-40 flex items-center justify-between text-black p-5 rounded-xl overflow-hidden bg-white">
+                <h2 className="text-xl">{card.title}</h2>
+                {/* <Button type="button" variant={"secondary"} className="py-5 text-md cursor-pointer" >Barchasi</Button> */}
+              </div>
               {card.data && Boolean(card.data.length) && (
-                <div className="grid gap-2">
+                <div className="grid gap-2 p-5">
                   {React.Children.toArray(
                     card.data.map((data, key) => (
                       <Link
@@ -112,20 +116,6 @@ export default async function Page() {
           )),
         )}
       </div>
-      {/* <DiagrammStatistic
-        data={{
-          video: videoNews || [],
-          standard: standardNews || [],
-          photo: photoNews || [],
-        }}
-      />
-      <Statistic
-        data={{
-          video: videoNews || [],
-          standard: standardNews || [],
-          photo: photoNews || [],
-        }}
-      /> */}
     </section>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Container from "../../shared/container";
 import TopNewsCard from "@/components/shared/top-news-card";
 import ScrollAnimation from "@/components/ui/scroll-animation";
@@ -12,6 +12,7 @@ import { AppType } from "@/types/server";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { Locale } from "@/configs/i18n";
+import Link from "next/link";
 
 const TopNews = ({
   news,
@@ -21,6 +22,25 @@ const TopNews = ({
   news: NewsDataType[];
 }) => {
   const { lang } = useParams<{ lang: Locale }>();
+
+  const [heroAds, setHeroAds] = useState<{
+    hero1: { url: string, id: number, file: { name: string; mimeType: string; extension: string; href: string }, type: string }[] | null;
+    hero2: { url: string, id: number, file: { name: string; mimeType: string; extension: string; href: string }, type: string }[] | null;
+  }>({
+    hero1: null,
+    hero2: null,
+  });
+
+  useEffect(() => {
+    if (!ads.length) return;
+    setHeroAds(prev => ({
+      hero1: ads.filter(i => i.type === "hero1"),
+      hero2: ads.filter(i => i.type === "hero2"),
+    }));
+  }, [ads]);
+
+  console.log(heroAds.hero1);
+
   return (
     Boolean(news.length) && (
       <Container className="relative max-md:w-full my-5">
@@ -41,28 +61,54 @@ const TopNews = ({
                 </SwiperSlide>
               ))}
             </Swiper>
-            {Boolean(ads.length) && (
+            {Object.keys(heroAds)?.length && (
               <div className="flex px-5 md:px-0 flex-col gap-3 w-full md:max-w-[400px]">
-                <Image
-                  className="size-full object-cover"
-                  alt="Ad"
-                  src="/img/banners/120uz.jpg"
-                  width={1080}
-                  height={1080}
-                />
-                <a
-                  href="https://www.oromgohlar.uz/uz"
-                  target="_blank"
-                  className="size-full"
+                <Swiper
+                  modules={[Autoplay]}
+                  autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false,
+                  }}
+                  loop
+                  className="size-full max-h-56"
                 >
-                  <Image
-                    className="size-full object-cover"
-                    alt="Ad"
-                    src="/img/banners/banner_uz_m.png"
-                    width={1080}
-                    height={1080}
-                  />
-                </a>
+                  {heroAds?.hero1?.map((ad, key) => (
+                    <SwiperSlide key={key}>
+                      <Link key={key} href={ad?.file?.href || "#"} target="_blank" rel="noopener noreferrer">
+                        <Image
+                          src={ad?.file?.href || "/img/default-image.png"}
+                          alt="Ad"
+                          width={1080}
+                          height={1080}
+                          className="size-full object-cover"
+                        />
+                      </Link>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+                <Swiper
+                  modules={[Autoplay]}
+                  autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false,
+                  }}
+                  loop
+                  className="size-full max-h-56"
+                >
+                  {heroAds?.hero2?.map((ad, key) => (
+                    <SwiperSlide key={key}>
+                      <Link key={key} href={ad?.file?.href || "#"} target="_blank" rel="noopener noreferrer">
+                        <Image
+                          src={ad?.file?.href || "/img/default-image.png"}
+                          alt="Ad"
+                          width={1080}
+                          height={1080}
+                          className="size-full object-cover"
+                        />
+                      </Link>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
             )}
           </div>

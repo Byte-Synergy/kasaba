@@ -1,8 +1,6 @@
 import { getNews } from "@/actions/news";
 import React from "react";
 import { redirect } from "next/navigation";
-import Link from "@/components/link";
-import NewsCard from "../components/card";
 import PageHeader from "../../components/header";
 import PageC from "./page-c";
 
@@ -13,9 +11,6 @@ export default async function Page({
 }) {
   const { type } = await params;
 
-  if (!["standard", "photo", "video", "archive"].includes(type))
-    redirect("/news/standard");
-
   const titles = {
     standard: "Standard yangiliklar",
     photo: "Foto yangiliklar",
@@ -23,18 +18,8 @@ export default async function Page({
     archive: "Arxiv",
   };
 
-  const { data } = await getNews(
-    type === "archive"
-      ? {
-          isArchived: true,
-        }
-      : {
-          type: [type as any],
-          isArchived: false,
-        },
-    50,
-    1,
-  );
+  if (!["standard", "photo", "video", "archive"].includes(type))
+      redirect("/news/standard");
   
   return (
     <section className="h-full">
@@ -45,13 +30,13 @@ export default async function Page({
             href={`/news/create/${type}`}
             title={titles[type as keyof typeof titles]}
           />
-          {!data?.data.length ? (
+          {/* {!data?.data.length ? (
             <div className="grid h-full min-h-40 w-full place-items-center">
               <p className="font-medium">Hech qanday ma'lumot mavjud emas</p>
             </div>
-          ) : (
-            <PageC type={type} data={data.data} />
-          )}
+          ) : ( */}
+            <PageC type={type} />
+          {/* )} */}
         </div>
       </div>
     </section>

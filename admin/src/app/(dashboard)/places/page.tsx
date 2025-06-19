@@ -7,6 +7,9 @@ export default async function Page() {
   const { data } = await getPlaces({
     limit: 50,
     page: 1,
+    filter: {
+      languageCode: "uz",
+    }
   });
 
   const columns: ColumnDef<Record<string, any>>[] = [

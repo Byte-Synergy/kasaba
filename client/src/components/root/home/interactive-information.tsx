@@ -2,48 +2,66 @@
 import ScrollAnimation from "@/components/ui/scroll-animation";
 import { cn } from "@/libs/utils";
 import { AppType } from "@/types/server";
+import { useTranslations } from "@/utils/translation-provider";
 import { Building2, ChevronLeft, Clock, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 
 const InteractiveInformation = ({
-  selectedPlace,
-  data
+  selectedArea,
+  setSelectedArea,
+  onBackHandler
 }: {
-  selectedPlace: {
-    id: number;
-    name?: string;
-    areasCount: number;
-    title: string;
-  };
-  data: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"];
+  selectedArea: { region: string | null, placeId: number | null, placeData: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"] } | null;
+  setSelectedArea: React.Dispatch<React.SetStateAction<{ region: string | null, placeId: number | null, placeData: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"] } | null>>;
+  onBackHandler: () => void
+  // selectedPlaceHandler: (placeId: number) => void;
 }) => {
-  const [place, setPlace] = useState(selectedPlace);
-  const [information, setInformation] = useState<string[] | null>(null);
+  const [findPlace, setFindPlace] = useState<{
+    email?: string | null;
+    phoneNumber?: string | null;
+    workingTime?: string | null;
+    id: number;
+    chairmanFullName: string;
+    chairmanPhoto: string;
+    address: string;
+    membersCount: number;
+  } | null>(null);
 
-  console.log("Places filter by selected region: ", data);
+  const t = useTranslations()
 
-  const choosePlaceHandler = useCallback(
-    (
-      data: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"][number]
-    ) => {
-      setInformation([
-        data.chairmanFullName,
-        data.address,
-        data.phoneNumber || "",
-        data.email || "",
-        data.address,
-        data.chairmanPhoto,
-        data.membersCount.toString(),
-      ]);
-    },
-    []
-  );
+  useEffect(() => {
+    const findSelectedPlace = selectedArea?.placeData?.find(place => place.id === selectedArea?.placeId);
+    
+    setFindPlace(findSelectedPlace ? { 
+      email: findSelectedPlace.email || null,
+      phoneNumber: findSelectedPlace.phoneNumber || null,
+      workingTime: findSelectedPlace.workingTime || null,
+      id: findSelectedPlace.id,
+      chairmanFullName: findSelectedPlace.chairmanFullName,
+      chairmanPhoto: findSelectedPlace.chairmanPhoto,
+      address: findSelectedPlace.address,
+      membersCount: findSelectedPlace.membersCount
+    } : null);
 
-  const backHandler = useCallback(() => {
-    setPlace(selectedPlace);
-    setInformation(null);
-  }, []);
+    console.log(selectedArea);
+  }, [selectedArea?.placeId]);
+
+  const selectedPlaceHandler = (placeId: number) => {
+    const existingPlace = selectedArea?.placeData?.find(place => place?.id === placeId);
+    if (!existingPlace) {
+      console.log("Xudud haqida ma'lumot topilmadi");
+      return;
+    }
+    if (selectedArea?.placeId !== placeId) {
+      setSelectedArea((prev) => ({
+        ...prev,
+        region: prev?.region || null,
+        placeId: placeId,
+        placeData: [...prev?.placeData || []]
+      }));
+    }
+  }
 
   return (
     <div className="w-full">
@@ -52,32 +70,37 @@ const InteractiveInformation = ({
           <button
             className={cn(
               "relative bg-[#000573] rounded-tl-lg rounded-bl-lg py-[15px] px-[25px] after:absolute after:w-full after:h-full after:content-[''] after:top-0 after:left-0",
-              !information && " after:bg-white/25 "
             )}
-            disabled={information ? false : true}
-            onClick={backHandler}
+            onClick={onBackHandler}
           >
             <ChevronLeft className="text-white w-8 h-8" />
           </button>
-          <h4 className="w-full text-[#000573] uppercase py-[18px] text-center font-bold">
-            {information ? "" : selectedPlace.name}
+          <h4 className="w-full text-[#000573] text-sm uppercase py-[18px] text-center font-bold line-clamp-1 overflow-clip">
+            {selectedArea?.region && selectedArea.placeId ? findPlace?.address : selectedArea?.region}
           </h4>
         </div>
       </ScrollAnimation>
       <div
         className={cn(
           "flex flex-col gap-y-1 overflow-y-auto scroll-bar p-2",
-          information ? "md:h-full" : "md:h-[480px]"
+          "md:h-[480px]",
+          "relative h-[400px] max-md:h-full max-sm:h-[250px] transition-all",
+          // "max-md:overflow-y-hidden",
         )}
       >
-        {place && information && (
-          data.map(p => (
-            <ScrollAnimation className="w-full h-full">
-              <div className="h-full bg-white rounded-xl flex flex-col gap-y-4 shadow-[0px_4px_8.199999809265137px_1px_rgba(0,0,0,0.25)] p-4">
+        {
+          // only selected place 
+          selectedArea?.region &&
+          selectedArea.placeId && (
+            <ScrollAnimation className={cn(
+              "w-full h-full",
+              // "absolute top-0 -left-[200%] transition-all duration-300",
+            )}>
+              <div className="h-full bg-white rounded-xl flex flex-col gap-y-4 shadow-[0px_4px_8.199999809265137px_1px_rgba(0,0,0,0.25)] p-4" onClick={() => selectedPlaceHandler(findPlace?.id || 0)}>
                 <div className="flex itmes-center gap-x-4 max-md:flex-col">
                   <Image
-                    src={information[5]}
-                    alt=""
+                    src={findPlace?.chairmanPhoto || ""}
+                    alt={findPlace?.address || ""}
                     width={150}
                     height={200}
                     objectFit="cover"
@@ -86,58 +109,60 @@ const InteractiveInformation = ({
                   />
                   <div className="">
                     <h5 className="text-[#000573] text-2xl font-extrabold py-2 border-b border-[#000573]">
-                      {p.chairmanFullName}
+                      {findPlace?.chairmanFullName}
                     </h5>
                     <p className="text-[#ff8400] text-xl font-extrabold my-1">
-                      {p.address}
+                      {findPlace?.address}
                     </p>
                     <ul className="flex flex-col gap-y-2 text-sm my-4">
                       <li className="flex items-center gap-x-1">
                         <strong>Tel raqam:</strong>
-                        <span>{p.phoneNumber}</span>
+                        <span>{findPlace?.phoneNumber}</span>
                       </li>
                       <li className="flex items-center gap-x-1">
                         <strong>Email:</strong>
-                        <span>{p.email}</span>
+                        <span>{findPlace?.email}</span>
                       </li>
                       <li className="flex items-start gap-x-1">
                         <strong>Manzil:</strong>
-                        <span>{p.address}</span>
+                        <span>{findPlace?.address}</span>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div className=" max-md:flex">
-                  <h4 className="py-4 px-5 bg-[#000573] max-md:text-lg text-center text-white max-md:w-full">
-                    {/* {data.members_count_label} */}
+                  <h4 className="py-2 px-5 bg-[#000573] max-md:text-lg text-center text-white max-md:w-full">
+                    {t("members_count_label")}
                   </h4>
                   <p className="text-8xl max-md:text-lg max-md:p-4 max-md:border font-extrabold  text-[#ff8400] py-5 text-center">
-                    {p.membersCount}
+                    {findPlace?.membersCount}
                   </p>
                 </div>
               </div>
             </ScrollAnimation>
-          ))
-        )}
-        {place &&
-          !information &&
-          data.map((_, idx) => (
+          )
+        }
+        {
+          // places list
+          selectedArea?.region &&
+          !selectedArea.placeId &&
+          selectedArea.placeData.map((place, idx) => (
             <ScrollAnimation key={idx} idx={idx}>
               <div
                 className="flex items-center justify-between gap-x-4 rounded-lg hover:shadow-xl cursor-pointer"
-                onClick={() => choosePlaceHandler(_)}
+                onClick={() => selectedPlaceHandler(place.id)}
               >
                 <div className="flex gap-x-4 items-center">
-                <div className=" bg-[#000573] py-4 px-4 rounded-lg">
-                  <Building2 className="w-12 h-12 text-white" />
-                </div>
-                <div className="flex flex-col gap-y-1 ">
-                  <div className="flex items-center gap-x-2 text-[#777] text-[12px]">
-                    <Clock className="w-4 h-4" />
-                    <p>{_.workingTime}</p>
+                  <div className=" bg-[#000573] py-4 px-4 rounded-lg">
+                    <Building2 className="w-12 h-12 text-white" />
                   </div>
-                  <div className="text-sm">{_.address}</div>
-                </div>
+                  <div className="flex flex-col gap-y-1 ">
+                    <div className="flex items-center gap-x-2 text-[#777] text-[12px]">
+                      <Clock className="w-4 h-4" />
+                      <p>{place.workingTime}</p>
+                    </div>
+                    <div className="text-sm">{place.address}</div>
+                  </div>
                 </div>
                 <div className="">
                   <button className="p-3">
@@ -146,7 +171,14 @@ const InteractiveInformation = ({
                 </div>
               </div>
             </ScrollAnimation>
-          ))}
+          ))
+        }
+        {
+          // not found msg
+          !selectedArea?.placeData.length && (
+            <p>{selectedArea?.region} bo'yicha hech qanday ma'lumot topilmadi.</p>
+          )
+        }
       </div>
     </div>
   );

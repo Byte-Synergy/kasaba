@@ -112,10 +112,8 @@ const HomePage = ({
       </section>
       <section id="interactive-informations" className="w-full ">
         <InteractivePlaces
-          select_area_placeholder={select_area_placeholder}
-          interactive_areas_label={interactive_areas_label}
           lang={lang}
-          places={places}
+          regions={places}
         />
       </section>
     </>

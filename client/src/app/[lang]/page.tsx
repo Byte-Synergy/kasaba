@@ -3,7 +3,9 @@ import HomePage from "./page-client";
 import UsefulLinks from "@/components/root/home/useful-links";
 import { Locale } from "@/configs/i18n";
 import { getDictionary } from "@/utils/directory";
-import {getAreas, getInteractiveAreas, getPlace, getPlaces } from "@/action/place";
+import { getPlaces } from "@/action/place";
+import { redirect } from "next/navigation";
+// import { redirect } from "next/dist/server/api-utils";
 
 export default async function Page({
   params,
@@ -13,6 +15,7 @@ export default async function Page({
   const { lang } = await params;
   const t = await getDictionary(lang as Locale);
 
+  if(!lang.length) redirect("/not-found")
   const { data: places } = await getPlaces({
     limit: 50,
     page: 1,

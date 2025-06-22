@@ -86,31 +86,7 @@ export default function InteractiveAreaHandler({
       let result: any = null;
 
       result = await PlaceApi.create(data, placeId);
-      // result = await PageApi.updateMenu(menuId, {
-      //   ...data,
-      //   content: data.content.map((content) => {
-      //     if ("filePreview" in content)
-      //       return {
-      //         ...content,
-      //         filePreview: undefined,
-      //       };
-      //     if ("members" in content)
-      //       return {
-      //         ...content,
-      //         members: content.members.map((member) =>
-      //           "filePreview" in member
-      //             ? {
-      //                 ...member,
-      //                 filePreview: undefined,
-      //               }
-      //             : member,
-      //         ),
-      //       };
-
-      //     return content;
-      //   }),
-      //   files: files || undefined,
-      // });
+      
       if (result) {
         setOpen(false);
         reset();

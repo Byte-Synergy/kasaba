@@ -69,10 +69,19 @@ export const formatDateToNumber = (date: string) => {
   return `${day}.${month}.${year}`
 }
 
-export const formatDateToWeekday = (date: string | Date): string => {
+export const formatDateToWeekday = (date: string | Date): {
+  weekday: number;
+  month: number;
+  day: string;
+} => {
   const d = new Date(date);
-  const w = WEEKDAYS[d.getDay()];
-  const month = MONTHS[d.getMonth()];
+  const w = d.getDay() + 1;
+  const month =d.getMonth() + 1;
   const day = String(d.getDate()).padStart(2, "0");
-  return `${w}, ${day}-${month}`;
+  
+  return {
+    weekday: w,
+    month: month,
+    day: day,
+  };
 };

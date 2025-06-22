@@ -96,15 +96,15 @@ export default async function RootLayout({
         )}
       >
         <AOSProviderDynamic>
-          <ModalProvider>
-            <TranslationsProvider dictionary={t}>
+          <TranslationsProvider dictionary={t}>
+            <ModalProvider lang={lang} menu={(menu.data || []).map(mapMenuTree)}>
               <Header header_desc={t.header.description} lang={lang} menu={(menu.data || []).map(mapMenuTree)} />
               <Navbar menu={(menu.data || []).map(mapMenuTree)} lang={lang} />
-              <Sidebar lang={lang} menu={(menu.data || [])?.map(mapMenuTree)} />
+              {/* <Sidebar lang={lang} menu={(menu.data || [])?.map(mapMenuTree)} /> */}
               <main className="py-5 max-md:p-0 ">{children}</main>
               <Footer lang={lang} />
-            </TranslationsProvider>
-          </ModalProvider>
+            </ModalProvider>
+          </TranslationsProvider>
         </AOSProviderDynamic>
       </body>
     </html>

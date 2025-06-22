@@ -1,11 +1,8 @@
 'use client'
 import Image from 'next/image'
-import Weather from './weather'
 import LanguageSwitcher from './language'
 import { MenuItem } from '@/types'
 import CurrencyBox from './currency-box'
-import Navbar from "./navbar"
-import { useSidebarStore } from '@/hooks/useSidebar'
 import { cn } from '@/libs/utils'
 import { IoClose } from 'react-icons/io5'
 import Link from 'next/link'
@@ -14,6 +11,7 @@ import { useTranslations } from '@/utils/translation-provider'
 import { ChevronDown, Search } from 'lucide-react'
 import { Locale } from '@/configs/i18n'
 import WeatherHeader from '@/components/shared/weather/weather-header'
+import { useModalStore } from '@/hooks/useModal'
 
 const Render = ({
     menu,
@@ -43,12 +41,16 @@ const Render = ({
                 const isOpen = activeMenuMap[item.id];
 
                 return (
-                    <li key={item.id} style={{ marginLeft: `${level * 15}px` }}>
+                    <li key={item.id} style={{ marginLeft: `${level * 15}px`, borderLeft: level > 0 ? '1px solid #e5e7eb' : 'none' }}>
                         {!hasSub ? (
                             <Link
                                 lang={lang}
                                 href={href}
-                                className='flex items-center space-x-2 text-[#141348] text-lg font-semibold hover:text-[#ff7a00] uppercase p-4'
+                                className={cn(
+                                    'relative flex items-center space-x-2 text-lg font-semibold uppercase p-4',
+                                    "hover:text-[#ff7a00]",
+                                    isOpen ? 'text-[#ff7a00]' : 'text-[#141348]',
+                                )}
                             >
                                 <span className='flex justify-start items-center w-full'>
                                     {item.title}
@@ -57,7 +59,11 @@ const Render = ({
                         ) : (
                             <div>
                                 <div
-                                    className='flex items-center justify-between space-x-2 text-[#141348] text-lg font-semibold hover:text-[#ff7a00] uppercase p-4 cursor-pointer'
+                                    className={cn(
+                                        'flex items-center justify-between space-x-2 text-lg font-semibold uppercase p-4 cursor-pointer',
+                                        "hover:text-[#ff7a00]",
+                                        isOpen ? 'text-[#ff7a00]' : 'text-[#141348]',
+                                    )}
                                     onClick={() => handleOpenMenu(item.id)}
                                 >
                                     {item.title}
@@ -90,7 +96,6 @@ const Sidebar = ({
     lang: Locale,
     menu: MenuItem[]
 }) => {
-    const { isOpen } = useSidebarStore()
     const [activeMenuMap, setActiveMenuMap] = useState<Record<string, boolean>>({});
 
     const handleOpenMenu = (id: string) => {
@@ -102,8 +107,10 @@ const Sidebar = ({
 
     const t = useTranslations()
 
+    const {modal, closeModal} = useModalStore()
+
     return (
-        <section id="sidebar" className={cn("min-h-[100vh] fixed inset-0 z-10 w-full bg-white hidden max-md:block top-0 overflow-hidden", isOpen ? "left-[0%]" : "-left-[100%]", "transition-transform duration-300 ease-in-out")}>
+        <section id="sidebar" className={cn("min-h-[100vh] fixed inset-0 z-10 w-full bg-white hidden max-md:block top-0 overflow-hidden", modal === "sidebar" ? "left-[0%]" : "-left-[100%]", "transition-transform duration-300 ease-in-out")}>
             <div id="sidebar__header" className='py-5 px-5 overflow-hidden relative z-10  after:w-full after:h-full after:absolute after:top-0 after:left-0 after:bg-linear-to-r after:from-[#141348] after:to-[#030239] after:blur-[40px] after:-z-10 max-md:bg-linear-to-r max-md:from-[#000674] max-md:to-[#000BDA]'>
                 <div className="text-xl font-bold flex justify-between items-center">
                     <Image
@@ -116,7 +123,7 @@ const Sidebar = ({
                     <WeatherHeader />
                     <button
                         className='p-2 bg-white/15 rounded-full border border-white/15'
-                        onClick={() => useSidebarStore.getState().close()}
+                        onClick={() => closeModal()}
                     >
                         <IoClose className='text-white' />
                     </button>
@@ -162,7 +169,7 @@ const Sidebar = ({
             </nav>
             {/* <Navbar lang={lang} menu={menu} /> */}
             <div id="sidebar__footer" className='p-5 flex flex-col gap-y-2'>
-                <LanguageSwitcher />
+                <LanguageSwitcher lang={lang}/>
                 <CurrencyBox />
             </div>
         </section>

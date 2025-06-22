@@ -39,8 +39,6 @@ const TopNews = ({
     }));
   }, [ads]);
 
-  console.log(heroAds.hero1);
-
   return (
     Boolean(news.length) && (
       <Container className="relative max-md:w-full my-5">
@@ -61,7 +59,7 @@ const TopNews = ({
                 </SwiperSlide>
               ))}
             </Swiper>
-            {Object.keys(heroAds)?.length && (
+            {Object.keys(heroAds).length && (
               <div className="flex px-5 md:px-0 flex-col gap-3 w-full md:max-w-[400px]">
                 <Swiper
                   modules={[Autoplay]}
@@ -72,19 +70,32 @@ const TopNews = ({
                   loop
                   className="size-full max-h-56"
                 >
-                  {heroAds?.hero1?.map((ad, key) => (
-                    <SwiperSlide key={key}>
-                      <Link key={key} href={ad?.file?.href || "#"} target="_blank" rel="noopener noreferrer">
+                  {
+                    heroAds.hero1?.length ?
+                    heroAds.hero1.map((ad, key) => (
+                      <SwiperSlide key={key}>
+                        <Link key={key} href={ad?.file?.href || "/"} target="_blank" rel="noopener noreferrer">
+                          <Image
+                            src={ad?.file?.href || "/img/default-image.png"}
+                            alt="Ad"
+                            width={1080}
+                            height={1080}
+                            className="size-full object-cover"
+                          />
+                        </Link>
+                      </SwiperSlide>
+                    )) : (
+                      <SwiperSlide>
                         <Image
-                          src={ad?.file?.href || "/img/default-image.png"}
-                          alt="Ad"
+                          src="/img/banners/120uz.jpg"
+                          alt="Default Ad"
                           width={1080}
                           height={1080}
                           className="size-full object-cover"
                         />
-                      </Link>
-                    </SwiperSlide>
-                  ))}
+                      </SwiperSlide>
+                    )
+                  }
                 </Swiper>
                 <Swiper
                   modules={[Autoplay]}
@@ -95,19 +106,32 @@ const TopNews = ({
                   loop
                   className="size-full max-h-56"
                 >
-                  {heroAds?.hero2?.map((ad, key) => (
-                    <SwiperSlide key={key}>
-                      <Link key={key} href={ad?.file?.href || "#"} target="_blank" rel="noopener noreferrer">
+                  {
+                    heroAds.hero2?.length ?
+                    heroAds.hero2.map((ad, key) => (
+                      <SwiperSlide key={key}>
+                        <Link key={key} href={ad?.file?.href || "/"} target="_blank" rel="noopener noreferrer">
+                          <Image
+                            src={ad?.file?.href || "/img/banners/banner_uz_m.png"}
+                            alt="Ad"
+                            width={1080}
+                            height={1080}
+                            className="size-full object-cover"
+                          />
+                        </Link>
+                      </SwiperSlide>
+                    )) : (
+                      <SwiperSlide>
                         <Image
-                          src={ad?.file?.href || "/img/default-image.png"}
-                          alt="Ad"
+                          src="/img/banners/banner_uz_m.png"
+                          alt="Default Ad"
                           width={1080}
                           height={1080}
                           className="size-full object-cover"
                         />
-                      </Link>
-                    </SwiperSlide>
-                  ))}
+                      </SwiperSlide>
+                    )
+                  }
                 </Swiper>
               </div>
             )}

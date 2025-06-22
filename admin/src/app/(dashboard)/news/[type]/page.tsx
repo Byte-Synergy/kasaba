@@ -30,13 +30,7 @@ export default async function Page({
             href={`/news/create/${type}`}
             title={titles[type as keyof typeof titles]}
           />
-          {/* {!data?.data.length ? (
-            <div className="grid h-full min-h-40 w-full place-items-center">
-              <p className="font-medium">Hech qanday ma'lumot mavjud emas</p>
-            </div>
-          ) : ( */}
             <PageC type={type} />
-          {/* )} */}
         </div>
       </div>
     </section>

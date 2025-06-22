@@ -1,5 +1,5 @@
 import InteractiveAreaHandler from "../components/handler";
-import { getInteractiveAreas, getPlace } from "@/actions/area";
+import { deleteArea, getInteractiveAreas, getPlace } from "@/actions/area";
 
 export default async function Page({
   params,
@@ -13,6 +13,14 @@ export default async function Page({
     { limit: 20, page: 1 },
     +areaId,
   );
+
+  const deletePlace = async (placeId: number) => {
+    try {
+      await deleteArea(placeId, "/dashboard")
+    } catch (error) {
+      console.log("Ma'lumot o'chirishda xatolik: ", error)
+    }
+  }
 
   if (!place.data) return;
   return (

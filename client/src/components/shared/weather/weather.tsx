@@ -17,7 +17,7 @@ const Weather = () => {
                 <WeatherHourly />
                 <WeatherDaily />
             </div>
-            <div className='w-5/6 p-3 bg-[#f9f9f9] rounded-xl max-md:w-full'>
+            <div className='w-5/6 p-3 bg-[#f9f9f9] rounded-xl max-md:hidden'>
                 <WeatherRegions />
             </div>
         </div>

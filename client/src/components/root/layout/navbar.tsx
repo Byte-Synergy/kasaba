@@ -16,7 +16,7 @@ export default function Navbar({
     "flex relative h-full text-nowrap items-center space-x-2 text-[#141348] text-lg font-semibold uppercase max-md:p-4";
 
   const t = useTranslations()
-
+  
   const render = (menu: MenuItem[], level = 0) => {
     return (
       <>

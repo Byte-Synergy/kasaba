@@ -4,17 +4,15 @@ import Container from "../../shared/container";
 import Logo from "./logo";
 import dynamic from "next/dynamic";
 import LanguageSwitcher from "./language";
-import Image from "next/image";
-import { FiSearch } from "react-icons/fi";
 import { Search } from "lucide-react";
 import Link from "@/components/link";
 import { Locale } from "@/configs/i18n";
-import Weather from "./weather";
 import { MenuItem } from "@/types";
 import CurrencyBox from "./currency-box";
 import { RiMenu3Fill } from "react-icons/ri";
 import { useSidebarStore } from "@/hooks/useSidebar";
 import WeatherHeader from "@/components/shared/weather/weather-header";
+import { useModalStore } from "@/hooks/useModal";
 
 const Clock = dynamic(() => import("./clock"), { ssr: false });
 
@@ -27,15 +25,17 @@ const Header = ({
   lang: Locale;
   menu: MenuItem[]
 }) => {
-  const openSidebar = useSidebarStore((state) => state.open)
+  // const openSidebar = useSidebarStore((state) => state.open)
+  const {openModal} = useModalStore()
 
   const handleOpenSidebar = () => {
-    openSidebar();
+    openModal("sidebar")
   };
 
   return (
     <section className="w-full bg-[url(/img/BG.png)] bg-cover bg-no-repeat py-[20px] overflow-hidden relative z-10 after:w-full after:h-full after:absolute after:top-0 after:left-0 after:bg-linear-to-r after:from-[#141348] after:to-[#030239] after:blur-[40px] after:-z-10 max-md:bg-linear-to-r max-md:from-[#000674] max-md:to-[#000BDA] max-md:shadow-[0px_0px_25px_5px] shadow-[#000BDA]/50">
-      <Container className=" flex items-center justify-between max-md:hidden">
+      {/* 768 px dan katta ekranlar uchun header */}
+      <Container className="flex items-center justify-between max-md:hidden">
         <Logo lang={lang} header_desc={header_desc} />
         <div className="flex items-center gap-x-[20px] max-md:hidden">
           <CurrencyBox />
@@ -43,7 +43,7 @@ const Header = ({
           <WeatherHeader />
           <Clock lang={lang} />
           <div className="flex items-center gap-x-1">
-            <LanguageSwitcher />
+            <LanguageSwitcher lang={lang}/>
             <Link lang={lang} href="/search" prefetch={false} >
               <button
                 role="button"
@@ -67,6 +67,7 @@ const Header = ({
           </div>
         </div>
       </Container>
+      {/* 768 px dan kichik ekranlar uchun header */}
       <Container className="hidden items-center justify-between max-md:flex ">
         <div className="w-full text-xl font-bold flex justify-between items-center">
           <Logo lang={lang} header_desc={header_desc} />

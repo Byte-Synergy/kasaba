@@ -7,7 +7,8 @@ import {
   MenubarMenu,
   MenubarTrigger,
 } from "@/components/ui/menubar";
-import { Languages } from "lucide-react";
+import { Locale } from "@/configs/i18n";
+import { useModalStore } from "@/hooks/useModal";
 import { useParams, useRouter } from "next/navigation";
 
 const languages = {
@@ -29,12 +30,18 @@ const languages = {
   },
 };
 
-export default function LanguageSwitcher() {
-  const { lang } = useParams();
+export default function LanguageSwitcher({
+  lang,
+}: {
+  lang: Locale
+}) {
+  // const { lang } = useParams();
   const router = useRouter();
+  // const {closeModal} = useModalStore()
 
   const changeLanguage = (lang: string) => {
     router.replace(`/${lang}`);
+    // closeModal()
   };
 
   return (
@@ -50,7 +57,7 @@ export default function LanguageSwitcher() {
             </h5>
           </button>
         </MenubarTrigger>
-        <MenubarContent className="bg-white border-none max-md:text-black max-md:w-full">
+        <MenubarContent className="bg-white border-none max-md:text-black max-md:w-full !z-[9999]">
           <MenubarItem className="max-md:w-full">
             <button
               className="cursor-pointer"

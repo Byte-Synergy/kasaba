@@ -43,8 +43,6 @@ const InteractiveInformation = ({
       address: findSelectedPlace.address,
       membersCount: findSelectedPlace.membersCount
     } : null);
-
-    console.log(selectedArea);
   }, [selectedArea?.placeId]);
 
   const selectedPlaceHandler = (placeId: number) => {

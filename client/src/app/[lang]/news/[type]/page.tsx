@@ -27,8 +27,6 @@ const NewsPage = async ({
     },
   });
 
-  console.log("lotin-data", data?.data.filter(item => item.languageCode === lang));
-
   return (
     <div className="max-w-[1440px] w-full mx-auto">
       <Container className="my-5">

@@ -13,7 +13,6 @@ export default function PageC({
   type,
 }: {
   type: string;
-  // data: AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"];
 }) {
   const limit = 50; // max 50
   const [data, setData] =
@@ -22,7 +21,6 @@ export default function PageC({
     >([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  // const [lang, setLang] = useState<"uz" | "uz-cryl" | "ru" | "en">("uz");
   const { lang } = useLangStore()
 
 

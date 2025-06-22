@@ -1,10 +1,13 @@
 'use client'
+import Sidebar from "@/components/root/layout/sidebar";
 import Weather from "@/components/shared/weather/weather";
+import { Locale } from "@/configs/i18n";
 import { useModalStore } from "@/hooks/useModal";
 import { cn } from "@/libs/utils";
+import { MenuItem } from "@/types";
 import React, { createContext, useContext, ReactNode } from "react";
 
-type ModalType = "weather" | "login" | "settings" | "sidebar" | null;
+type ModalType = "weather" | "sidebar" | null;
 
 interface ModalContextType {
     modal: ModalType;
@@ -14,7 +17,7 @@ interface ModalContextType {
 
 const ModalContext = createContext<ModalContextType | null>(null);
 
-export const ModalProvider = ({ children }: { children: ReactNode }) => {
+export const ModalProvider = ({ children, lang, menu }: { children: ReactNode, lang: Locale, menu: MenuItem[]; }) => {
     const { modal, closeModal } = useModalStore();
 
     return (
@@ -29,18 +32,28 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
                     )}
                     onClick={closeModal} // <- Fonga bosilganda modal yopiladi
                 >
-                    {modal === "weather" && (
-                        <div
-                            className="w-4/6"
-                            onClick={(e) => e.stopPropagation()} // <- Ichki bosishda yopilmasin
-                        >
-                            <Weather />
-                        </div>
-                    )}
+                    {
+                        modal === "weather" && (
+                            <div
+                                className="w-4/6 max-md:w-5/6"
+                                onClick={(e) => e.stopPropagation()} // <- Ichki bosishda yopilmasin
+                            >
+                                <Weather />
+                            </div>
+                        )
+                    }
+                    {
+                        modal === "sidebar" && (
+                            <div
+                                className="w-full"
+                                onClick={(e) => e.stopPropagation()} // <- Ichki bosishda yopilmasin
+                            >
+                                {/* Sidebar content goes here */}
+                                <Sidebar lang={lang} menu={menu} />
+                            </div>
+                        )
+                    }
                 </article>
-
-                {/* Modals */}
-                {/* Sidebar modal */}
             </main>
         </ModalContext.Provider>
     );

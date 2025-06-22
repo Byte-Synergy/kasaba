@@ -10,15 +10,15 @@ const WeatherCurrently = () => {
     const t = useTranslations()
 
     return (
-        <div className='flex items-center justify-between mb-4 max-md:flex-col max-md:items-start'>
+        <div className='flex items-center justify-between mb-4'>
             <div className='w-3/4'>
                 <div className=''>
-                    <h3 className='text-xl font-bold'>
-                    {t(`regions[${selectedRegion}]`)}
+                    <h3 className='text-xl font-bold capitalize'>
+                        {t(`regions.${selectedRegion}`)}
                     </h3>
-                    <p className='text-sm font-medium'>{formatDateToWeekday(current?.time)}</p>
+                    {/* <p className='text-sm font-medium'></p> */}
                 </div>
-                <h1 className='text-7xl font-bold mt-2 text-[#FF8400]'>{current?.temperature} °C</h1>
+                <h1 className='text-7xl font-bold mt-2 text-[#FF8400] max-md:text-4xl'>{current?.temperature} °C</h1>
             </div>
             <div className='w-1/4'>
                 {/* <Sun className='w-36 h-36 float-end' /> */}

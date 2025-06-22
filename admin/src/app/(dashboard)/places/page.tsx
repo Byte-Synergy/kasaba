@@ -6,10 +6,7 @@ import { getPlaces } from "@/actions/area";
 export default async function Page() {
   const { data } = await getPlaces({
     limit: 50,
-    page: 1,
-    filter: {
-      languageCode: "uz",
-    }
+    page: 1
   });
 
   const columns: ColumnDef<Record<string, any>>[] = [

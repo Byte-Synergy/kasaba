@@ -28,15 +28,18 @@ const InteractivePlaces = ({
   regions: { id: number, name?: string, areasCount: number, title: string }[] | []
 }) => {
   const [selectedArea, setSelectedArea] = useState<{ region: string | null, placeId: number | null, placeData: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"] } | null>({
-    region: null,
-    placeId: null,
-    placeData: []
+    region: null,  // region nomi === region.name
+    placeId: null,  // tanlagan region ichidagi tanlangan place id === place.id
+    placeData: []   // tanlangan region ichidagi barcha place ma'lumotlari
   })
 
   const t = useTranslations()
 
+  // select bo'lgan regionni umumiy regionlarda topib olish
   const findSelectedRegion = regions?.find(r => r.name === selectedArea?.region)
-
+  
+  // fetch places by region
+  // agar selectedArea region bo'lsa, fetch qilish
   useEffect(() => {
     const getPlacesByRegion = async () => {
       if (!findSelectedRegion?.id) {
@@ -72,10 +75,11 @@ const InteractivePlaces = ({
         );
       }
     };
-
     getPlacesByRegion();
   }, [selectedArea?.region]);
 
+  // initial state for selectedArea
+  // agar selectedArea region bo'lmasa, selectedArea ga toshkent-region ni berish
   useEffect(() => {
     if (selectedArea?.region === null) {
       setSelectedArea(() => ({
@@ -86,6 +90,10 @@ const InteractivePlaces = ({
     }
   }, []);
 
+  // place infromation back button function
+  // agar selectedArea region bo'lsa, placeId ni null qilish
+  // agar selectedArea region bo'lmasa, selectedArea ni tozalash
+  // agar selectedArea region bo'lsa, placeData ni tozalash
   const onBackHandler = useCallback(() => {
     if (selectedArea?.placeId) {
       setSelectedArea(prev => ({
@@ -93,7 +101,6 @@ const InteractivePlaces = ({
         placeId: null,
         placeData: prev?.placeData || []
       }))
-      console.log("after of nullish: ", selectedArea);
       return null
     } 
       setSelectedArea(() => ({
@@ -104,6 +111,7 @@ const InteractivePlaces = ({
       }))
   }, [selectedArea?.placeId])
 
+  // region selectda o'zgartirish functioni
   const changeSelectRegionHandler = useCallback((place: string) => {
     setSelectedArea(() => ({
       region: place,
@@ -120,11 +128,11 @@ const InteractivePlaces = ({
       <div className="flex items-start max-md:flex-col gap-4">
         <div className={cn(
           "w-full transition-all",
-          selectedArea?.region && findSelectedRegion && "w-[55%] max-md:w-full",
+          (selectedArea?.region && findSelectedRegion) ? "w-[55%] max-md:w-full" : "w-full",
           "max-sm:w-full max-md:max-w-full",
         )}>
           <ScrollAnimation>
-            <Select
+            <Select  // select yordamida region tanlash
               onValueChange={(value) => changeSelectRegionHandler(value)}
               defaultValue={selectedArea?.region || "tashkent_region"}
               value={selectedArea?.region ? selectedArea?.region : "tashkent_region"}
@@ -144,7 +152,7 @@ const InteractivePlaces = ({
                 ))}
               </SelectContent>
             </Select>
-            <InteractiveMap
+            <InteractiveMap  // Xududlar xaritasi
               selectPlace={selectedArea?.region || "tashkent_region"}
               onChangeSelectPlace={(value) => {
                 changeSelectRegionHandler(value);
@@ -154,7 +162,7 @@ const InteractivePlaces = ({
         </div>
         <div className={cn(
           "w-full transition-all",
-          selectedArea?.region && findSelectedRegion && "w-[45%] max-md:w-full",
+          (selectedArea?.region && findSelectedRegion) ? "w-[45%] max-md:w-full" : "hidden",
           "max-sm:w-full max-md:max-w-full",
         )}>
           <ScrollAnimation>

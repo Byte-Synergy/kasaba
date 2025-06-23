@@ -55,12 +55,12 @@ const VideoNews = ({
           <div className="flex flex-col gap-5 max-md:gap-2">
             {selectedData && (
               <>
-                {selectedData?.content.find((i) => i.type === "video-url") && (
+                {selectedData?.content.find((i : any) => i.type === "video-url") && (
                   <iframe
                     src={
                       (
                         selectedData?.content.find(
-                          (i) => i.type === "video-url"
+                          (i: any) => i.type === "video-url"
                         ) as any
                       ).value
                     }
@@ -121,7 +121,7 @@ const VideoNews = ({
                       url={
                         (
                           item.content?.find(
-                            (item) => item.type === "video-url"
+                            (item: any) => item.type === "video-url"
                           ) as any
                         )?.value || ""
                       }

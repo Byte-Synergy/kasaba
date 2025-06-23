@@ -93,12 +93,12 @@ const StandardNewsCard = memo(
               />
             )}
           {data.type === "video" &&
-            data.content.find((content) => content.type === "video-url") && (
+            data.content.find((content: any) => content.type === "video-url") && (
               <iframe
                 src={
                   (
                     data.content.find(
-                      (content) => content.type === "video-url"
+                      (content: any) => content.type === "video-url"
                     ) as any
                   ).value
                 }

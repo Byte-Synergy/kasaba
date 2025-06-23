@@ -28,6 +28,8 @@ const SingleNewsPage = async ({
     }},
   });
 
+  console.log(currentNews);
+  
   if (!currentNews) redirect("/");
 
   const breadcrumbs: Record<typeof currentNews.type, string> = {
@@ -68,7 +70,7 @@ const SingleNewsPage = async ({
                 </div>
               </div>
               <div className="flex flex-col gap-y-5 py-4">
-                {currentNews.content?.map((content, idx) => (
+                {currentNews.content?.map((content: any, idx: number) => (
                   <>
                     <Content
                       key={"cotent-" + idx}

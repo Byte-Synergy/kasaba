@@ -218,7 +218,7 @@ export declare const app: Elysia<"", {
                                 title: string;
                                 description: string;
                                 isTop: boolean;
-                                path: string;
+                                path: string;xwx
                                 id: number;
                                 createdAt: Date;
                                 updatedAt: Date | null;

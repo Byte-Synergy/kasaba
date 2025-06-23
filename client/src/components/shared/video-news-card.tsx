@@ -26,7 +26,7 @@ const VideoNewsCard = memo(
     const { lang } = useParams<{ lang: Locale }>();
 
     const videoUrl =
-      (data?.content?.find((item) => item.type === "video-url") as any)
+      (data?.content?.find((item: any) => item.type === "video-url") as any)
         ?.value || "";
 
     return (
@@ -52,7 +52,7 @@ const VideoNewsCard = memo(
               variant !== "standart" ? "text-[#e7e7e7]" : "text-[#777]"
             )}
           >
-            {formatDate(data?.createdAt || new Date())}
+            <span>{String(formatDate(data?.createdAt))}</span>
           </p>
           <h3
             className={cn(

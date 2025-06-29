@@ -18,11 +18,16 @@ export default function BannerUploader({ type, onUpload }: BannerUploaderProps) 
 
   const handleUpload = async () => {
     if (!bannerFile || !bannerUrl) return;
-    await BannerApi.create({ type, file: bannerFile, url: bannerUrl });
-    onUpload(URL.createObjectURL(bannerFile), bannerFile);
-    setModalOpen(false);
-    setBannerFile(null);
-    setBannerUrl("");
+    try {
+      await BannerApi.create({ type, file: bannerFile, url: bannerUrl });
+      onUpload(URL.createObjectURL(bannerFile), bannerFile);
+      setModalOpen(false);
+      setBannerFile(null);
+      setBannerUrl("");
+    } catch (error) {
+      console.error("Banner upload failed:", error);
+      alert("Banner yuklashda xatolik yuz berdi. Iltimos, qayta urinib ko‘ring.");
+    }
   };
 
   const dropClass = type === "full" ? "h-[70px]" : "aspect-square";
@@ -62,6 +67,7 @@ export default function BannerUploader({ type, onUpload }: BannerUploaderProps) 
         <input
           type="text"
           placeholder="URL kiriting"
+          required
           value={bannerUrl}
           onChange={(e) => setBannerUrl(e.target.value)}
           className="mt-4 w-full border px-3 py-2"

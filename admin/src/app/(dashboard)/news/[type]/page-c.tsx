@@ -36,7 +36,7 @@ export default function PageC({
           lang: lang, // yangilangan til
         },
         limit,
-        1 // albatta 1-sahifadan yuklaymiz
+        page 
       );
   
       const newItems = newsData.data?.data || [];

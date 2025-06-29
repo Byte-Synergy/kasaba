@@ -14,8 +14,6 @@ export const BannerApi = {
 
       const formData = new FormData();
 
-      console.log("data to server",data.file);
-
       formData.append("url", data.url);
       formData.append("file", data.file);
       formData.append("type", data.type);
@@ -31,10 +29,6 @@ export const BannerApi = {
           body: formData,
         },
       );
-
-      // Javobni tekshirish
-      // Javobni tekshirish
-      console.log(response);
       
       if (!response.ok) {
         let errorMessage = `Banner yaratishda xatolik: ${response.status}`;

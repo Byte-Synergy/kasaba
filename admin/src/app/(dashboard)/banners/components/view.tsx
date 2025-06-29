@@ -2,12 +2,12 @@
 
 import { AppType } from "@/types/server";
 import PageViewHeader from "./header";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { deleteBanner } from "@/actions/banner";
+import { useCallback, useState } from "react";
+import { deleteBanner, getBanners } from "@/actions/banner";
 import BannerUploader from "./banner-upload-modal";
 import BannerList from "./banner-list";
 import { cn } from "@/libs/utils";
+import { BannerApi } from "@/utils/api/banner";
 
 export default function PageView({
   fitBanner,
@@ -20,7 +20,6 @@ export default function PageView({
   hero1Banner: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
   hero2Banner: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
 }) {
-  const router = useRouter();
 
   const [fitBanners, setFitBanners] = useState(fitBanner.map(b => b.file.href));
   const [fullBanners, setFullBanners] = useState(fullBanner.map(b => b.file.href));
@@ -30,10 +29,17 @@ export default function PageView({
   const deleteBannerImage = async (bannerHref: string) => {
     const allBanners = [...fitBanner, ...fullBanner, ...hero1Banner, ...hero2Banner];
     const banner = allBanners.find(b => b.file.href === bannerHref);
+  
     if (!banner) return alert("O'chirishda xatolik yuz berdi.");
-    await deleteBanner(banner.id);
-    router.refresh();
+  
+    try {
+      await deleteBanner(banner.id);
+    } catch (error) {
+      console.error("Bannerni o‘chirishda xatolik:", error);
+      alert("Bannerni o‘chirishda xatolik yuz berdi.");
+    }
   };
+  
 
   const bannerConfigs = [
     { title: "horizontal", type: "full", list: fullBanners, setList: setFullBanners },
@@ -48,7 +54,11 @@ export default function PageView({
         {bannerConfigs.map(({ title, type, list, setList }) => (
           <div
             key={type}
-            className={cn(`h-full w-full rounded-lg bg-white p-5 shadow-lg`, type === "full" ? "" : "max-w-[310px]", type.includes("hero") ? "max-w-[410px]" : "" )}
+            className={
+              cn(`h-full w-full rounded-lg bg-white p-5 shadow-lg`, 
+              type === "full" ? "" : "max-w-[310px]", 
+              type.includes("hero") ? "max-w-[410px]" : "")
+            }
           >
             <PageViewHeader type={title as "link" | "horizontal" | "hero-1" | "hero-2"} />
             <div className="mt-10 flex flex-col gap-5">

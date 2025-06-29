@@ -74,10 +74,10 @@ const TopNews = ({
                     heroAds.hero1?.length ?
                     heroAds.hero1.map((ad, key) => (
                       <SwiperSlide key={key}>
-                        <Link key={key} href={ad?.file?.href || "/"} target="_blank" rel="noopener noreferrer">
+                        <Link key={key} href={ad.url || "/"} target="_blank" rel="noopener noreferrer">
                           <Image
                             src={ad?.file?.href || "/img/default-image.png"}
-                            alt="Ad"
+                            alt={ad.file.name}
                             width={1080}
                             height={1080}
                             className="size-full object-cover"
@@ -110,10 +110,10 @@ const TopNews = ({
                     heroAds.hero2?.length ?
                     heroAds.hero2.map((ad, key) => (
                       <SwiperSlide key={key}>
-                        <Link key={key} href={ad?.file?.href || "/"} target="_blank" rel="noopener noreferrer">
+                        <Link key={key} href={ad.url || "/"} target="_blank" rel="noopener noreferrer">
                           <Image
                             src={ad?.file?.href || "/img/banners/banner_uz_m.png"}
-                            alt="Ad"
+                            alt={ad.file.name}
                             width={1080}
                             height={1080}
                             className="size-full object-cover"

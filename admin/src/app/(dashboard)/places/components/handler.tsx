@@ -1,8 +1,6 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { extname } from "path";
-import { v4 as uuidv4 } from "uuid";
 import {
   Dialog,
   DialogContent,
@@ -36,12 +34,15 @@ export default function InteractiveAreaHandler({
   placeData,
   placeId,
   interactiveAreas,
+  // deletePlace
 }: {
   placeId: number;
   placeData: AppType["~Routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"][number];
   interactiveAreas?: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"];
+  // deletePlace?: (id: number) => Promise<void>;
 }) {
   const router = useRouter();
+  
   const {
     watch,
     handleSubmit,
@@ -54,6 +55,17 @@ export default function InteractiveAreaHandler({
       placeId: placeData.id,
     },
   });
+
+  const deletePlace = async (id: number) => {
+    try {
+      const response = await PlaceApi.delete(id, "/dashboard/places");
+      handleInfo("Hudud muvaffaqiyatli o'chirildi.");
+      router.refresh();
+    } catch (error) {
+      console.error("Hudud o'chirishda xatolik:", error);
+      handleInfo("Hudud o'chirishda xatolik yuz berdi. Iltimos keyinroq urunib ko'ring.");
+    }
+  };
 
   const [showSaveButton, setShowSaveButton] = useState(false);
   const [isOpen, setOpen] = useState(false);
@@ -106,9 +118,9 @@ export default function InteractiveAreaHandler({
 
   return (
     <>
-      <section>
+      <section className="min-h-[100vh]">
         <div className="grid gap-3">
-          <Card className="sticky top-0 z-20 rounded-none border-none py-2 shadow-none">
+          <Card className="sticky w-full top-0 z-20 rounded-none border-none py-2 shadow-none">
             <CardHeader className="flex flex-row items-center space-y-0 p-3 py-2">
               <CardTitle className="text-lg font-semibold capitalize">
                 {placeData.name}
@@ -280,19 +292,29 @@ export default function InteractiveAreaHandler({
               </div>
             </CardHeader>
           </Card>
-          <div className="container px-5">
-            {interactiveAreas ? (
+          <div className="px-5 ">
+            {interactiveAreas?.length ? (
               <div className="grid gap-3 p-5 md:grid-cols-3">
                 {React.Children.toArray(
                   interactiveAreas.map((area, key) => (
-                    <Card key={key}>
+                    <Card key={key} className="relative p-0 overflow-hidden">
+                      <button 
+                        type="button" 
+                        className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-sm"
+                        onClick={async () => {
+                          if (deletePlace) {
+                            await deletePlace(area.id);
+                            handleInfo("Hudud muvaffaqiyatli o'chirildi.");
+                          }
+                        }}
+                      >o'chirish</button>
                       <CardContent className="p-0">
                         <Image
                           src={area.chairmanPhoto}
                           width={1080}
                           height={1080}
                           className="aspect-square object-cover"
-                          alt=""
+                          alt={area.chairmanFullName || "Chairman Photo"}
                         />
                         <div className="grid gap-2 p-5">
                           {React.Children.toArray(
@@ -335,7 +357,7 @@ export default function InteractiveAreaHandler({
                 )}
               </div>
             ) : (
-              <p className="py-20 text-center">Hech qanday hudud topilmadi.</p>
+              <p className="h-screen grid place-content-center">Hech qanday hudud topilmadi.</p>
             )}
           </div>
         </div>

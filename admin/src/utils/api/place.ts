@@ -29,7 +29,7 @@ export const PlaceApi = {
       if (data.workingTime) formData.append("workingTime", data.workingTime);
 
       // API so'rovni yuborish
-      const response = await fetch(
+      const response = await (globalThis.fetch || window.fetch)(
         `${process.env.NEXT_PUBLIC_API_URL}/api/rest/places/${placeId}/interactive_areas`,
         {
           method: "POST",
@@ -72,4 +72,34 @@ export const PlaceApi = {
       throw error;
     }
   },
+
+  delete: async (
+    areaId: number,
+    redirectTo: string,
+    fetchOptions?: Omit<RequestInit, "headers" | "method">,
+  ) => {  
+    const token = await getSessionData();
+
+    if (!token) {
+      throw new Error("Autentifikatsiya tokeni topilmadi");
+    }
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/rest/places/interactive_areas/${areaId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`Interaktiv hududni o'chirishda xatolik: ${response.status}`);
+    }
+
+    if (redirectTo) {
+      window.location.href = redirectTo;
+    }
+  }
 };

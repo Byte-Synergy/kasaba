@@ -64,7 +64,7 @@ export default function PageView({
               data-state={row.getIsSelected() && "selected"}
               className="cursor-pointer border-slate-100"
               onClick={() =>
-                router.push(`/places//${row.original.id}`)
+                router.push(`/places/${row.original.id}`)
               }
             >
               {row.getVisibleCells().map((cell) => (

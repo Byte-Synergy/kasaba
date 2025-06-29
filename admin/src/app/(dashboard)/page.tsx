@@ -1,11 +1,8 @@
-// 'use client'
 import Link from "@/components/link";
 import { cn } from "@/libs/utils";
 import React from "react";
 import NewsCard from "./news/components/card";
 import eden from "@/libs/eden";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 
 export default async function Page() {
   const [

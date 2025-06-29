@@ -22,7 +22,8 @@ export default async function Page({
     }
   }
 
-  if (!place.data) return;
+  if (!place.data) return <p>Hech qanday ma'lumot topilmadi</p>;
+
   return (
     <InteractiveAreaHandler
       placeId={+areaId}
@@ -33,6 +34,7 @@ export default async function Page({
         title: place.data.title,
         areasCount: place.data.areasCount,
       }}
+      // deletePlace={deletePlace}
     />
   );
 }

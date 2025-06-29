@@ -6,6 +6,9 @@ import { ThemeProvider } from "next-themes";
 import { cn } from "@heroui/theme";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Head from "next/head";
+import { useEffect } from "react";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,6 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Telegram WebApp SDK */}
+        <Script src="/telegram-web-app.js" strategy="beforeInteractive" />
+      </head>
       <body
         className={cn(
           "min-h-screen overflow-hidden bg-slate-100 antialiased dark:bg-slate-900",

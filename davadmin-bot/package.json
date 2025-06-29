@@ -1,0 +1,30 @@
+{
+  "name": "davadmin-bot",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "bun run index.ts",
+    "dev": "nodemon --watch index.ts --exec bun run index.ts"
+  },
+  "version": "1.0.0",
+  "description": "A Telegram bot for managing DAVAdmin",
+  "author": "drCoder",
+  "license": "MIT",
+  "main": "index.ts",
+  "bin": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "dotenv": "^17.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.3",
+    "axios": "^1.10.0",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "telegraf": "^4.16.3"
+  }
+}

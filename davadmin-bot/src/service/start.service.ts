@@ -14,9 +14,6 @@ export async function Login(username: string, password: string): Promise<AuthRes
       throw new Error("API_URL is not defined in the environment variables");
     }
 
-    console.log("usernmae: ", username)
-    console.log("password: ", password)
-
     const response = await axios.post(`${process.env.API_URL}/api/rest/auth/signIn`, {
       username,
       password,

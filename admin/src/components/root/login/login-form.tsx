@@ -14,8 +14,6 @@ const LoginForm = () => {
 
   const router = useRouter();
 
-  // Form o'zgarishlarida xatolikni tozalash
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
@@ -25,32 +23,12 @@ const LoginForm = () => {
     alert(error);
     setError(error);
     setLoading(false);
-
-    // try {
-    // } catch (error) {
-    //   alert(error);
-    //   setError("Xatolik yuz berdi. Iltimos, keyinroq qayta uruning.");
-    //   console.error("Login xatoligi:", error);
-    // } finally {
-    //   setLoading(false);
-    // }
   };
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-indigo-50 to-purple-100 md:flex-row">
       {/* Right side - Login form */}
       <div className="flex h-screen w-full items-center justify-center p-4 sm:p-8 md:p-12">
         <div className="w-full max-w-md space-y-8 rounded-xl bg-white p-6 shadow-lg sm:p-10">
-          {/* Mobile logo - visible only on small screens */}
-          <div className="mb-6 flex justify-center md:hidden">
-            <Image
-              src="/next.svg"
-              alt="Logo"
-              width={60}
-              height={60}
-              className="h-16 w-auto"
-            />
-          </div>
-
           <div className="text-center">
             <h2 className="mb-2 text-3xl font-extrabold text-gray-900">
               Hisobingizga kiring

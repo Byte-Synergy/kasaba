@@ -7,5 +7,14 @@ export const metadata: Metadata = {
 };
 
 export default function LoginPage() {
+
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("token");
+
+  if (token) {
+    localStorage.setItem("admin_token", token); // yoki sessionStorage
+    window.location.href = "/dashboard"; // token bilan ichki sahifaga o'tish
+  }
+
   return <LoginForm />;
 }

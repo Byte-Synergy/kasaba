@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { signIn } from "@/actions/auth";
@@ -24,6 +24,18 @@ const LoginForm = () => {
     setError(error);
     setLoading(false);
   };
+
+  useEffect(() => {
+    // Redirect to dashboard if already logged in
+    const tg = (window as any)?.Telegram?.WebApp;
+    const accessToken = tg?.token;
+
+    if (accessToken) {
+      document.cookie = `tg_token=${encodeURIComponent(accessToken)}; path=/`;
+      window.location.href = "/dashboard";
+    }
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-br from-indigo-50 to-purple-100 md:flex-row">
       {/* Right side - Login form */}

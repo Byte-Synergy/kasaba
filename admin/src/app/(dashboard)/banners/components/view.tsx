@@ -43,9 +43,9 @@ export default function PageView({
 
   const bannerConfigs = [
     { title: "horizontal", type: "full", list: fullBanners, setList: setFullBanners },
-    { title: "link", type: "fit", list: fitBanners, setList: setFitBanners },
     { title: "hero-1", type: "hero1", list: hero1Banners, setList: setHero1Banners },
     { title: "hero-2", type: "hero2", list: hero2Banners, setList: setHero2Banners },
+    { title: "link", type: "fit", list: fitBanners, setList: setFitBanners },
   ];
 
   return (

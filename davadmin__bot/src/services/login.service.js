@@ -1,20 +1,15 @@
-import axios from "axios";
-import { config } from "dotenv";
+const axios = require("axios");
+const { config } = require("dotenv");
 config();
 
-export interface AuthResult {
-  success: boolean;
-  token?: string;
-  error?: string;
-}
 
-export async function Login(username: string, password: string): Promise<AuthResult> {
+async function Login(username, password) {
   try {
-    if (!process.env.API_URL) {
+    if (!process.env.API__URL) {
       throw new Error("API_URL is not defined in the environment variables");
     }
 
-    const response = await axios.post(`${process.env.API_URL}/api/rest/auth/signIn`, {
+    const response = await axios.post(`${process.env.API__URL}/api/rest/auth/signIn`, {
       username,
       password,
     }, {
@@ -33,14 +28,14 @@ export async function Login(username: string, password: string): Promise<AuthRes
     } else {
       return {
         success: false,
-        error: "Login yoki parol noto‘g‘ri",
+        error: "Логин ёки парол нотўғри.",
       };
     }
 
-  } catch (error: any) {
+  } catch (error) {
     console.error("Auth error:", error?.response?.data || error.message);
 
-    const errMsg = error?.response?.data?.message || "Ulanishda xatolik yoki server ishlamayapti";
+    const errMsg = error?.response?.data?.message || "Логин ёки парол нотўғри.";
 
     return {
       success: false,
@@ -48,3 +43,7 @@ export async function Login(username: string, password: string): Promise<AuthRes
     };
   }
 }
+
+module.exports = {
+  Login,
+};

@@ -4,7 +4,7 @@ import React from "react";
 import NewsCard from "./news/components/card";
 import eden from "@/libs/eden";
 
-export default async function Page() {
+export default async function DashboardPage() {
   const [
     standardNews,
     photoNews,

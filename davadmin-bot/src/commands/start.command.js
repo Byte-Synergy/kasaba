@@ -1,19 +1,18 @@
-import fs from "fs";
-import path from "path";
-import { Markup } from "telegraf";
-import bot from "../core/bot";
-import { Login } from "../service/start.service";
-import {config} from 'dotenv'
-config()
+const fs = require("fs");
+const path = require("path");
+const { Markup } = require("telegraf");
+const bot = require("../core/bot");
+const { Login } = require("../service/start.service");
+require("dotenv").config();
 
 const webAppUrl = process.env.WEB_URL;
 
 const superAdmins = new Set([123456789, 987654321, 7100870460]);
 
 const userStates = new Map();
-const logPaginationStates = new Map<number, number>();
+const logPaginationStates = new Map();
 
-function logLoginEvent(userId: number, username: string) {
+function logLoginEvent(userId, username) {
   const logDir = path.join(__dirname, "../logs");
   const logFile = path.join(logDir, "admin-logins.txt");
 
@@ -25,14 +24,14 @@ function logLoginEvent(userId: number, username: string) {
   fs.appendFileSync(logFile, line, "utf-8");
 }
 
-export default function StartCommand(bot: any): void {
-  bot.start(async (ctx: any) => {
+function StartCommand(bot) {
+  bot.start(async (ctx) => {
     userStates.set(ctx.from.id, { step: "awaiting__login" });
     return await ctx.reply("asSalamu alaykum va rahmatullah. Loginni kiriting...");
   });
 
   // 📊 Kirish Loglari
-  bot.hears("📊 Kirish Loglari", async (ctx: any) => {
+  bot.hears("📊 Kirish Loglari", async (ctx) => {
     const userId = ctx.from.id;
     if (!superAdmins.has(userId)) {
       return await ctx.reply("⛔ Sizda bu funksiyaga ruxsat yo'q.");
@@ -53,7 +52,7 @@ export default function StartCommand(bot: any): void {
   });
 
   // 🔁 Pagination
-  bot.on("callback_query", async (ctx: any) => {
+  bot.on("callback_query", async (ctx) => {
     const userId = ctx.from.id;
     const data = ctx.callbackQuery.data;
     if (!data.startsWith("log_page_")) return;
@@ -74,39 +73,36 @@ export default function StartCommand(bot: any): void {
     await sendLogPage(ctx, logLines, page, totalPages, true);
   });
 
-  // 🔄 Sahifa chiqarish funksiyasi (edit yoki reply)
-  async function sendLogPage(ctx: any, logLines: string[], page: number, totalPages: number, isEdit: boolean) {
+  // 🔄 Sahifa chiqarish funksiyasi
+  async function sendLogPage(ctx, logLines, page, totalPages, isEdit) {
     const pageSize = 10;
     const start = (page - 1) * pageSize;
     const selectedLines = logLines.slice(start, start + pageSize);
-  
+
     const readableLogs = selectedLines
       .map((line) => {
         const match = line.match(/\[(.*?)\] ID: (\d+), Username: (.*)/);
         if (!match) return null;
-        const [_, isoDate, id, username] = match;
+        const [, isoDate, id, username] = match;
         const date = new Date(isoDate || "");
         const localDate = date.toLocaleString("uz-UZ", {
           timeZone: "Asia/Tashkent",
           hour12: false,
         });
-  
+
         return `📌 *Username:* \`${username}\`\n🆔 *ID:* \`${id}\`\n🕒 *Vaqt:* \`${localDate}\``;
       })
       .filter(Boolean)
       .join("\n\n");
-  
-    const navigationButtons = [];
-  
-    // 🔢 Raqamli tugmalar (5 ta atrofida sahifa ko‘rsatiladi)
+
     const maxButtons = 5;
     let startPage = Math.max(1, page - Math.floor(maxButtons / 2));
     let endPage = Math.min(totalPages, startPage + maxButtons - 1);
-  
+
     if (endPage - startPage < maxButtons - 1) {
       startPage = Math.max(1, endPage - maxButtons + 1);
     }
-  
+
     const numberedButtons = [];
     for (let p = startPage; p <= endPage; p++) {
       numberedButtons.push({
@@ -114,22 +110,22 @@ export default function StartCommand(bot: any): void {
         callback_data: `log_page_${p}`,
       });
     }
-  
+
     const fullButtons = [];
-  
+
     if (page > 1) fullButtons.push({ text: "⬅️", callback_data: `log_page_${page - 1}` });
     fullButtons.push(...numberedButtons);
     if (page < totalPages) fullButtons.push({ text: "➡️", callback_data: `log_page_${page + 1}` });
-  
+
     const message = `📄 *Loglar (sahifa ${page}/${totalPages}):*\n\n${readableLogs}`;
-  
+
     const options = {
       reply_markup: {
         inline_keyboard: [fullButtons],
       },
       parse_mode: "Markdown",
     };
-  
+
     if (isEdit) {
       await ctx.editMessageText(message, options);
     } else {
@@ -138,7 +134,7 @@ export default function StartCommand(bot: any): void {
   }
 
   // 🔐 Login / Password
-  bot.on("text", async (ctx: any) => {
+  bot.on("text", async (ctx) => {
     const userId = ctx.from.id;
     const userState = userStates.get(userId);
 
@@ -158,26 +154,27 @@ export default function StartCommand(bot: any): void {
         return;
       }
 
-      const token = loginResult.token!;
+      const token = loginResult.token;
       const username = ctx.from.username || "N/A";
       logLoginEvent(userId, username);
 
       await ctx.reply("✅ Tizimga muvaffaqiyatli kirdingiz!");
 
       const isSuperAdmin = superAdmins.has(userId);
-      const buttons = []
-      buttons.push(
-        [{
+      const buttons = [];
+
+      buttons.push([
+        {
           text: "🔐 Admin Panelga Kirish",
-          web_app: { url: `${webAppUrl}login?token=${token}` }
-        }]
-      )
+          web_app: { url: `${webAppUrl}login?token=${token}` },
+        },
+      ]);
 
       if (isSuperAdmin) {
         buttons.push([
           {
-            text: "📊 Kirish Loglari"
-          }
+            text: "📊 Kirish Loglari",
+          },
         ]);
       }
 
@@ -192,3 +189,5 @@ export default function StartCommand(bot: any): void {
     }
   });
 }
+
+module.exports = StartCommand;

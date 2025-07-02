@@ -66,7 +66,13 @@ function StartCommand(bot) {
     const data = ctx.callbackQuery.data;
 
     if (data === "restart_bot") {
-      return await bot.handleUpdate({ message: { ...ctx.update.callback_query.message, text: "/start", from: ctx.from } });
+      return await bot.handleUpdate({
+        message: {
+          ...ctx.update.callback_query.message,
+          text: "/start",
+          from: ctx.from,
+        },
+      });
     }
 
     if (!data.startsWith("log_page_")) return;
@@ -75,7 +81,8 @@ function StartCommand(bot) {
     logPaginationStates.set(userId, page);
 
     const logPath = path.join(__dirname, "../logs/admin-logins.txt");
-    if (!fs.existsSync(logPath)) return await ctx.reply("❌ Лог файли топилмади.");
+    if (!fs.existsSync(logPath))
+      return await ctx.reply("❌ Лог файли топилмади.");
     const logs = fs.readFileSync(logPath, "utf-8");
     const logLines = logs.trim().split("\n").reverse();
     const totalPages = Math.ceil(logLines.length / 10);
@@ -121,9 +128,11 @@ function StartCommand(bot) {
     }
 
     const fullButtons = [];
-    if (page > 1) fullButtons.push({ text: "⬅️", callback_data: `log_page_${page - 1}` });
+    if (page > 1)
+      fullButtons.push({ text: "⬅️", callback_data: `log_page_${page - 1}` });
     fullButtons.push(...numberedButtons);
-    if (page < totalPages) fullButtons.push({ text: "➡️", callback_data: `log_page_${page + 1}` });
+    if (page < totalPages)
+      fullButtons.push({ text: "➡️", callback_data: `log_page_${page + 1}` });
 
     const message = `📄 *Logлар (саҳифа ${page}/${totalPages}):*\n\n${readableLogs}`;
     const options = {
@@ -139,7 +148,7 @@ function StartCommand(bot) {
   }
 
   // 🚪 Logout
-  bot.hears("🚪 Чиқиш", async (ctx) => {
+  bot.hears("🚪 Tизимдан чиқиш", async (ctx) => {
     const userId = ctx.from.id;
     loggedInUsers.delete(userId);
     userStates.delete(userId);
@@ -184,7 +193,9 @@ function StartCommand(bot) {
 
       if (!loginResult.success) {
         await ctx.reply(
-          `❌ *Киришда хатолик:* ${loginResult.error || "Логин ёки парол нотўғри. Қайта киритинг."}`,
+          `❌ *Киришда хатолик:* ${
+            loginResult.error || "Логин ёки парол нотўғри. Қайта киритинг."
+          }`,
           { parse_mode: "Markdown" }
         );
 
@@ -209,7 +220,7 @@ function StartCommand(bot) {
       buttons.push([
         {
           text: "🔐 Admin Panelga Kirish",
-          web_app: { url: `${webAppUrl}login?token=${token}` },
+          web_app: { url: `${webAppUrl}` },
         },
       ]);
 

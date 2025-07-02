@@ -26,10 +26,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
         {/* Telegram WebApp SDK */}
         <Script src="/telegram-web-app.js" strategy="beforeInteractive" />
-      </head>
+      </Head>
       <body
         className={cn(
           "min-h-screen overflow-hidden bg-slate-100 antialiased dark:bg-slate-900",

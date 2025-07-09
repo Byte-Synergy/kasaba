@@ -1,4 +1,4 @@
-# Kasaba Client
+# Kasaba 
 
 ## Overview
 
@@ -11,7 +11,7 @@ Ensure both files are present before starting the application.
 
 ### 🔐 License Activation
 
-To run the backend, two additional files are required for license validation:
+To run the backend, one additional file are required for license validation:
 
 - `server/src/license/license.json`
 

@@ -9,7 +9,7 @@ node_modules
 backups
 
 # License
-server/license
+license
 
 # Local env files
 .env

@@ -21,6 +21,8 @@ export async function signIn(
       fetch,
     },
   );
+  console.log(process.env.NEXT_PUBLIC_API_URL);
+  console.log(error);
 
   if (error) return `Login muvaffaqiyatsiz. Iltimos, qayta uruning.`;
 

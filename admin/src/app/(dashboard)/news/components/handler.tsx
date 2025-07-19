@@ -257,10 +257,7 @@ export default function NewsHandler({
           ),
           files,
         });
-      }
-
-      // update news
-      if (mode === "update")
+      } else if (mode === "update")
         console.log("update", data);
         
         if (path) {

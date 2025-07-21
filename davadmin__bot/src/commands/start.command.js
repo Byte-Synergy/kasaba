@@ -25,9 +25,9 @@ function StartCommand(bot) {
   // /start komandasi
   bot.start(async (ctx) => {
     const userId = ctx.from.id;
-    if (loggedInUsers.has(userId)) {
-      return await ctx.reply("✅ Сиз тизимга аввал киргансиз.");
-    }
+    // if (loggedInUsers.has(userId)) {
+    //   return await ctx.reply("✅ Сиз тизимга аввал киргансиз.");
+    // }
 
     userStates.set(userId, { step: "awaiting__login" });
 
@@ -210,7 +210,18 @@ function StartCommand(bot) {
       const token = loginResult.token;
       const username = ctx.from.username || null;
       logLoginEvent(userId, username);
-      loggedInUsers.add(userId);
+
+      // Yangi kod: Telegram user ID va tokenni backendga yuborish
+      try {
+        await fetch("https://davadmin.kasaba.uz/api/auth/telegram", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ telegramUserId: userId, token }),
+        });
+      } catch (e) {
+        // Xatolik bo'lsa, logga yozing
+        console.error("Sessiyani backendga yuborishda xatolik:", e);
+      }
 
       await ctx.reply("✅ Тизимга муваффақиятли кирдингиз!");
 
@@ -220,7 +231,7 @@ function StartCommand(bot) {
       buttons.push([
         {
           text: "🔐 Admin Panelga Kirish",
-          web_app: { url: `${webAppUrl}` },
+          web_app: { url: "https://davadmin.kasaba.uz" },
         },
       ]);
 

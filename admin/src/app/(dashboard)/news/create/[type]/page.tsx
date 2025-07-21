@@ -20,7 +20,6 @@ export default async function Page({
         mode="create"
         title="Yangilik qo'shish"
         type={type}
-        path={type}
       />
     </>
   );

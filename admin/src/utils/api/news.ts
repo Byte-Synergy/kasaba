@@ -36,7 +36,6 @@ export const NewsApi = {
   }): Promise<any> => {
     try {
       const token = await getSessionData();
-      console.log(newsData);
 
       if (!token) {
         throw new Error("Autentifikatsiya tokeni topilmadi");
@@ -45,16 +44,18 @@ export const NewsApi = {
       // FormData obyektini yaratish
       const formData = new FormData();
 
-      
       if (newsData.type) formData.append("type", newsData.type);
-      
-      if (newsData.title) formData.append("title", newsData.title);
-      
-      if (newsData.description) formData.append("description", newsData.description);
-      
-      if (newsData.languageCode)  formData.append("languageCode", newsData.languageCode);
 
-      if(newsData.categories) formData.append("tags", JSON.stringify(newsData.categories || []));
+      if (newsData.title) formData.append("title", newsData.title);
+
+      if (newsData.description)
+        formData.append("description", newsData.description);
+
+      if (newsData.languageCode)
+        formData.append("languageCode", newsData.languageCode);
+
+      if (newsData.categories)
+        formData.append("tags", JSON.stringify(newsData.categories || []));
 
       if (newsData.isTop) formData.append("isTop", String(newsData.isTop));
 

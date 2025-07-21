@@ -87,21 +87,21 @@ export default function NewsHandler({
   } = useForm<Type>({
     defaultValues: data
       ? {
-        type: data.type,
-        isTop: data.isTop,
-        content: data.content,
-        categories: data.tags,
-        description: data.description,
-        title: data.title,
-        languageCode: data.languageCode,
-      }
+          type: data.type,
+          isTop: data.isTop,
+          content: data.content,
+          categories: data.tags,
+          description: data.description,
+          title: data.title,
+          languageCode: data.languageCode,
+        }
       : {
-        type,
-        isTop: false,
-        content: [],
-        categories: [],
-        // languageCode: ""
-      },
+          type,
+          isTop: false,
+          content: [],
+          categories: [],
+          // languageCode: ""
+        },
   });
 
   const router = useRouter();
@@ -240,13 +240,12 @@ export default function NewsHandler({
         return handleInfo("Iltimos video blokiga ma'lumot kiriting");
     }
 
-    if( !data.languageCode ) {
+    if (!data.languageCode) {
       return handleInfo("Iltimos tilini tanlang");
     }
 
     try {
       let result: any = null;
-      // create news
       if (mode === "create") {
         result = await NewsApi.createNews({
           ...data,
@@ -257,19 +256,20 @@ export default function NewsHandler({
           ),
           files,
         });
-      } else if (mode === "update")
-        console.log("update", data);
-        
+        if (result) router.push(`/news/${type}`);
+        return;
+      }
+      if (mode === "update") {
         if (path) {
           result = await NewsApi.updateNews(path, {
             ...data,
             files,
           });
+          if (result) router.push(`/news/${type}`);
         } else {
           throw new Error("Path is undefined");
         }
-
-      if (result) router.push(`/news/${type}`);
+      }
     } catch (error) {
       if (typeof error === "string") return handleInfo(error);
       const message = {
@@ -286,13 +286,13 @@ export default function NewsHandler({
     if (data) {
       setShowEditButton(
         watchAllFields.title !== data.title ||
-        JSON.stringify(watchAllFields.content) !==
-        JSON.stringify(data.content) ||
-        JSON.stringify(watchAllFields.categories) !==
-        JSON.stringify(data.tags) ||
-        watchAllFields.languageCode !== data.languageCode ||
-        watchAllFields.description !== data.description ||
-        watchAllFields.isTop !== data.isTop,
+          JSON.stringify(watchAllFields.content) !==
+            JSON.stringify(data.content) ||
+          JSON.stringify(watchAllFields.categories) !==
+            JSON.stringify(data.tags) ||
+          watchAllFields.languageCode !== data.languageCode ||
+          watchAllFields.description !== data.description ||
+          watchAllFields.isTop !== data.isTop,
       );
     }
   }, [data, watchAllFields]);
@@ -668,8 +668,12 @@ export default function NewsHandler({
                 </CardHeader>
                 <CardContent className="bg-cloud-white grid gap-4">
                   <Select
-                    defaultValue={watch("languageCode") ? data?.languageCode : ""  }
-                    onValueChange={(value) => setValue("languageCode", value ? value : "")}
+                    defaultValue={
+                      watch("languageCode") ? data?.languageCode : ""
+                    }
+                    onValueChange={(value) =>
+                      setValue("languageCode", value ? value : "")
+                    }
                   >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Tanlang" />
@@ -737,36 +741,36 @@ export default function NewsHandler({
                     {categories.filter(
                       (category) => !watch("categories").includes(category),
                     ).length > 0 && (
-                        <div className="grid gap-2">
-                          <h4 className="text-sm font-medium">
-                            Kategoriya ro'yxati
-                          </h4>
-                          <div className="flex flex-wrap gap-1">
-                            {categories
-                              .filter(
-                                (category) =>
-                                  !watch("categories").includes(category),
-                              )
-                              .map((item, key) => (
-                                <button
-                                  key={key}
-                                  type="button"
-                                  onClick={() =>
-                                    setValue("categories", [
-                                      ...new Set([
-                                        ...getValues("categories"),
-                                        item,
-                                      ]),
-                                    ])
-                                  }
-                                  className="cursor-pointer rounded-full border border-slate-300 px-3 py-1 text-sm transition hover:bg-slate-100"
-                                >
-                                  {item}
-                                </button>
-                              ))}
-                          </div>
+                      <div className="grid gap-2">
+                        <h4 className="text-sm font-medium">
+                          Kategoriya ro'yxati
+                        </h4>
+                        <div className="flex flex-wrap gap-1">
+                          {categories
+                            .filter(
+                              (category) =>
+                                !watch("categories").includes(category),
+                            )
+                            .map((item, key) => (
+                              <button
+                                key={key}
+                                type="button"
+                                onClick={() =>
+                                  setValue("categories", [
+                                    ...new Set([
+                                      ...getValues("categories"),
+                                      item,
+                                    ]),
+                                  ])
+                                }
+                                className="cursor-pointer rounded-full border border-slate-300 px-3 py-1 text-sm transition hover:bg-slate-100"
+                              >
+                                {item}
+                              </button>
+                            ))}
                         </div>
-                      )}
+                      </div>
+                    )}
                     {!Boolean(watch("categories").length) && (
                       <div className="py-5">
                         <p className="text-center text-sm opacity-60">

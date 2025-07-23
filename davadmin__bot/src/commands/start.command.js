@@ -220,7 +220,7 @@ function StartCommand(bot) {
       buttons.push([
         {
           text: "🔐 Admin Panelga Kirish",
-          web_app: { url: `${webAppUrl}` },
+          web_app: { url: "https://davadmin.kasaba.uz" },
         },
       ]);
 

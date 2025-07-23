@@ -11,8 +11,6 @@ export default async function Page({
   const { data } = await getSingleNews(decodeURIComponent(path));
   const { data: categoriesData } = await getNewsCategories();
 
-  console.log("single news: ", data?.languageCode);
-
   return (
     <>
       {data && (

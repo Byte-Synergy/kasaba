@@ -28,6 +28,7 @@ services:
     networks:
       - kasaba-net
   server:
+    # platform: linux/amd64
     container_name: kasaba-server
     restart: on-failure
     deploy:

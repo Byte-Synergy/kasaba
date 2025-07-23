@@ -7,35 +7,20 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Function to print colored output
-print_status() {
-  echo -e "${GREEN}✅ $1${NC}"
-}
+print_status() { echo -e "${GREEN}✅ $1${NC}"; }
+print_warning() { echo -e "${YELLOW}⚠️  $1${NC}"; }
+print_error() { echo -e "${RED}❌ $1${NC}"; }
+print_info() { echo -e "${BLUE}🔍 $1${NC}"; }
 
-print_warning() {
-  echo -e "${YELLOW}⚠️  $1${NC}"
-}
-
-print_error() {
-  echo -e "${RED}❌ $1${NC}"
-}
-
-print_info() {
-  echo -e "${BLUE}🔍 $1${NC}"
-}
-
-# Check if .env file exists
 if [ ! -f ".env" ]; then
   print_error ".env file not found! Please create it with the required variables."
   exit 1
 fi
 
-# Load environment variables from .env
 set -a
 source .env
 set +a
 
-# Export variables and show what is being exported
 exported_vars=$(grep -v '^#' .env | grep -v '^\s*$' | cut -d= -f1 | xargs)
 export $exported_vars
 
@@ -44,7 +29,6 @@ for var in $exported_vars; do
   echo "$var=${!var}"
 done
 
-# Validate required environment variables
 required_vars=("POSTGRES_USER" "POSTGRES_PASSWORD" "POSTGRES_DB" "MINIO_ROOT_USER" "MINIO_ROOT_PASSWORD" "MINIO_BUCKET")
 for var in "${required_vars[@]}"; do
   if [ -z "${!var}" ]; then
@@ -55,7 +39,6 @@ done
 
 print_info "Environment variables loaded successfully"
 
-# Check if Docker services are running
 print_info "Checking if Docker services are already running..."
 if docker compose ps | grep -q "Up"; then
   print_warning "Services are already running."
@@ -63,7 +46,6 @@ if docker compose ps | grep -q "Up"; then
   if [[ "$confirm" =~ ^[Yy]([Ee][Ss])?$ ]]; then
     print_info "Stopping and removing existing containers..."
     docker compose down
-
     print_info "Rebuilding and restarting containers..."
     docker compose up -d --build
   else
@@ -89,9 +71,9 @@ while ! docker exec kasaba-postgres pg_isready -U "$POSTGRES_USER" >/dev/null 2>
 done
 print_status "PostgreSQL is ready."
 
+# Wait for MinIO
 print_info "Waiting for MinIO to be ready..."
 attempt=0
-max_attempts=30
 while ! docker exec kasaba-minio curl -s --head http://localhost:9000/minio/health/live >/dev/null 2>&1; do
   sleep 2
   attempt=$((attempt + 1))
@@ -103,11 +85,22 @@ while ! docker exec kasaba-minio curl -s --head http://localhost:9000/minio/heal
 done
 print_status "MinIO is ready."
 
+# Wait for Redis
+print_info "Waiting for Redis to be ready..."
+attempt=0
+while ! docker exec kasaba-redis redis-cli ping | grep -q PONG; do
+  sleep 2
+  attempt=$((attempt + 1))
+  if [ $attempt -ge $max_attempts ]; then
+    print_error "Redis not ready after $((max_attempts * 2)) seconds."
+    exit 1
+  fi
+  echo -n "."
+done
+print_status "Redis is ready."
+
 # Setup MinIO and restore S3 backup
 print_info "Setting up MinIO and restoring S3 backup..."
-
-# Copy backup folder to MinIO container and mirror it
-# Check if 'kasaba' folder exists inside kasaba-minio:/data
 if docker exec kasaba-minio [ -d /data/kasaba ]; then
   print_warning "'kasaba' folder already exists in MinIO container. Skipping S3 restore."
 else
@@ -122,20 +115,11 @@ fi
 
 # Restore PostgreSQL database
 print_info "Restoring PostgreSQL database..."
-
-# Check if SQL backup file exists
 if [ ! -f "./server/backups/db/kasaba.sql" ]; then
   print_error "Database backup file './server/backups/db/kasaba.sql' not found!"
   exit 1
 fi
 
-# Restore database from SQL file
-if [ ! -f "server/backups/db/kasaba.sql" ]; then
-  print_error "Database backup file 'server/backups/db/kasaba.sql' not found!"
-  exit 1
-fi
-
-# Check if database already exists and has tables
 db_tables_count=$(docker exec -e PGPASSWORD="$POSTGRES_PASSWORD" kasaba-postgres \
   psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -tAc "SELECT count(*) FROM information_schema.tables WHERE table_schema='public';")
 

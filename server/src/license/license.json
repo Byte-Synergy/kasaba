@@ -1,0 +1,8 @@
+{
+  "payload": {
+    "customerId": "kasaba-client",
+    "issuedAt": 1752215777312,
+    "expiresAt": 1761836400000
+  },
+  "signature": "FgONF2BxFmG43qtOxobZ0rPoX5jxjwdvf3a25PaQnQeRUxkV2UY8GSMK24NtAN6F7pA6NwvV+xFk5qlcvt6DPsOp7S4zjgAf/ylJcD0WNbC/aGMXl72Z0r040wPYFQDFgOD0cHj8G53Lx3dJ803npzU23beSXyzP4dkZB8QoTkpvMSGRNHz+6NYdPGhDDp0CRq5zr/uabwC0eq5F8mI0XzlftbxU24eBOMH9fIfxUiEhPPUuMP8qMvZ/VZG5qwtqWYkE+vunrM5pAk4CQuM2s/u0/c1D4fsYqb4GXuH5eK8xbYQ38bHlK2rT3rSNA+F1T/5MdZPfSiqICZNzngKTlA=="
+}

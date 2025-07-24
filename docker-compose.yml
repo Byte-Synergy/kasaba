@@ -28,7 +28,6 @@ services:
     networks:
       - kasaba-net
   server:
-    # platform: linux/amd64
     container_name: kasaba-server
     restart: on-failure
     deploy:
@@ -56,6 +55,7 @@ services:
       - MINIO_BUCKET=$MINIO_BUCKET
     build:
       context: server
+    platform: linux/arm64
     networks:
       - kasaba-net
   minio:

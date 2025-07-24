@@ -1,4 +1,4 @@
-FROM oven/bun:1.2.18
+FROM oven/bun:1.2.18 AS base
 
 RUN apt-get update && apt-get install -y openssl
 
@@ -14,5 +14,4 @@ COPY ./src/license ./src/license
 RUN addgroup --system --gid 1001 new_group
 RUN adduser --system --uid 1001 new_user
 USER new_user
-
 CMD bun run ./src/seed.js && ./src/server

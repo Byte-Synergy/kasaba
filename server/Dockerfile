@@ -4,15 +4,20 @@ RUN apt-get update && apt-get install -y openssl
 
 WORKDIR /app
 
-COPY ./src/seed.js ./src/seed.js
-COPY ./src/seed.js.map ./src/seed.js.map
-COPY ./src/generated ./src/generated
-COPY ./src/server-linux-arm ./src/server
-COPY ./src/license ./src/license
+COPY ./prisma ./prisma
+COPY ./src ./src
+COPY ./package.json .
+COPY ./start.sh .
 
+RUN bun i
 
 RUN addgroup --system --gid 1001 new_group
 RUN adduser --system --uid 1001 new_user
+
+RUN chmod +x ./start.sh
+
+RUN chown -R new_user:new_group /app
+
 USER new_user
 
-CMD bun run ./src/seed.js && ./src/server
+CMD bunx prisma generate --schema=./prisma && ./start.sh

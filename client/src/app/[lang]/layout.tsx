@@ -11,10 +11,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { cn } from "@/libs/utils";
 import AOSProviderDynamic from "@/providers/aos-dynamic";
 import { i18n, Locale } from "@/configs/i18n";
-import { AppType } from "@/types/server";
 import { getDictionary } from "@/utils/directory";
-import eden from "@/libs/eden";
-import Sidebar from "@/components/root/layout/sidebar";
+import { getMenuTree } from "../../action/menu";
 import { TranslationsProvider } from "@/utils/translation-provider";
 import { ModalProvider } from "@/providers/modal-provider";
 
@@ -41,15 +39,6 @@ export async function generateStaticParams() {
     lang,
   }));
 }
-export type MenuItem = {
-  id: string;
-  title: string;
-  path: string;
-  docCount?: number;
-  sub_menu: MenuItem[];
-  type?: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["type"];
-  newsType?: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["newsType"];
-};
 
 export default async function RootLayout({
   children,
@@ -61,33 +50,12 @@ export default async function RootLayout({
   const { lang } = await params;
   const t = await getDictionary(lang);
 
-  const menu = await eden.menus.tree.get({
-    query: {
-      page: 1,
-      filter: {
-        lang,
-        orderBy: "asc",
-        parentId: null,
-      },
-    },
-  });
-
-  function mapMenuTree(
-    menu: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]
-  ): MenuItem {
-    return {
-      type: menu.type,
-      id: menu.id.toString(),
-      title: menu.name,
-      path: menu.path || "",
-      newsType: menu.newsType,
-      docCount: menu.type === "document" ? menu.files?.length : undefined,
-      sub_menu: (menu.children || []).map(mapMenuTree),
-    };
-  }
+  // ✅ Menuni server action orqali olish
+  const menuResult = await getMenuTree(lang);
+  const menu = menuResult.success ? menuResult.data : [];
 
   return (
-    <html lang={lang} className="">
+    <html lang={lang}>
       <body
         className={cn(
           "antialiased flex flex-col min-h-screen",
@@ -97,11 +65,10 @@ export default async function RootLayout({
       >
         <AOSProviderDynamic>
           <TranslationsProvider dictionary={t}>
-            <ModalProvider lang={lang} menu={(menu.data || []).map(mapMenuTree)}>
-              <Header header_desc={t.header.description} lang={lang} menu={(menu.data || []).map(mapMenuTree)} />
-              <Navbar menu={(menu.data || []).map(mapMenuTree)} lang={lang} />
-              {/* <Sidebar lang={lang} menu={(menu.data || [])?.map(mapMenuTree)} /> */}
-              <main className="py-5 max-md:p-0 ">{children}</main>
+            <ModalProvider lang={lang} menu={menu}>
+              <Header header_desc={t.header.description} lang={lang} menu={menu} />
+              <Navbar menu={menu} lang={lang} />
+              <main className="py-5 max-md:p-0">{children}</main>
               <Footer lang={lang} />
             </ModalProvider>
           </TranslationsProvider>

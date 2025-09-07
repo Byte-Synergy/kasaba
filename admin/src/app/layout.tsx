@@ -31,7 +31,7 @@ export default function RootLayout({
           inter.className,
         )}
       >
-        <ThemeProvider defaultTheme="dark">
+        <ThemeProvider defaultTheme="system">
           <NuqsAdapter>{children}</NuqsAdapter>
         </ThemeProvider>
       </body>

@@ -31,11 +31,9 @@ export default function RootLayout({
           inter.className,
         )}
       >
-        {/* <ModalProvider> */}
         <ThemeProvider defaultTheme="dark">
           <NuqsAdapter>{children}</NuqsAdapter>
         </ThemeProvider>
-        {/* </ModalProvider> */}
       </body>
     </html>
   );

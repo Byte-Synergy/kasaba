@@ -21,23 +21,30 @@ import { useTranslations } from "@/utils/translation-provider";
 
 const InteractivePlaces = ({
   lang,
-  regions
+  regions,
 }: {
-
   lang: Locale;
-  regions: { id: number, name?: string, areasCount: number, title: string }[] | []
+  regions:
+  | { id: number; name?: string; areasCount: number; title: string }[]
+  | [];
 }) => {
-  const [selectedArea, setSelectedArea] = useState<{ region: string | null, placeId: number | null, placeData: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"] } | null>({
-    region: null,  // region nomi === region.name
-    placeId: null,  // tanlagan region ichidagi tanlangan place id === place.id
-    placeData: []   // tanlangan region ichidagi barcha place ma'lumotlari
-  })
+  const [selectedArea, setSelectedArea] = useState<{
+    region: string | null;
+    placeId: number | null;
+    placeData: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"];
+  } | null>({
+    region: null, // region nomi === region.name
+    placeId: null, // tanlagan region ichidagi tanlangan place id === place.id
+    placeData: [], // tanlangan region ichidagi barcha place ma'lumotlari
+  });
 
-  const t = useTranslations()
+  const t = useTranslations();
 
   // select bo'lgan regionni umumiy regionlarda topib olish
-  const findSelectedRegion = regions?.find(r => r.name === selectedArea?.region)
-  
+  const findSelectedRegion = regions?.find(
+    (r) => r.name === selectedArea?.region
+  );
+
   // fetch places by region
   // agar selectedArea region bo'lsa, fetch qilish
   useEffect(() => {
@@ -47,8 +54,8 @@ const InteractivePlaces = ({
         setSelectedArea(() => ({
           region: null,
           placeId: null,
-          placeData: []
-        }))
+          placeData: [],
+        }));
         return;
       }
 
@@ -62,7 +69,7 @@ const InteractivePlaces = ({
             ...prev,
             region: findSelectedRegion.name || null,
             placeId: prev?.placeId || null,
-            placeData: [...places.data]
+            placeData: [...places.data],
           }));
         } else {
           console.log("Ma'lumot olishda xatolik: ", places.error);
@@ -85,7 +92,7 @@ const InteractivePlaces = ({
       setSelectedArea(() => ({
         region: "toshkent-region",
         placeId: null,
-        placeData: []
+        placeData: [],
       }));
     }
   }, []);
@@ -96,46 +103,50 @@ const InteractivePlaces = ({
   // agar selectedArea region bo'lsa, placeData ni tozalash
   const onBackHandler = useCallback(() => {
     if (selectedArea?.placeId) {
-      setSelectedArea(prev => ({
+      setSelectedArea((prev) => ({
         region: prev?.region || null,
         placeId: null,
-        placeData: prev?.placeData || []
-      }))
-      return null
-    } 
-      setSelectedArea(() => ({
-        
-        region: null,
-        placeData: [],
-        placeId: null
-      }))
-  }, [selectedArea?.placeId])
+        placeData: prev?.placeData || [],
+      }));
+      return null;
+    }
+    setSelectedArea(() => ({
+      region: null,
+      placeData: [],
+      placeId: null,
+    }));
+  }, [selectedArea?.placeId]);
 
   // region selectda o'zgartirish functioni
-  const changeSelectRegionHandler = useCallback((place: string) => {
-    setSelectedArea(() => ({
-      region: place,
-      placeId: null,
-      placeData: []
-    }))
-  }, [selectedArea?.region])
+  const changeSelectRegionHandler = useCallback(
+    (place: string) => {
+      setSelectedArea(() => ({
+        region: place,
+        placeId: null,
+        placeData: [],
+      }));
+    },
+    [selectedArea?.region]
+  );
 
   return (
-    <Container className="">
+    <Container className="py-15">
       <ScrollAnimation>
-        <NewsTitle lang={lang} title={t("interactive_areas_label")} />
+        <NewsTitle
+          lang={lang}
+          title={t("interactive_areas_label")}
+          variant="titleWithoutLink"
+        />
       </ScrollAnimation>
       <div className="flex items-start max-md:flex-col gap-4">
-        <div className={cn(
-          "w-full transition-all",
-          (selectedArea?.region && findSelectedRegion) ? "w-[55%] max-md:w-full" : "w-full",
-          "max-sm:w-full max-md:max-w-full",
-        )}>
-          <ScrollAnimation>
-            <Select  // select yordamida region tanlash
+        <div className={cn("w-2/3 max-md:w-full transition-all ")}>
+          <ScrollAnimation className="">
+            <Select // select yordamida region tanlash
               onValueChange={(value) => changeSelectRegionHandler(value)}
               defaultValue={selectedArea?.region || "tashkent_region"}
-              value={selectedArea?.region ? selectedArea?.region : "tashkent_region"}
+              value={
+                selectedArea?.region ? selectedArea?.region : "tashkent_region"
+              }
             >
               <SelectTrigger className="w-[300px] py-[15px] px-[25px] bg-[#ff8400] text-white text-xl font-bold mb-5 max-md:w-full">
                 <SelectValue
@@ -152,7 +163,7 @@ const InteractivePlaces = ({
                 ))}
               </SelectContent>
             </Select>
-            <InteractiveMap  // Xududlar xaritasi
+            <InteractiveMap // Xududlar xaritasi
               selectPlace={selectedArea?.region || "tashkent_region"}
               onChangeSelectPlace={(value) => {
                 changeSelectRegionHandler(value);
@@ -160,17 +171,21 @@ const InteractivePlaces = ({
             />
           </ScrollAnimation>
         </div>
-        <div className={cn(
-          "w-full transition-all",
-          (selectedArea?.region && findSelectedRegion) ? "w-[45%] max-md:w-full" : "hidden",
-          "max-sm:w-full max-md:max-w-full",
-        )}>
+        <div
+          className={cn(
+            "w-130 transition-all",
+            selectedArea?.region && findSelectedRegion
+              ? " max-md:w-full"
+              : "hidden",
+            "max-sm:w-full max-md:max-w-full"
+          )}
+        >
           <ScrollAnimation>
             <InteractiveInformation
               selectedArea={selectedArea}
               setSelectedArea={setSelectedArea}
               onBackHandler={onBackHandler}
-              // selectedPlaceHandler={(id: number) => selectedPlaceHandler(id.toString())}
+            // selectedPlaceHandler={(id: number) => selectedPlaceHandler(id.toString())}
             />
           </ScrollAnimation>
         </div>

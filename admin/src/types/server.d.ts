@@ -1116,6 +1116,66 @@ export declare const app: Elysia<"", {
                     headers: unknown;
                     response: {
                         200: {
+                            list: {
+                                type?: "photo" | "text" | "news" | "document" | "member" | undefined; files?: {
+                                    name: string;
+                                    mimeType: string;
+                                    extension: string;
+                                    href: string;
+                                }[] | undefined; path?: string | undefined; languageCode?: string | undefined; newsType?: "standard" | "photo" | "video" | "area" | undefined; isPin?: boolean | undefined; isVisible?: boolean | undefined; parent?: {
+                                    type?: "photo" | "text" | "news" | "document" | "member" | undefined;
+                                    path?: string | undefined;
+                                    newsType?: "standard" | "photo" | "video" | "area" | undefined;
+                                    isPin?: boolean | undefined;
+                                    isVisible?: boolean | undefined;
+                                    name: string;
+                                    id: number;
+                                } | undefined; children?: {
+                                    type?: "photo" | "text" | "news" | "document" | "member" | undefined;
+                                    content?: {
+                                        [x: string]: any;
+                                    }[] | undefined;
+                                    path?: string | undefined;
+                                    createdAt?: string | undefined;
+                                    newsType?: "standard" | "photo" | "video" | "area" | undefined;
+                                    isPin?: boolean | undefined;
+                                    isVisible?: boolean | undefined;
+                                    name: string;
+                                    id: number;
+                                }[] | undefined; name: string; content: {
+                                    [x: string]: any;
+                                }[]; id: number;
+                            }[];
+                            items: {
+                                type?: "photo" | "text" | "news" | "document" | "member" | undefined; files?: {
+                                    name: string;
+                                    mimeType: string;
+                                    extension: string;
+                                    href: string;
+                                }[] | undefined; path?: string | undefined; languageCode?: string | undefined; newsType?: "standard" | "photo" | "video" | "area" | undefined; isPin?: boolean | undefined; isVisible?: boolean | undefined; parent?: {
+                                    type?: "photo" | "text" | "news" | "document" | "member" | undefined;
+                                    path?: string | undefined;
+                                    newsType?: "standard" | "photo" | "video" | "area" | undefined;
+                                    isPin?: boolean | undefined;
+                                    isVisible?: boolean | undefined;
+                                    name: string;
+                                    id: number;
+                                } | undefined; children?: {
+                                    type?: "photo" | "text" | "news" | "document" | "member" | undefined;
+                                    content?: {
+                                        [x: string]: any;
+                                    }[] | undefined;
+                                    path?: string | undefined;
+                                    createdAt?: string | undefined;
+                                    newsType?: "standard" | "photo" | "video" | "area" | undefined;
+                                    isPin?: boolean | undefined;
+                                    isVisible?: boolean | undefined;
+                                    name: string;
+                                    id: number;
+                                }[] | undefined; name: string; content: {
+                                    [x: string]: any;
+                                }[]; id: number;
+                            }[];
                             data: {
                                 type?: "photo" | "text" | "news" | "document" | "member" | undefined;
                                 files?: {

@@ -8,7 +8,8 @@ interface BannerListProps {
 }
 
 export default function BannerList({ banners, onDelete, type }: BannerListProps) {
-  
+  console.log(banners);
+
   return (
     <div className="mt-4 grid gap-2">
       {

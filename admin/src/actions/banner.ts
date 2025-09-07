@@ -13,7 +13,6 @@ export async function getBanners(
 
   return { data, error, status };
 }
-
 export async function deleteBanner(
   bannerId: number,
   redirectTo?: string,

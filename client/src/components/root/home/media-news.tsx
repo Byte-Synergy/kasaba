@@ -6,6 +6,7 @@ import PhotoNews from "./photo-news";
 import { NewsDataType, NewsFilter } from "@/types";
 import { NewsApi } from "@/utils/newsApi";
 import { Locale } from "@/configs/i18n";
+import NewsTitle from "@/components/news/title";
 
 const fetchNews = async (filters: NewsFilter) => {
   try {
@@ -61,7 +62,15 @@ const MediaNews = ({
   }, []);
 
   return (
-    <Container className="py-12 relative max-md:py-5">
+    <Container className="py-15 relative max-md:py-5">
+      <NewsTitle
+        lang={lang}
+        title={"МЕДИАТЕКА"}
+        button={all_label}
+        href="/news/video"
+        className="max-md:text-[#fff]"
+        variant="titleWithoutLink"
+      />
       {news.video?.length ? (
         <VideoNews
           share_label={share_label}

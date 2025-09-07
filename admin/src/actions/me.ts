@@ -1,7 +1,7 @@
 "use server";
 
-import { TOKEN_COOKIE_NAME } from "@/configs/cookie";
 import eden from "@/libs/eden";
+import { TOKEN_COOKIE_NAME } from "@/utils/configs/cookie";
 import { getUserSession } from "@/utils/session";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";

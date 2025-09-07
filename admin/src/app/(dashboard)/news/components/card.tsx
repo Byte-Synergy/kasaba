@@ -1,31 +1,47 @@
-import { FaStar } from "react-icons/fa6";
 import { cn } from "@/libs/utils";
 import Image from "next/image";
+import Link from "next/link";
+import { Crown, Star } from "lucide-react";
+import { Badge } from "../../../../components/ui/badge";
+import { formatDate } from "@/utils/formateDate";
 
 export default function NewsCard({
-  data,
+  newData,
   variant = "row",
 }: {
   variant?: "col" | "row";
-  data: {
+  newData: {
+    id: number;
+    path: string;
+    title: string;
+    isTop?: boolean;
+    description: string;
+    content: {
+      type: string;
+      value?: string;
+      fileId?: string
+    }[];
+    type: any;
+    languageCode?: string | undefined;
+    tags?: string[];
+    createdAt: string;
+    authorId?: number | null;
     files?: {
-      name: string;
-      mimeType: string;
       extension: string;
+      mimeType: string;
+      name: string;
       href: string;
     }[];
-    isTop: boolean;
-    title: string;
-    description: string;
-    content: Record<string, any>[];
-    authorId?: number|null;
   };
 }) {
-  return (
+
+  const thumbnailPhoto = newData.files?.find(f => f.name === newData.content.find(c => c.type === "photo")?.fileId)
+
+  return newData == undefined ? null : (
     <>
       <div
         className={cn(
-          "flex overflow-hidden rounded-lg bg-slate-100 transition-shadow hover:shadow-xl",
+          "flex overflow-hidden rounded-lg bg-white hover:bg-gray-50 transition-shadow hover:shadow-[0px_0px_20px_-5px_#d1d1d1] group border",
           variant === "row" && "flex-row",
           variant === "col" && "flex-col",
         )}
@@ -34,19 +50,21 @@ export default function NewsCard({
           className={cn(
             "relative aspect-video size-full w-full shrink-0 overflow-hidden rounded-lg",
             variant === "row" && "max-w-64",
-            data.files?.length ? "bg-black" : "bg-slate-200",
+            newData?.files?.length ? "bg-black" : "bg-slate-200",
           )}
         >
-          {data.isTop && (
+          {newData?.isTop && (
             <>
               <div className="absolute z-20 size-full bg-gradient-to-br from-black via-transparent to-transparent" />
-              <FaStar className="absolute top-3 left-3 z-30 text-yellow-500" />
+              <Badge variant={"light"} color={"gold"}>
+                <Crown className="absolute top-3 left-3 z-30" />
+              </Badge>
             </>
           )}
-          {data.content.find((content) => content.type === "video-url") && (
+          {newData?.content.find((content: any) => content?.type === "video-url") && (
             <iframe
               src={
-                data.content.find((content) => content.type === "video-url")
+                newData?.content.find((content: any) => content?.type === "video-url")
                   ?.value
               }
               title="YouTube video player"
@@ -56,27 +74,37 @@ export default function NewsCard({
               className="size-full"
             />
           )}
-          {data.files && Boolean(data.files.length) && (
+          {newData?.files && Boolean(newData?.files.length) && (
             <>
               <Image
                 className="relative z-10 size-full object-contain"
-                src={data.files[0].href}
-                alt={data.files[0].name}
+                src={`${thumbnailPhoto?.href}`}
+                alt={`${thumbnailPhoto?.href}`}
                 width={1920}
                 height={1080}
               />
               <Image
                 className="absolute top-0 left-0 scale-110 opacity-70 blur-xs"
-                src={data.files[0].href}
-                alt={data.files[0].name}
+                src={`${thumbnailPhoto?.href}`}
+                alt={`${thumbnailPhoto?.href}`}
                 fill
               />
             </>
           )}
         </div>
         <div className="p-5">
-          <h3 className="mb-2 text-base font-semibold line-clamp-1">{data.title}</h3>
-          <p className="text-sm font-medium line-clamp-3">{data.description}</p>
+          <div className="flex justify-start gap-x-2 mb-2">
+            {
+              newData.isTop && <Badge variant={"light"} color={"gold"} withIcon icon={Crown}>Top yangilik</Badge>
+            }
+            <Badge variant={"light"} color={"primary"}>{formatDate(newData?.createdAt)}</Badge>
+            {/* <span className="px-1 py-0 border border-blue-500 bg-blue-500/25 rounded-2xl text-black/75"></span> */}
+            <Badge variant={"light"} color={"primary"} className="hover:underline">
+              <Link href={`/news/${newData.type}`}>{newData?.type}</Link>
+            </Badge>
+          </div>
+          <Link href={`/news/content/${newData?.type}/${newData?.path}`} className={cn("mb-1 text-lg font-semibold line-clamp-1", "group-hover:underline")}>{newData?.title}</Link>
+          <p className="text-sm font-normal line-clamp-2">{newData?.description}</p>
         </div>
       </div>
     </>

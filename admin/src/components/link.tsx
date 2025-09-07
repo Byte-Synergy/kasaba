@@ -9,7 +9,7 @@ import { cn } from "@heroui/theme";
 
 export interface LinkProperties
   extends React.HTMLAttributes<HTMLAnchorElement>,
-    WithOptional<LinkProps, "href"> {
+  WithOptional<LinkProps, "href"> {
   lang?: string;
   exact?: boolean;
   activeClassName?: string;

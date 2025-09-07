@@ -36,7 +36,7 @@ const PartniersLink = () => {
           slidesPerView={1.5}
           modules={[Autoplay]}
           autoplay={{
-            delay: 4000,
+            delay: 3500,
             pauseOnMouseEnter: true,
           }}
           breakpoints={{

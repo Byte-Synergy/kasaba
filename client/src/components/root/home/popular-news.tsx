@@ -29,6 +29,7 @@ const PopularNews = ({
             title={public_news_label}
             button={all_label}
             href="/news/standard"
+            variant="titleWithLink"
           />
         </ScrollAnimation>
         <div className="relative">
@@ -36,7 +37,7 @@ const PopularNews = ({
             modules={[Navigation, Autoplay]}
             autoplay={{
               pauseOnMouseEnter: true,
-              delay: 5000,
+              delay: 2400,
             }}
             spaceBetween={20}
             slidesPerView={5}
@@ -49,9 +50,9 @@ const PopularNews = ({
             }}
           >
             {news?.map((data, index) => (
-              <SwiperSlide key={data.id}>
-                <ScrollAnimation idx={index / 2}>
-                  <StandardNewsCard data={data} variant="card" />
+              <SwiperSlide key={data.id} className="h-full">
+                <ScrollAnimation idx={index / 2} className="h-full">
+                  <StandardNewsCard data={data} variant="withThumbnailImage" />
                 </ScrollAnimation>
               </SwiperSlide>
             ))}

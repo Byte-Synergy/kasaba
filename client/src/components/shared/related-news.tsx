@@ -9,32 +9,32 @@ const RelatedNews = ({
   data,
   news_on_the_topic_label,
   all_label,
-  lang
+  lang,
 }: {
   news_on_the_topic_label: string;
   all_label: string;
   data: NewsDataType[];
-  lang: Locale
+  lang: Locale;
 }) => {
-  
   return (
-    <Container className=" py-16 max-md:py-5">
+    <div className=" py-16 max-md:py-5">
       <NewsTitle
-                title={news_on_the_topic_label}
-                button={all_label}
-                href={`/news/standard`}
-                lang={lang}
-                // className="max-md:text-[#fff]"
-              />
+        title={news_on_the_topic_label}
+        button={all_label}
+        href={`/news/${data[0].type}`}
+        lang={lang}
+        variant="titleWithLink"
+      />
       <div className=" grid grid-cols-4 max-md:grid-cols-1 gap-7 max-md:gap-3 ">
         {data.map((data) => (
           <StandardNewsCard
             key={data.id}
             data={{ ...data, type: "standard" }}
+            variant="withThumbnailImage"
           />
         ))}
       </div>
-    </Container>
+    </div>
   );
 };
 

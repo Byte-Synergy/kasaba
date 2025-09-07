@@ -44,6 +44,7 @@ services:
     ports:
       - "4040:4040"
     environment:
+      - CLIENT_URL=$CLIENT_URL
       - DATABASE_URL=$DATABASE_URL
       - SECRET_KEY=$SECRET_KEY
       - PORT=$SERVER_PORT

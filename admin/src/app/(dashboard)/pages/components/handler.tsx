@@ -59,13 +59,13 @@ export default function PageHandler({
   } = useForm<Type>({
     defaultValues: data
       ? {
-          content: data.content,
-          name: data.name,
-          parentId: data.parent?.id,
-        }
+        content: data.content,
+        name: data.name,
+        parentId: data.parent?.id,
+      }
       : {
-          content: [],
-        },
+        content: [],
+      },
   });
 
   const router = useRouter();
@@ -201,9 +201,9 @@ export default function PageHandler({
                 members: content.members.map((member) =>
                   "filePreview" in member
                     ? {
-                        ...member,
-                        filePreview: undefined,
-                      }
+                      ...member,
+                      filePreview: undefined,
+                    }
                     : member,
                 ),
               };
@@ -228,9 +228,9 @@ export default function PageHandler({
                 members: content.members.map((member) =>
                   "filePreview" in member
                     ? {
-                        ...member,
-                        filePreview: undefined,
-                      }
+                      ...member,
+                      filePreview: undefined,
+                    }
                     : member,
                 ),
               };
@@ -266,9 +266,9 @@ export default function PageHandler({
     if (data) {
       setShowEditButton(
         watchAllFields.name !== data.name ||
-          JSON.stringify(watchAllFields.content) !==
-            JSON.stringify(data.content) ||
-          data.parent?.id !== watchAllFields.parentId,
+        JSON.stringify(watchAllFields.content) !==
+        JSON.stringify(data.content) ||
+        data.parent?.id !== watchAllFields.parentId,
       );
     }
   }, [data, watchAllFields]);
@@ -720,14 +720,14 @@ export default function PageHandler({
                                                   (content) =>
                                                     content.type === "member"
                                                       ? {
-                                                          ...content,
-                                                          members:
-                                                            content.members.filter(
-                                                              (_, memberKey) =>
-                                                                memberKey !==
-                                                                currentMemberIndex,
-                                                            ),
-                                                        }
+                                                        ...content,
+                                                        members:
+                                                          content.members.filter(
+                                                            (_, memberKey) =>
+                                                              memberKey !==
+                                                              currentMemberIndex,
+                                                          ),
+                                                      }
                                                       : content,
                                                 ),
                                               );
@@ -851,7 +851,7 @@ export default function PageHandler({
                                                       ...member,
                                                       fullName:
                                                         currentMemberIndex ===
-                                                        memberIndex
+                                                          memberIndex
                                                           ? value
                                                           : member.fullName,
                                                     }),
@@ -872,7 +872,7 @@ export default function PageHandler({
                                                       ...member,
                                                       position:
                                                         currentMemberIndex ===
-                                                        memberIndex
+                                                          memberIndex
                                                           ? value
                                                           : member.position,
                                                     }),
@@ -893,7 +893,7 @@ export default function PageHandler({
                                                       ...member,
                                                       phoneNumber:
                                                         currentMemberIndex ===
-                                                        memberIndex
+                                                          memberIndex
                                                           ? value
                                                           : member.phoneNumber,
                                                     }),
@@ -914,7 +914,7 @@ export default function PageHandler({
                                                       ...member,
                                                       email:
                                                         currentMemberIndex ===
-                                                        memberIndex
+                                                          memberIndex
                                                           ? value
                                                           : member.email,
                                                     }),
@@ -935,7 +935,7 @@ export default function PageHandler({
                                                       ...member,
                                                       acceptanceDay:
                                                         currentMemberIndex ===
-                                                        memberIndex
+                                                          memberIndex
                                                           ? value
                                                           : member.acceptanceDay,
                                                     }),
@@ -956,7 +956,7 @@ export default function PageHandler({
                                                       ...member,
                                                       address:
                                                         currentMemberIndex ===
-                                                        memberIndex
+                                                          memberIndex
                                                           ? value
                                                           : member.address,
                                                     }),
@@ -977,7 +977,7 @@ export default function PageHandler({
                                                       ...member,
                                                       workingTime:
                                                         currentMemberIndex ===
-                                                        memberIndex
+                                                          memberIndex
                                                           ? value
                                                           : member.workingTime,
                                                     }),

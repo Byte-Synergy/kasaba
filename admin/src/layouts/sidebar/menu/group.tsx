@@ -6,16 +6,18 @@ import SidebarMenuItem from "./item";
 export default function SidebarMenuGroup({
   className,
   menuItems,
+  showSidebar,
   ...props
 }: React.HTMLAttributes<HTMLUListElement> & {
   menuItems: MenuItemType[];
+  showSidebar: boolean
 }) {
   return (
     <>
       <ul className={cn("grid gap-1", className)} {...props}>
         {React.Children.toArray(
           menuItems.map((menuItem, key) => (
-            <SidebarMenuItem key={key} item={menuItem} />
+            <SidebarMenuItem key={key} item={menuItem} showSidebar={showSidebar} />
           )),
         )}
       </ul>

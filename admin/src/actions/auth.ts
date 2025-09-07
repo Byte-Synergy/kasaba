@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { setCookie } from "@/utils/session";
 import eden from "@/libs/eden";
 import { redirect } from "next/navigation";
-import { TOKEN_COOKIE_NAME } from "@/configs/cookie";
+import { TOKEN_COOKIE_NAME } from "@/utils/configs/cookie";
 
 export async function signIn(
   username: string,
@@ -21,8 +21,6 @@ export async function signIn(
       fetch,
     },
   );
-  console.log(process.env.NEXT_PUBLIC_API_URL);
-  console.log(error);
 
   if (error) return `Login muvaffaqiyatsiz. Iltimos, qayta uruning.`;
 

@@ -20,6 +20,8 @@ export default function PageView({
   hero1Banner: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
   hero2Banner: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
 }) {
+  console.log("entery banners: ", fitBanner, fullBanner, hero1Banner, hero2Banner);
+
 
   const [fitBanners, setFitBanners] = useState(fitBanner.map(b => b.file.href));
   const [fullBanners, setFullBanners] = useState(fullBanner.map(b => b.file.href));
@@ -29,9 +31,9 @@ export default function PageView({
   const deleteBannerImage = async (bannerHref: string) => {
     const allBanners = [...fitBanner, ...fullBanner, ...hero1Banner, ...hero2Banner];
     const banner = allBanners.find(b => b.file.href === bannerHref);
-  
+
     if (!banner) return alert("O'chirishda xatolik yuz berdi.");
-  
+
     try {
       await deleteBanner(banner.id);
     } catch (error) {
@@ -39,7 +41,7 @@ export default function PageView({
       alert("Bannerni o‘chirishda xatolik yuz berdi.");
     }
   };
-  
+
 
   const bannerConfigs = [
     { title: "horizontal", type: "full", list: fullBanners, setList: setFullBanners },
@@ -48,6 +50,8 @@ export default function PageView({
     { title: "link", type: "fit", list: fitBanners, setList: setFitBanners },
   ];
 
+
+
   return (
     <section className="h-full">
       <div className="container flex flex-wrap gap-3 p-5">
@@ -55,9 +59,9 @@ export default function PageView({
           <div
             key={type}
             className={
-              cn(`h-full w-full rounded-lg bg-white p-5 shadow-lg`, 
-              type === "full" ? "" : "max-w-[310px]", 
-              type.includes("hero") ? "max-w-[410px]" : "")
+              cn(`h-full w-full rounded-lg bg-white p-5 shadow-lg`,
+                type === "full" ? "" : "max-w-[310px]",
+                type.includes("hero") ? "max-w-[410px]" : "")
             }
           >
             <PageViewHeader type={title as "link" | "horizontal" | "hero-1" | "hero-2"} />

@@ -1,179 +1,198 @@
-'use client'
-import Image from 'next/image'
-import LanguageSwitcher from './language'
-import { MenuItem } from '@/types'
-import CurrencyBox from './currency-box'
-import { cn } from '@/libs/utils'
-import { IoClose } from 'react-icons/io5'
-import Link from 'next/link'
-import { useState } from 'react'
-import { useTranslations } from '@/utils/translation-provider'
-import { ChevronDown, Search } from 'lucide-react'
-import { Locale } from '@/configs/i18n'
-import WeatherHeader from '@/components/shared/weather/weather-header'
-import { useModalStore } from '@/hooks/useModal'
+"use client";
+import Image from "next/image";
+import LanguageSwitcher from "./language";
+import { MenuItem } from "@/types";
+import CurrencyBox from "./currency-box";
+import { cn } from "@/libs/utils";
+import { IoClose } from "react-icons/io5";
+import Link from "next/link";
+import { useState } from "react";
+import { useTranslations } from "@/utils/translation-provider";
+import { ChevronDown, Search } from "lucide-react";
+import { Locale } from "@/configs/i18n";
+import WeatherHeader from "@/components/shared/weather/weather-header";
+import { useModalStore } from "@/hooks/useModal";
 
 const Render = ({
-    menu,
-    level = 0,
-    lang,
-    handleOpenMenu,
-    activeMenuMap
+  menu,
+  level = 0,
+  lang,
+  handleOpenMenu,
+  activeMenuMap,
 }: {
-    menu: MenuItem[],
-    level: number,
-    lang: Locale,
-    handleOpenMenu: (id: string) => void,
-    activeMenuMap: Record<string, boolean>
+  menu: MenuItem[];
+  level: number;
+  lang: Locale;
+  handleOpenMenu: (id: string) => void;
+  activeMenuMap: Record<string, boolean>;
 }) => {
-    return (
-        <>
-            {menu.map((item) => {
-                const hasSub = Array.isArray(item.sub_menu) && item.sub_menu.length > 0;
+  return (
+    <>
+      {menu.map((item) => {
+        const hasSub = Array.isArray(item.sub_menu) && item.sub_menu.length > 0;
 
-                const href =
-                    item.type === "news"
-                        ? `/news/${item.newsType}`
-                        : item.type === "document" && !(item.docCount && item.docCount > 1)
-                            ? `/documents/${item.id}`
-                            : `/p/${item.id}`;
+        const href =
+          item.type === "news"
+            ? `/news/${item.newsType}`
+            : item.type === "document" && !(item.docCount && item.docCount > 1)
+            ? `/documents/${item.id}`
+            : `/p/${item.id}`;
 
-                const isOpen = activeMenuMap[item.id];
+        const isOpen = activeMenuMap[item.id];
 
-                return (
-                    <li key={item.id} style={{ marginLeft: `${level * 15}px`, borderLeft: level > 0 ? '1px solid #e5e7eb' : 'none' }}>
-                        {!hasSub ? (
-                            <Link
-                                lang={lang}
-                                href={href}
-                                className={cn(
-                                    'relative flex items-center space-x-2 text-lg font-semibold uppercase p-4',
-                                    "hover:text-[#ff7a00]",
-                                    isOpen ? 'text-[#ff7a00]' : 'text-[#141348]',
-                                )}
-                            >
-                                <span className='flex justify-start items-center w-full'>
-                                    {item.title}
-                                </span>
-                            </Link>
-                        ) : (
-                            <div>
-                                <div
-                                    className={cn(
-                                        'flex items-center justify-between space-x-2 text-lg font-semibold uppercase p-4 cursor-pointer',
-                                        "hover:text-[#ff7a00]",
-                                        isOpen ? 'text-[#ff7a00]' : 'text-[#141348]',
-                                    )}
-                                    onClick={() => handleOpenMenu(item.id)}
-                                >
-                                    {item.title}
-                                    <ChevronDown className={`w-5 h-5 text-black transform transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-                                </div>
+        return (
+          <li
+            key={item.id}
+            style={{
+              marginLeft: `${level * 15}px`,
+              borderLeft: level > 0 ? "1px solid #e5e7eb" : "none",
+            }}
+          >
+            {!hasSub ? (
+              <Link
+                lang={lang}
+                href={href}
+                className={cn(
+                  "relative flex items-center space-x-2 text-lg font-semibold uppercase p-4",
+                  "hover:text-[#ff7a00]",
+                  isOpen ? "text-[#ff7a00]" : "text-[#141348]"
+                )}
+              >
+                <span className="flex justify-start items-center w-full">
+                  {item.title}
+                </span>
+              </Link>
+            ) : (
+              <div>
+                <div
+                  className={cn(
+                    "flex items-center justify-between space-x-2 text-lg font-semibold uppercase p-4 cursor-pointer",
+                    "hover:text-[#ff7a00]",
+                    isOpen ? "text-[#ff7a00]" : "text-[#141348]"
+                  )}
+                  onClick={() => handleOpenMenu(item.id)}
+                >
+                  {item.title}
+                  <ChevronDown
+                    className={`w-5 h-5 text-black transform transition-transform ${
+                      isOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </div>
 
-                                {isOpen && (
-                                    <ul className="pl-4 border-l border-gray-200">
-                                        <Render
-                                            menu={item.sub_menu}
-                                            level={level + 1}
-                                            lang={lang}
-                                            activeMenuMap={activeMenuMap}
-                                            handleOpenMenu={handleOpenMenu}
-                                        />
-                                    </ul>
-                                )}
-                            </div>
-                        )}
-                    </li>
-                );
-            })}
-        </>
-    );
+                {isOpen && (
+                  <ul className="pl-4 border-l border-gray-200">
+                    <Render
+                      menu={item.sub_menu}
+                      level={level + 1}
+                      lang={lang}
+                      activeMenuMap={activeMenuMap}
+                      handleOpenMenu={handleOpenMenu}
+                    />
+                  </ul>
+                )}
+              </div>
+            )}
+          </li>
+        );
+      })}
+    </>
+  );
 };
 
-const Sidebar = ({
-    lang, menu
-}: {
-    lang: Locale,
-    menu: MenuItem[]
-}) => {
-    const [activeMenuMap, setActiveMenuMap] = useState<Record<string, boolean>>({});
+const Sidebar = ({ lang, menu }: { lang: Locale; menu: MenuItem[] }) => {
+  const [activeMenuMap, setActiveMenuMap] = useState<Record<string, boolean>>(
+    {}
+  );
 
-    const handleOpenMenu = (id: string) => {
-        setActiveMenuMap(prev => ({
-            ...prev,
-            [id]: !prev[id]  // toggle holat
-        }));
-    };
+  const handleOpenMenu = (id: string) => {
+    setActiveMenuMap((prev) => ({
+      ...prev,
+      [id]: !prev[id], // toggle holat
+    }));
+  };
 
-    const t = useTranslations()
+  const t = useTranslations();
 
-    const {modal, closeModal} = useModalStore()
+  const { modal, closeModal } = useModalStore();
 
-    return (
-        <section id="sidebar" className={cn("min-h-[100vh] fixed inset-0 z-10 w-full bg-white hidden max-md:block top-0 overflow-hidden", modal === "sidebar" ? "left-[0%]" : "-left-[100%]", "transition-transform duration-300 ease-in-out")}>
-            <div id="sidebar__header" className='py-5 px-5 overflow-hidden relative z-10  after:w-full after:h-full after:absolute after:top-0 after:left-0 after:bg-linear-to-r after:from-[#141348] after:to-[#030239] after:blur-[40px] after:-z-10 max-md:bg-linear-to-r max-md:from-[#000674] max-md:to-[#000BDA]'>
-                <div className="text-xl font-bold flex justify-between items-center">
-                    <Image
-                        width={100}
-                        height={80}
-                        src="/img/logo.svg"
-                        alt="logo"
-                        className=" object-contain max-md:w-14 max-md:h-11"
-                    />
-                    <WeatherHeader />
-                    <button
-                        className='p-2 bg-white/15 rounded-full border border-white/15'
-                        onClick={() => closeModal()}
-                    >
-                        <IoClose className='text-white' />
-                    </button>
-                </div>
-            </div>
-            <form className="flex items-center justify-start p-4 flex-row-reverse gap-x-1">
-                <label htmlFor='search' className='inline-flex items-center bg-white rounded-sm focus-within:ring-2 focus-within:ring-[#ff7a00]'>
-                    <Search className="text-gray-500 ml-2" />
-                </label>
-                <input
-                    type="search"
-                    placeholder={t("search_label")}
-                    id='search'
-                    name='search'
-                    className="w-full max-w-md p-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#ff7a00]"
-                />
-            </form>
-            {/* Navbar links */}
-            <nav className="flex flex-col h-[65vh] overflow-y-auto">
-                <Link
-                    className="flex items-center space-x-2 text-[#141348] text-lg font-semibold hover:text-[#ff7a00] uppercase p-4"
-                    href={"/"}
-                    lang={lang}
-                >
-                    {t("menu.main")}
-                </Link>
-                <Render
-                    menu={menu}
-                    level={0}
-                    lang={lang}
-                    activeMenuMap={activeMenuMap}
-                    handleOpenMenu={handleOpenMenu}
-                />
+  return (
+    <section
+      id="sidebar"
+      className={cn(
+        "min-h-[100vh] fixed inset-0 z-10 w-full bg-white hidden max-md:block top-0 overflow-hidden",
+        modal === "sidebar" ? "left-[0%]" : "-left-[100%]",
+        "transition-transform duration-300 ease-in-out"
+      )}
+    >
+      <div
+        id="sidebar__header"
+        className="py-5 px-5 overflow-hidden relative z-10  after:w-full after:h-full after:absolute after:top-0 after:left-0 after:bg-linear-to-r after:from-[#141348] after:to-[#030239] after:blur-[40px] after:-z-10 max-md:bg-linear-to-r max-md:from-[#000674] max-md:to-[#000BDA]"
+      >
+        <div className="text-xl font-bold flex justify-between items-center">
+          <Image
+            width={100}
+            height={80}
+            src="/img/logo.svg"
+            alt="logo"
+            className=" object-contain max-md:w-14 max-md:h-11"
+          />
+          <WeatherHeader />
+          <button
+            className="p-2 bg-white/15 rounded-full border border-white/15"
+            onClick={() => closeModal()}
+          >
+            <IoClose className="text-white" />
+          </button>
+        </div>
+      </div>
+      <form className="flex items-center justify-start p-4 flex-row-reverse gap-x-1">
+        <label
+          htmlFor="search"
+          className="inline-flex items-center bg-white rounded-sm focus-within:ring-2 focus-within:ring-[#ff7a00]"
+        >
+          <Search className="text-gray-500 ml-2" />
+        </label>
+        <input
+          type="search"
+          placeholder={t("search_label")}
+          id="search"
+          name="search"
+          className="w-full max-w-md p-2 border border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#ff7a00]"
+        />
+      </form>
+      {/* Navbar links */}
+      <nav className="flex flex-col h-[65vh] overflow-y-auto">
+        <Link
+          className="flex items-center space-x-2 text-[#141348] text-lg font-semibold hover:text-[#ff7a00] uppercase p-4"
+          href={"/"}
+          lang={lang}
+        >
+          {t("menu.main")}
+        </Link>
+        <Render
+          menu={menu}
+          level={0}
+          lang={lang}
+          activeMenuMap={activeMenuMap}
+          handleOpenMenu={handleOpenMenu}
+        />
 
+        <Link
+          className="flex items-center space-x-2 text-[#141348] text-lg font-semibold hover:text-[#ff7a00] uppercase p-4"
+          href={"/contact"}
+          lang={lang}
+        >
+          {t("menu.contact")}
+        </Link>
+      </nav>
+      {/* <Navbar lang={lang} menu={menu} /> */}
+      <div id="sidebar__footer" className="p-5 flex flex-col gap-y-2">
+        <LanguageSwitcher lang={lang} />
+        <CurrencyBox />
+      </div>
+    </section>
+  );
+};
 
-                <Link
-                    className="flex items-center space-x-2 text-[#141348] text-lg font-semibold hover:text-[#ff7a00] uppercase p-4"
-                    href={"/contact"}
-                    lang={lang}
-                >
-                    {t("menu.contact")}
-                </Link>
-            </nav>
-            {/* <Navbar lang={lang} menu={menu} /> */}
-            <div id="sidebar__footer" className='p-5 flex flex-col gap-y-2'>
-                <LanguageSwitcher lang={lang}/>
-                <CurrencyBox />
-            </div>
-        </section>
-    )
-}
-
-export default Sidebar
+export default Sidebar;

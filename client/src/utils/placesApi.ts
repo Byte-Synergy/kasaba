@@ -8,7 +8,7 @@ export async function getInteractiveAreasByFetch(
 ) {
     const params = new URLSearchParams(query);
     const url = `${API_BASE_URL}/api/rest/places/${placeId}/interactive_areas?`;
-    
+
     try {
         const response = await fetch(url, {
             method: "GET",
@@ -19,7 +19,7 @@ export async function getInteractiveAreasByFetch(
         });
 
         const data = await response.json();
-        
+
         return {
             data: response.ok ? data : null,
             error: response.ok ? null : data,

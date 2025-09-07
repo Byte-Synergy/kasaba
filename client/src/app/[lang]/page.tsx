@@ -15,13 +15,14 @@ export default async function Page({
   const { lang } = await params;
   const t = await getDictionary(lang as Locale);
 
-  if(!lang.length) redirect("/not-found")
+  if (!lang.length) redirect("/not-found");
+
   const { data: places } = await getPlaces({
     limit: 50,
     page: 1,
     filter: {
-      languageCode: lang || "uz"
-    }
+      languageCode: lang || "uz",
+    },
   });
 
   const { data: adsData } = await eden.banner.get();
@@ -37,7 +38,7 @@ export default async function Page({
   });
   const { data: standardNewsData } = await eden.news.get({
     query: {
-      limit: 50,
+      limit: 17,
       page: 1,
       filter: {
         type: ["standard"],
@@ -66,7 +67,7 @@ export default async function Page({
         topNewsData={topNewsData?.data || []}
         ads={adsData || []}
       />
-      <section id="useful-links" className="w-full max-w-[1440px] mx-auto">
+      <section id="useful-links">
         <UsefulLinks lang={lang} />
       </section>
     </>

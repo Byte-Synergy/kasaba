@@ -23,33 +23,34 @@ export default function PageC({
   const [hasMore, setHasMore] = useState(true);
   const { lang } = useLangStore()
 
-
   useEffect(() => {
     const loadFirstPage = async () => {
       setData([]);          // eski ma'lumotni tozalaymiz
       setPage(1);           // page-ni 1 ga o‘rnatamiz
       setHasMore(true);     // infinite scroll holatini reset qilamiz
-  
+
       const newsData = await getNews(
         {
           type: [type as any],
           lang: lang, // yangilangan til
         },
         limit,
-        page 
+        page
       );
-  
+
       const newItems = newsData.data?.data || [];
       setData(newItems);
       if (newItems.length < limit) setHasMore(false);
     };
-  
+
+    console.log("Yangiliklar: ", data, lang);
+
     loadFirstPage();
-  }, [lang]);  
+  }, [lang]);
 
   useEffect(() => {
     if (page === 1) return; // 1-sahifa allaqachon lang-effectda yuklangan
-  
+
     const fetchData = async () => {
       const newsData = await getNews(
         {
@@ -59,12 +60,12 @@ export default function PageC({
         limit,
         page
       );
-  
+
       const newItems = newsData.data?.data || [];
       setData((prev) => [...prev, ...newItems]);
       if (newItems.length < limit) setHasMore(false);
     };
-  
+
     fetchData();
   }, [page]);
 
@@ -74,13 +75,13 @@ export default function PageC({
       next={() => setPage((prev) => prev + 1)}
       hasMore={hasMore}
       scrollableTarget="main-scroll"
-      loader={hasMore ? <h4>Yuklanmoqda...</h4> : null}
+      loader={hasMore ? <h4 >Yuklanmoqda...</h4> : null}
     >
       <div className="mt-5 grid gap-4">
-        {data.map((news, key) => (
-          <Link href={`/news/content/${type}/${news.path}`} key={key}>
-            <NewsCard data={news} />
-          </Link>
+        {data.map((d) => (
+          // <Link href={`/news/content/${type}/${news.path}`} key={key}>
+          <NewsCard newData={d} variant={"row"} key={d.id} />
+          // </Link>
         ))}
       </div>
     </InfiniteScroll>

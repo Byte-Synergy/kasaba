@@ -13,7 +13,7 @@ type TitleProps = {
 
 const TitleVariants = (variant: string = "standard") => {
   switch (variant) {
-    case "standard":
+    case "withSubtitle":
       return {
         div: "flex items-center justify-center gap-2",
         title: "text-orange-500 font-montserrat font-bold text-4xl text-nowrap",
@@ -21,7 +21,7 @@ const TitleVariants = (variant: string = "standard") => {
         miniTitle:
           "text-orange-500 font-montserrat font-bold text-base hidden hover:text-black duration-200",
       };
-    case "withMiniTitle":
+    case "withoutSubtitle":
       return {
         div: "flex items-center justify-center gap-2",
         title: "text-orange-500 font-montserrat font-bold text-4xl text-nowrap",
@@ -48,18 +48,12 @@ function Title({
   lang,
 }: TitleProps) {
   return (
-    <div className={cn("my-[50px]", TitleVariants(variant).div)}>
-      <p className={cn(TitleVariants(variant).title)}>{title}</p>
-      <hr className={cn(TitleVariants(variant).hr)} />
-      {miniTitle && link && (
-        <Link
-          lang={lang}
-          href={link}
-          className={cn(TitleVariants(variant).miniTitle)}
-        >
-          {miniTitle}
-        </Link>
-      )}
+    <div className={cn("flex items-center justify-start gap-x-2.5")}>
+      <h3 className={cn()}>{title}</h3>
+      <hr className={cn()} />
+      <Link lang={lang} href={link} className={cn()}>
+        {miniTitle}
+      </Link>
     </div>
   );
 }

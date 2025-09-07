@@ -66,22 +66,27 @@
   "social_networks": {
     "facebook": {
       "title": "Respublika Kengashi Facebook sahifasi",
+      "media": "facebook",
       "description": "Facebook orqali bizni kutazatib boring. Va ijtimoiy va iqtisodiy yangiliklardan birinchilardan bo'lib habardor bo'ling."
     },
     "x": {
       "title": "Respublika Kengashi X (Twitter) sahifasi",
+      "media": "twitter",
       "description": "X(Twitter) orqali bizni kutazatib boring. Va ijtimoiy va iqtisodiy yangiliklardan birinchilardan bo'lib habardor bo'ling."
     },
     "telegram": {
       "title": "Respublika Kengashi Telegram sahifasi",
+      "media": "telegram",
       "description": "Telegram orqali bizni kutazatib boring. Va ijtimoiy va iqtisodiy yangiliklardan birinchilardan bo'lib habardor bo'ling."
     },
     "youtube": {
       "title": "Respublika Kengashi YouTube sahifasi",
+      "media": "youtube",
       "description": "Youtube orqali bizni kuzatib boring. Va ijtimoiy va iqtisodiy yangiliklardan birinchilardan bo’lib habardor bo’ling"
     },
     "instagram": {
       "title": "Respublika Kengashi Instagram sahifasi",
+      "media": "instagram",
       "description": "Instagram orqali bizni kutazatib boring. Va ijtimoiy va iqtisodiy yangiliklardan birinchilardan bo'lib habardor bo'ling."
     }
   },

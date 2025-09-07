@@ -29,6 +29,7 @@ export async function getPlace(
 
   return { data, error, status };
 }
+
 export async function getInteractiveAreas(
   query: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["query"],
   placeId: number,
@@ -41,6 +42,7 @@ export async function getInteractiveAreas(
       fetch,
       query,
     });
+  console.log(data);
 
   return { data, error, status };
 }

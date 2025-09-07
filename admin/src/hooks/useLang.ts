@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type Lang = "uz" | "ru" | "en" | "uz-cryl"; // kerakli tillarni qo‘shing
+export type Lang = "uz" | "ru" | "en" | "uz-cyrl"; // kerakli tillarni qo‘shing
 
 interface LangState {
   lang: Lang;

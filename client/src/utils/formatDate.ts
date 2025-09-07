@@ -1,3 +1,6 @@
+import { dateInput } from "@heroui/theme";
+import Month from "react-calendar/dist/esm/YearView/Month.js";
+
 const MONTHS = [
   "yanvar",
   "fevral",
@@ -31,7 +34,9 @@ export const formatDate = (date: string | Date): Object => {
   const day = String(d.getDate()).padStart(2, "0");
 
   return {
-    day, month, year
+    day,
+    month,
+    year,
   };
 };
 
@@ -60,28 +65,50 @@ export const formatDateToDateTime = (date: string) => {
 };
 
 export const formatDateToNumber = (date: string) => {
-  const d = new Date(date)
+  const d = new Date(date);
 
-  const year = d.getFullYear()
-  const month = String(d.getMonth()).padStart(2, "0")
-  const day = String(d.getDate()).padStart(2, "0")
+  const year = d.getFullYear();
+  const month = String(d.getMonth()).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
 
-  return `${day}.${month}.${year}`
-}
+  return `${day}.${month}.${year}`;
+};
 
-export const formatDateToWeekday = (date: string | Date): {
+export const formatDateToWeekday = (
+  date: string | Date
+): {
   weekday: number;
   month: number;
   day: string;
 } => {
   const d = new Date(date);
   const w = d.getDay() + 1;
-  const month =d.getMonth() + 1;
+  const month = d.getMonth() + 1;
   const day = String(d.getDate()).padStart(2, "0");
-  
+
   return {
     weekday: w,
     month: month,
     day: day,
+  };
+};
+
+export const formateDateToDayhithMonth = (
+  date: string | Date
+): {
+  day: String;
+  month: Number;
+  year: Number;
+} => {
+  const d = new Date(date);
+
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = d.getMonth();
+  const year = d.getFullYear();
+
+  return {
+    day,
+    month,
+    year,
   };
 };

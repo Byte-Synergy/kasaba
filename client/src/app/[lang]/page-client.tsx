@@ -31,7 +31,6 @@ const HomePage = ({
   share_label,
   public_news_label,
   video_news_label,
-  select_area_placeholder,
 }: {
   select_area_placeholder: string;
   all_label: string;
@@ -43,7 +42,9 @@ const HomePage = ({
   lang: Locale;
   ads: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
   // areas: AppType["~Routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"];
-  places: {id: number, name?: string, areasCount: number, title: string}[] | []
+  places:
+  | { id: number; name?: string; areasCount: number; title: string }[]
+  | [];
   topNewsData: NewsDataType[];
   standardNews: NewsDataType[];
   news_label: string;
@@ -51,9 +52,6 @@ const HomePage = ({
   archive_label: string;
   areas_label: string;
 }) => {
-
-  
-
   return (
     <>
       <TopNews ads={ads} news={topNewsData} />
@@ -71,7 +69,7 @@ const HomePage = ({
         all_label={all_label}
         public_news_label={public_news_label}
         lang={lang}
-        news={standardNews.slice(10, 20)}
+        news={standardNews.slice(10)}
       />
       <Container className="py-10 max-md:py-5">
         <ScrollAnimation>
@@ -98,9 +96,9 @@ const HomePage = ({
       </Container>
       <section
         id="media"
-        className="relative before:w-full before:h-full before:absolute before:top-0 before:left-0 before:bg-[#1e1e1e]/90 before:backdrop-blur-[9.30px] before:-z-10 after:w-full after:h-full after:absolute after:top-0 after:left-0 after:bg-[#000573]/75 after:backdrop-blur-[9.30px] after:-z-10"
+        className="relative bg-[url(/img/media__section__bg.png)] h-[1817px]"
       >
-        <section id="vide-news" className="max-w-[1440px] w-full mx-auto">
+        <section id="vide-news" className="">
           <MediaNews
             all_label={all_label}
             photo_news_label={photo_news_label}
@@ -111,10 +109,7 @@ const HomePage = ({
         </section>
       </section>
       <section id="interactive-informations" className="w-full ">
-        <InteractivePlaces
-          lang={lang}
-          regions={places}
-        />
+        <InteractivePlaces lang={lang} regions={places} />
       </section>
     </>
   );

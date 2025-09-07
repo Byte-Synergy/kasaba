@@ -1,7 +1,5 @@
 "use client";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
 import PhotoNewsCard from "@/components/shared/photo-news-card";
 import ScrollAnimation from "@/components/ui/scroll-animation";
 import { NewsDataType } from "@/types";
@@ -21,46 +19,38 @@ const PhotoNews = ({
 }) => {
   return (
     <>
-      <ScrollAnimation>
+      <ScrollAnimation className="">
         <NewsTitle
           lang={lang}
           title={photo_news_label}
           button={all_label}
           href="/news/photo"
           className="max-md:text-[#fff]"
+          variant="subtitleWithLink"
         />
       </ScrollAnimation>
-      <div className="flex flex-col gap-y-10">
-        <div className="flex items-center justify-between gap-x-10 max-md:flex-col gap-10 max-md:gap-5">
-          <ScrollAnimation idx={0} className="w-1/2 max-md:w-full">
-            <PhotoNewsCard data={data[0]} />
-          </ScrollAnimation>
-          <ScrollAnimation idx={1} className="w-1/2 max-md:w-full">
-            <PhotoNewsCard data={data[1]} />
-          </ScrollAnimation>
-        </div>
-        <div className="">
-          <Swiper
-            modules={[Autoplay]}
-            spaceBetween={30}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            breakpoints={{
-              768: { slidesPerView: 3 },
-              0: { slidesPerView: 1.5 },
-            }}
-            loop={true}
-            className="size-full"
-          >
-            {data.slice(2).map((data, key) => (
-              <SwiperSlide key={key}>
-                <PhotoNewsCard data={data} variant="small" />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+      {/* <div className="flex flex-col gap-y-10"> */}
+      <div className="grid grid-cols-4 grid-rows-4 auto-rows-fr gap-9 max-md:flex-col max-md:gap-5 pt-5">
+        <ScrollAnimation idx={0} className="col-span-1 row-span-1">
+          <PhotoNewsCard data={data[0]} />
+        </ScrollAnimation>
+
+        {/* Ikkinchi item: 2 ustun va 2 qatorni egallaydi */}
+        <ScrollAnimation idx={1} className="col-span-2 row-span-2">
+          <PhotoNewsCard data={data[1]} variant="secondaryPhotoCard" />
+        </ScrollAnimation>
+
+        <ScrollAnimation idx={2} className="col-span-1 row-span-1">
+          <PhotoNewsCard data={data[2]} />
+        </ScrollAnimation>
+
+        <ScrollAnimation idx={3} className="col-span-1 row-span-1">
+          <PhotoNewsCard data={data[3]} />
+        </ScrollAnimation>
+
+        <ScrollAnimation idx={4} className="col-span-1 row-span-1">
+          <PhotoNewsCard data={data[4]} />
+        </ScrollAnimation>
       </div>
     </>
   );

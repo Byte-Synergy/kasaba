@@ -6,9 +6,8 @@ import { ThemeProvider } from "next-themes";
 import { cn } from "@heroui/theme";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Head from "next/head";
-import { useEffect } from "react";
-import Script from "next/script";
+import ModalProvider from "@/provider/ModalProvider";
+// import ModalProvider from 
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,13 +27,15 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen overflow-hidden bg-slate-100 antialiased dark:bg-slate-900",
+          "min-h-screen bg-slate-100 antialiased dark:bg-slate-900",
           inter.className,
         )}
       >
-        <ThemeProvider defaultTheme="light">
+        {/* <ModalProvider> */}
+        <ThemeProvider defaultTheme="dark">
           <NuqsAdapter>{children}</NuqsAdapter>
         </ThemeProvider>
+        {/* </ModalProvider> */}
       </body>
     </html>
   );

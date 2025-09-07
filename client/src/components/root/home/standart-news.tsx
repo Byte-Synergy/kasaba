@@ -1,11 +1,13 @@
-'use client'
+"use client";
 import NewsTitle from "@/components/news/title";
 import { Container } from "@/components/shared";
 import NewsOption from "@/components/shared/news-option";
 import StandardNewsCard from "@/components/shared/standart-news-card";
+import TopNewsCard from "@/components/shared/top-news-card";
 import ScrollAnimation from "@/components/ui/scroll-animation";
 import { Locale } from "@/configs/i18n";
 import { useWindowSize } from "@/hooks/useWindowSize";
+import { cn } from "@/libs/utils";
 import { NewsDataType } from "@/types";
 import { AppType } from "@/types/server";
 import { useEffect, useState } from "react";
@@ -18,7 +20,7 @@ const StandardNews = ({
   lang,
   search_label,
   archive_label,
-  all_label
+  all_label,
 }: {
   lang: Locale;
   search_label: string;
@@ -50,34 +52,49 @@ const StandardNews = ({
           button={all_label}
           href="/news/standard"
           title={news_label}
+          variant="titleWithLink"
         />
       </ScrollAnimation>
 
       <div className="flex gap-8 max-md:flex-col items-start">
-        <div className="w-3/4 max-md:w-full grid md:grid-cols-3 gap-7 items-start max-md:gap-x-3 max-md:gap-y-5">
-          {data?.[0] && (
-            <StandardNewsCard
-              className="md:col-span-3"
-              data={data[0]}
-              variant="fit"
-            />
+        <div className="w-4/5 max-md:w-full grid md:grid-cols-3 gap-4 items-start max-md:gap-x-3 max-md:gap-y-5">
+          {/* <ScrollAnimation className="h-full">
+            <StandardNewsCard data={data[1]} />
+          </ScrollAnimation> */}
+          {data[1] && (
+            <ScrollAnimation className="col-span-1 h-full">
+              <StandardNewsCard data={data[1]} variant="withThumbnailImage" />
+            </ScrollAnimation>
           )}
-          {data?.slice(1)?.map((item, idx) => (
+          {data?.[0] && (
+            <ScrollAnimation className="md:col-span-2 max-md:px-5 xl:h-[500px] lg:h-[350px] sm:h-[250px]">
+              <TopNewsCard
+                variant="inStandardNewsSection"
+                lang={lang}
+                data={data[0]}
+              />
+            </ScrollAnimation>
+          )}
+          {data?.slice(2, 5)?.map((item, idx) => (
             <div key={item.id} className="h-full">
-              <ScrollAnimation idx={idx} className="h-full">
-                <StandardNewsCard variant="card" data={item} />
+              <ScrollAnimation idx={idx} className="col-span-1 h-full">
+                <StandardNewsCard data={item} variant="withThumbnailImage" />
               </ScrollAnimation>
             </div>
           ))}
         </div>
 
-        <div className="w-1/4 max-md:w-full md:block hidden">
-          <NewsOption
-            search_label={search_label}
-            archive_label={archive_label}
-            areas_label={areas_label}
-            ads={ads}
-          />
+        <div
+          className={cn(
+            "w-1/5 max-md:w-full h-full md:block hidden",
+            "flex flex-col items-start gap-4"
+          )}
+        >
+          {data?.slice(5)?.map((item, idx) => (
+            <ScrollAnimation key={item.id} idx={idx} className="h-full">
+              <StandardNewsCard data={item} variant="withoutThumbnailImage" />
+            </ScrollAnimation>
+          ))}
         </div>
       </div>
     </Container>

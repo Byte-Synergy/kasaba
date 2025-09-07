@@ -18,11 +18,7 @@
   "search_results_empty_label": "Результаты не найдены",
   "search_results_empty_description": "По вашему запросу не найдено никаких результатов",
   "all_label": "Все",
-  "contact_options": [
-    "Вопрос",
-    "Предложение",
-    "Просьба"
-  ],
+  "contact_options": ["Вопрос", "Предложение", "Просьба"],
   "contact_label": "Контакт",
   "search_engine": "Поисковая система",
   "reception_number": "Номер приема",
@@ -70,22 +66,27 @@
   "social_networks": {
     "facebook": {
       "title": "Республиканский совет страница Facebook",
+      "media": "facebook",
       "description": "Следите за нами в Facebook. Узнавайте первыми о социальных и экономических новостях."
     },
     "x": {
       "title": "Республиканский совет страница X (Twitter)",
+      "media": "twitter",
       "description": "Следите за нами в X(Twitter). Узнавайте первыми о социальных и экономических новостях."
     },
     "telegram": {
       "title": "Республиканский совет страница Telegram",
+      "media": "telegram",
       "description": "Следите за нами в Telegram. Узнавайте первыми о социальных и экономических новостях."
     },
     "youtube": {
       "title": "Республиканский совет страница YouTube",
+      "media": "youtube",
       "description": "Следите за нами в Youtube. Узнавайте первыми о социальных и экономических новостях."
     },
     "instagram": {
       "title": "Республиканский совет страница Instagram",
+      "media": "instagram",
       "description": "Следите за нами в Instagram. Узнавайте первыми о социальных и экономических новостях."
     }
   },

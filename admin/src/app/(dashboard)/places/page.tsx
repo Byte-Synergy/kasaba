@@ -6,7 +6,10 @@ import { getPlaces } from "@/actions/area";
 export default async function Page() {
   const { data } = await getPlaces({
     limit: 50,
-    page: 1
+    page: 1,
+    filter: {
+      languageCode: "uz-cyrl"
+    }
   });
 
   const columns: ColumnDef<Record<string, any>>[] = [
@@ -30,6 +33,7 @@ export default async function Page() {
     <>
       <section className="h-full">
         <div className="container min-h-full p-5">
+          <PageViewHeader title="Interaktive hududlar" />
           <div className="h-full rounded-lg bg-white p-5 shadow-lg shadow-slate-200">
             {!data?.data.length || !placeData?.length ? (
               <div className="grid h-full min-h-40 w-full place-items-center">
@@ -37,7 +41,6 @@ export default async function Page() {
               </div>
             ) : (
               <>
-                <PageViewHeader title="Shahar va viloyatlar" />
                 <PageView data={placeData} columns={columns} />
               </>
             )}

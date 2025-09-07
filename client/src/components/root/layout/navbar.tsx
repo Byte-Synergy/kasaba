@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { MenuItem } from "@/app/[lang]/layout";
 import Link from "@/components/link";
 import { Locale } from "@/configs/i18n";
@@ -15,8 +15,8 @@ export default function Navbar({
   const c =
     "flex relative h-full text-nowrap items-center space-x-2 text-[#141348] text-lg font-semibold uppercase max-md:p-4";
 
-  const t = useTranslations()
-  
+  const t = useTranslations();
+
   const render = (menu: MenuItem[], level = 0) => {
     return (
       <>
@@ -46,8 +46,8 @@ export default function Navbar({
               ? `/news/${item.newsType}`
               : item.type === "document" &&
                 !(item.docCount && item.docCount > 1)
-                ? `/documents/${item.id}`
-                : `/p/${item.id}`;
+              ? `/documents/${item.id}`
+              : `/p/${item.id}`;
 
           return (
             <div key={item.id} className={`relative ${g[level]}`}>
@@ -63,9 +63,7 @@ export default function Navbar({
                       : "hover:text-[#ff7a00]"
                   )}
                 >
-                  <span>
-                    {item.title}
-                  </span>
+                  <span>{item.title}</span>
                 </Link>
               ) : (
                 <div
@@ -77,16 +75,15 @@ export default function Navbar({
                       : "hover:text-[#ff7a00]"
                   )}
                 >
-                  <span>
-                    {item.title}
-                  </span>
+                  <span>{item.title}</span>
                 </div>
               )}
 
               {hasSub && (
                 <div
-                  className={`absolute z-20 bg-[#ff7a00] flex-col hidden cursor-pointer ${gHF[level]} ${level === 0 ? "top-full left-0" : "top-0 left-full"
-                    }`}
+                  className={`absolute z-20 bg-[#ff7a00] flex-col hidden cursor-pointer ${
+                    gHF[level]
+                  } ${level === 0 ? "top-full left-0" : "top-0 left-full"}`}
                 >
                   {render(item.sub_menu, level + 1)}
                 </div>

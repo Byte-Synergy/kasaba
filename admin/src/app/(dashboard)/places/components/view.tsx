@@ -6,15 +6,18 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useRouter } from "next/navigation";
+import TableComponent from "../../../../components/share/list-table/tableComponent";
+import TableHeader from "../../../../components/share/list-table/tableHeader";
+import TableSpan from "../../../../components/share/list-table/tableSpan";
+import TableBody from "../../../../components/share/list-table/tableBody";
+import DataListItem from "./DataListItem";
+
+export interface TableDataType {
+  id: number;
+  name: string;
+  areas: number;
+}
 
 export default function PageView({
   data,
@@ -24,6 +27,7 @@ export default function PageView({
   data: Record<string, any>[];
 }) {
   const router = useRouter();
+
   const table = useReactTable({
     data,
     columns,
@@ -31,57 +35,24 @@ export default function PageView({
   });
 
   return (
-    <Table>
+    <TableComponent className="border rounded-sm">
       <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow
-            className="border-slate-200 hover:bg-transparent"
-            key={headerGroup.id}
-          >
-            {headerGroup.headers.map((header) => {
-              return (
-                <TableHead
-                  className="text-xs font-bold text-slate-600 capitalize"
-                  key={header.id}
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                </TableHead>
-              );
-            })}
-          </TableRow>
-        ))}
+        <div className={"grid grid-cols-7 text-start py-5 border-b rounded-sm"}>
+          <TableSpan className="col-span-2 text-start pl-10 font-bold uppercase">Hududlar</TableSpan>
+          <TableSpan className="col-span-1 font-bold uppercase">Hududlar soni</TableSpan>
+          <TableSpan className="col-span-1 font-bold uppercase">A'zolar</TableSpan>
+          <TableSpan className="col-span-1 font-bold uppercase">Qo'shilgan vaqti</TableSpan>
+          <TableSpan className="col-span-1 font-bold uppercase">Yangilangan vaqti</TableSpan>
+          <TableSpan className="col-span-1 font-bold uppercase"></TableSpan>
+        </div>
       </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && "selected"}
-              className="cursor-pointer border-slate-100"
-              onClick={() =>
-                router.push(`/places/${row.original.id}`)
-              }
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell className="text-sm font-medium" key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
+      <TableBody className="">
+        {
+          data.map(p => (
+            <DataListItem placeData={p} step={0} key={p.id} />
           ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              No results.
-            </TableCell>
-          </TableRow>
-        )}
+        }
       </TableBody>
-    </Table>
+    </TableComponent>
   );
 }

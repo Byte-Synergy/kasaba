@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type ModalType = "weather" | "sidebar" | null;
+type ModalType = "weather" | "sidebar" | "photoPreview" | null;
 
 interface ModalState {
   modal: ModalType;

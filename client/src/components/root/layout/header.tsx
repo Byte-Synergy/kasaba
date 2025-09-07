@@ -19,17 +19,17 @@ const Clock = dynamic(() => import("./clock"), { ssr: false });
 const Header = ({
   lang,
   header_desc,
-  menu
+  menu,
 }: {
   header_desc: string;
   lang: Locale;
-  menu: MenuItem[]
+  menu: MenuItem[];
 }) => {
   // const openSidebar = useSidebarStore((state) => state.open)
-  const {openModal} = useModalStore()
+  const { openModal } = useModalStore();
 
   const handleOpenSidebar = () => {
-    openModal("sidebar")
+    openModal("sidebar");
   };
 
   return (
@@ -43,8 +43,8 @@ const Header = ({
           <WeatherHeader />
           <Clock lang={lang} />
           <div className="flex items-center gap-x-1">
-            <LanguageSwitcher lang={lang}/>
-            <Link lang={lang} href="/search" prefetch={false} >
+            <LanguageSwitcher lang={lang} />
+            <Link lang={lang} href="/search" prefetch={false}>
               <button
                 role="button"
                 className="hover:bg-white/15 transition-colors p-2 rounded-sm"
@@ -73,13 +73,13 @@ const Header = ({
           <Logo lang={lang} header_desc={header_desc} />
           <WeatherHeader />
           <button
-              className=" w-auto p-2 bg-white/15 rounded-full border border-white/15 float-end"
-              onClick={handleOpenSidebar}
-            >
-              <RiMenu3Fill className="w-5 h-5 text-white" />
-            </button>
+            className=" w-auto p-2 bg-white/15 rounded-full border border-white/15 float-end"
+            onClick={handleOpenSidebar}
+          >
+            <RiMenu3Fill className="w-5 h-5 text-white" />
+          </button>
         </div>
-        </Container>
+      </Container>
     </section>
   );
 };

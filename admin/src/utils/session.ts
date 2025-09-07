@@ -1,6 +1,6 @@
-import { TOKEN_COOKIE_NAME } from "@/configs/cookie";
 import eden from "@/libs/eden";
 import { Cookies } from "@/types/cookie";
+import { TOKEN_COOKIE_NAME } from "./configs/cookie";
 
 export function getUserSession(cookies: Pick<Cookies, "get">) {
   const sessionId = cookies.get(TOKEN_COOKIE_NAME)?.value;

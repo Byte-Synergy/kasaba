@@ -2,6 +2,8 @@ import { getSessionData } from "@/actions/session";
 import { WithOut } from "@/types";
 import { AppType } from "@/types/server";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export const PlaceApi = {
   create: async (
     data: WithOut<
@@ -77,7 +79,7 @@ export const PlaceApi = {
     areaId: number,
     redirectTo: string,
     fetchOptions?: Omit<RequestInit, "headers" | "method">,
-  ) => {  
+  ) => {
     const token = await getSessionData();
 
     if (!token) {
@@ -95,11 +97,71 @@ export const PlaceApi = {
     );
 
     if (!response.ok) {
-      throw new Error(`Interaktiv hududni o'chirishda xatolik: ${response.status}`);
+      throw new Error(
+        `Interaktiv hududni o'chirishda xatolik: ${response.status}`,
+      );
     }
 
     if (redirectTo) {
       window.location.href = redirectTo;
     }
+  },
+
+  getPlaces: async (
+    placeId: number,
+    fetchOptions?: Omit<RequestInit, "headers" | "method">,
+  ) => {
+    const token = await getSessionData()
+
+    if (!token) {
+      throw new Error("Autentifikatsiya token topilmadi")
+    }
+
+    const res = await fetch(`${API_BASE_URL}/api/rest/places/${placeId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!res.ok) {
+      throw new Error(`Interkativ hududlarni olishda xatolik: ${res.status}`)
+    }
+  },
+
+  getInteractiveAreasByFetch: async (
+    query: Record<string, any>,
+    placeId: number,
+    fetchOptions?: Omit<RequestInit, "headers" | "method">
+  ) => {
+    const params = new URLSearchParams(query);
+    const url = `${API_BASE_URL}/api/rest/places/${placeId}/interactive_areas?`;
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        ...fetchOptions,
+      });
+
+      const data = await response.json();
+
+      return {
+        data: response.ok ? data : null,
+        error: response.ok ? null : data,
+        status: response.status,
+      };
+    } catch (error: any) {
+      return {
+        data: null,
+        error: error.message || "Fetch error",
+        status: 500,
+      };
+    }
   }
+
 };
+
+

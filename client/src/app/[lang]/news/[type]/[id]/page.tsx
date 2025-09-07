@@ -23,13 +23,18 @@ const SingleNewsPage = async ({
   const { data: currentNews } = await eden.news({ newsPath: id }).get();
 
   const { data: otherNews } = await eden.news.get({
-    query: { limit: 4, page: 1, filter: {
-      lang
-    }},
+    query: {
+      limit: 4,
+      page: 1,
+      filter: {
+        lang,
+        type: [currentNews?.type],
+      },
+    },
   });
 
   console.log(currentNews);
-  
+
   if (!currentNews) redirect("/");
 
   const breadcrumbs: Record<typeof currentNews.type, string> = {
@@ -38,10 +43,10 @@ const SingleNewsPage = async ({
     photo: t.photo_news_label,
     video: t.video_news_label,
   };
-  
+
   return (
     <div className="">
-      <section className="max-w-[1440px] w-full mx-auto">
+      <section className="">
         <Container className="my-5">
           <Breadcrumb
             main_label={t.main_label}
@@ -49,10 +54,10 @@ const SingleNewsPage = async ({
           />
         </Container>
       </section>
-      <section id="content" className="max-w-[1440px] w-full mx-auto mb-10">
+      <section id="content" className="mb-10">
         <Container>
-          <div className="flex gap-9">
-            <div className="w-3/4 max-md:w-full">
+          <div className="flex gap-9 ">
+            <div className="w-3/4 max-md:w-full bg-[#f0f0f0] rounded-xl p-5 px-10">
               <h1 className=" font-montserrat font-semibold text-2xl max-md:text-md max-md:text-center max-md:mt-5">
                 {currentNews.title}
               </h1>
@@ -84,7 +89,7 @@ const SingleNewsPage = async ({
                 text={`https://davlat.kasaba.uz/news/${currentNews.type}/${currentNews.path}`}
               />
             </div>
-            <div className=" w-1/4 max-md:hidden">
+            <div className="relative w-1/4 max-md:hidden">
               {otherNews?.data.length && (
                 <OtherContent lang={lang} data={otherNews?.data.slice(0, 3)} />
               )}
@@ -92,22 +97,26 @@ const SingleNewsPage = async ({
           </div>
         </Container>
       </section>
-      <section id="social-news" className="max-w-[1440px] w-full mx-auto">
+      <section id="social-news">
+        {/* <Container> */}
         <SocialAds
           connect_button={t.link_sections.telegram.connect_button}
           description={t.link_sections.telegram.description}
           title={t.link_sections.telegram.title}
         />
+        {/* </Container> */}
       </section>
-      <section id="related-news" className="max-w-[1440px] w-full mx-auto">
-        {otherNews?.data.length && (
-          <RelatedNews
-            lang={lang}
-            all_label={t.all_label}
-            news_on_the_topic_label={t.news_on_the_topic_label}
-            data={otherNews.data}
-          />
-        )}
+      <section id="related-news">
+        <Container>
+          {otherNews?.data.length && (
+            <RelatedNews
+              lang={lang}
+              all_label={t.all_label}
+              news_on_the_topic_label={t.news_on_the_topic_label}
+              data={otherNews.data}
+            />
+          )}
+        </Container>
       </section>
     </div>
   );

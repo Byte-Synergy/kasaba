@@ -1,6 +1,7 @@
 "use client";
 
 import { getNews } from "@/action/news";
+import PhotoNewsCard from "@/components/shared/photo-news-card";
 import StandardNewsCard from "@/components/shared/standart-news-card";
 import { Locale } from "@/configs/i18n";
 import { AppType } from "@/types/server";
@@ -43,17 +44,31 @@ export default function PageC({
   return (
     <>
       <InfiniteScroll
-      className="!overflow-visible"
+        className="!overflow-visible"
         dataLength={data.length}
         next={() => setPage((prev) => prev + 1)}
         hasMore={hasMore}
         loader={hasMore ? "" : null}
       >
-        <div className="flex items-start gap-3 flex-wrap">
+        <div className="grid grid-cols-4 gap-5">
           {data.map((item, key) => (
-            <div className="w-[24%] max-md:w-full" key={key}>
-              <StandardNewsCard data={item} key={item.title} />
-            </div>
+            <>
+              {type === "photo" && (
+                <div className="col-span-1 row-span-1 max-md:w-full" key={key}>
+                  <PhotoNewsCard data={item} variant="primaryPhotoCard" />
+                </div>
+              )}
+
+              {type === "standard" && (
+                <div className="col-span-1 max-md:w-full" key={key}>
+                  <StandardNewsCard
+                    data={item}
+                    key={item.title}
+                    variant="withThumbnailImage"
+                  />
+                </div>
+              )}
+            </>
           ))}
         </div>
       </InfiniteScroll>

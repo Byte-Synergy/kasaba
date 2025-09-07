@@ -24,8 +24,32 @@ const TopNews = ({
   const { lang } = useParams<{ lang: Locale }>();
 
   const [heroAds, setHeroAds] = useState<{
-    hero1: { url: string, id: number, file: { name: string; mimeType: string; extension: string; href: string }, type: string }[] | null;
-    hero2: { url: string, id: number, file: { name: string; mimeType: string; extension: string; href: string }, type: string }[] | null;
+    hero1:
+      | {
+          url: string;
+          id: number;
+          file: {
+            name: string;
+            mimeType: string;
+            extension: string;
+            href: string;
+          };
+          type: string;
+        }[]
+      | null;
+    hero2:
+      | {
+          url: string;
+          id: number;
+          file: {
+            name: string;
+            mimeType: string;
+            extension: string;
+            href: string;
+          };
+          type: string;
+        }[]
+      | null;
   }>({
     hero1: null,
     hero2: null,
@@ -33,17 +57,17 @@ const TopNews = ({
 
   useEffect(() => {
     if (!ads.length) return;
-    setHeroAds(prev => ({
-      hero1: ads.filter(i => i.type === "hero1"),
-      hero2: ads.filter(i => i.type === "hero2"),
+    setHeroAds((prev) => ({
+      hero1: ads.filter((i) => i.type === "hero1"),
+      hero2: ads.filter((i) => i.type === "hero2"),
     }));
   }, [ads]);
 
   return (
     Boolean(news.length) && (
-      <Container className="relative max-md:w-full my-5">
+      <Container className="relative max-md:w-full">
         <ScrollAnimation>
-          <div className="relative flex md:flex-row flex-col gap-3">
+          <div className="relative">
             <Swiper
               modules={[Autoplay]}
               autoplay={{
@@ -52,15 +76,23 @@ const TopNews = ({
               }}
               loop={true}
               className="w-full"
+              pagination={true}
             >
               {news.map((data) => (
-                <SwiperSlide key={data.id} className="max-md:px-5">
-                  <TopNewsCard lang={lang} data={data} />
+                <SwiperSlide
+                  key={data.id}
+                  className="max-md:px-5 xl:h-[750px] lg:h-[550px] md:h-[350px] sm:h-[250px]"
+                >
+                  <TopNewsCard
+                    variant="inTopNewsSection"
+                    lang={lang}
+                    data={data}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
             {Object.keys(heroAds).length && (
-              <div className="flex px-5 md:px-0 flex-col gap-3 w-full md:max-w-[400px]">
+              <div className="flex px-5 md:px-0 flex-col gap-3 w-full rounded-[10px] mt-2 overflow-hidden">
                 <Swiper
                   modules={[Autoplay]}
                   autoplay={{
@@ -68,15 +100,19 @@ const TopNews = ({
                     disableOnInteraction: false,
                   }}
                   loop
-                  className="size-full max-h-56"
+                  className="size-full max-h-72"
                 >
-                  {
-                    heroAds.hero1?.length ?
+                  {heroAds.hero1?.length ? (
                     heroAds.hero1.map((ad, key) => (
                       <SwiperSlide key={key}>
-                        <Link key={key} href={ad.url || "/"} target="_blank" rel="noopener noreferrer">
+                        <Link
+                          key={key}
+                          href={ad.url || "/"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           <Image
-                            src={ad?.file?.href || "/img/default-image.png"}
+                            src={ad.file.href || "/img/oromgoh-banner.png"}
                             alt={ad.file.name}
                             width={1080}
                             height={1080}
@@ -84,54 +120,18 @@ const TopNews = ({
                           />
                         </Link>
                       </SwiperSlide>
-                    )) : (
-                      <SwiperSlide>
-                        <Image
-                          src="/img/banners/120uz.jpg"
-                          alt="Default Ad"
-                          width={1080}
-                          height={1080}
-                          className="size-full object-cover"
-                        />
-                      </SwiperSlide>
-                    )
-                  }
-                </Swiper>
-                <Swiper
-                  modules={[Autoplay]}
-                  autoplay={{
-                    delay: 3000,
-                    disableOnInteraction: false,
-                  }}
-                  loop
-                  className="size-full max-h-56"
-                >
-                  {
-                    heroAds.hero2?.length ?
-                    heroAds.hero2.map((ad, key) => (
-                      <SwiperSlide key={key}>
-                        <Link key={key} href={ad.url || "/"} target="_blank" rel="noopener noreferrer">
-                          <Image
-                            src={ad?.file?.href || "/img/banners/banner_uz_m.png"}
-                            alt={ad.file.name}
-                            width={1080}
-                            height={1080}
-                            className="size-full object-cover"
-                          />
-                        </Link>
-                      </SwiperSlide>
-                    )) : (
-                      <SwiperSlide>
-                        <Image
-                          src="/img/banners/banner_uz_m.png"
-                          alt="Default Ad"
-                          width={1080}
-                          height={1080}
-                          className="size-full object-cover"
-                        />
-                      </SwiperSlide>
-                    )
-                  }
+                    ))
+                  ) : (
+                    <SwiperSlide>
+                      <Image
+                        src="/img/banners/oromgoh-banner.png"
+                        alt="Default Ad"
+                        width={1080}
+                        height={1080}
+                        className="size-full object-cover"
+                      />
+                    </SwiperSlide>
+                  )}
                 </Swiper>
               </div>
             )}

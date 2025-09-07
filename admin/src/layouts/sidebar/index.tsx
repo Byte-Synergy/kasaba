@@ -1,6 +1,6 @@
 "use client";
 
-import { FaAngleLeft } from "react-icons/fa6";
+// import { FaAngleLeft } from "react-icons/fa6";
 import { IoMdLogOut } from "react-icons/io";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import SidebarMenu from "@/layouts/sidebar/menu";
@@ -17,44 +17,40 @@ export default function Sidebar({
   setShowSidebar: Dispatch<SetStateAction<boolean>>;
   photoUrl: string;
 }) {
+
+  console.log(showSidebar);
+
   return (
     <>
       <aside
         className={cn(
-          "fixed z-50 top-0 flex h-full w-full max-w-64 flex-col gap-3 bg-gradient-to-tr from-slate-900 to-slate-800 p-2 pr-5 transition-all duration-500 ease-in-out md:sticky md:left-0 md:max-w-60 md:pr-2",
-          showSidebar ? "left-0" : "-left-full",
+          "sticky top-0 z-50 flex min-h-[100vh] h-full flex-col gap-3 p-2 transition-all duration-500 ease-in-out",
+          "dark:bg-gradient-to-tr dark:from-slate-900 dark:to-slate-800",
+          "border-r border-black/50",
+          showSidebar ? "w-75" : "w-20",
         )}
       >
-        {showSidebar && (
-          <button
-            className="absolute top-2 -right-3 grid size-6 place-items-center rounded-full bg-slate-950 text-white"
-            onClick={() => setShowSidebar(false)}
-          >
-            <FaAngleLeft size={14} />
-          </button>
-        )}
         <div className="size-full overflow-y-auto">
-          <div className="mb-4 flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2 transition-colors hover:bg-white/10">
+          <div className={cn("mb-4 flex w-full cursor-pointer items-center gap-2 rounded-md px-3 py-2 transition-colors hover:bg-white/10", showSidebar ? "" : "items-center justify-center")}>
             <Avatar>
               <AvatarImage src={photoUrl} alt="Kasaba" />
               <AvatarFallback className="bg-white/30 text-white">
                 K
               </AvatarFallback>
             </Avatar>
-            {/* <div className="grid h-10 w-10 place-items-center overflow-hidden rounded-full bg-white/50">
-            <Image width={40} height={40} src={photoUrl} alt="" />
-          </div> */}
-            <span className="text-xs font-medium text-white uppercase">
+            <span className={cn("text-xs font-medium text-white uppercase", showSidebar ? "inline-block" : "hidden")}>
               Kasaba
             </span>
             <button
               onClick={logOut}
-              className="ml-auto cursor-pointer text-lg text-red-300"
+              className={cn("ml-auto cursor-pointer text-lg text-red-300", showSidebar ? "inline-block" : "hidden")}
             >
               <IoMdLogOut />
             </button>
           </div>
-          <SidebarMenu />
+          <div>
+            <SidebarMenu showSidebar={showSidebar} />
+          </div>
         </div>
       </aside>
     </>

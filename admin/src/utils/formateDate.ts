@@ -19,7 +19,7 @@ export const formatDate = (date: string) => {
   const day = dateObj.getDate();
   const month = dateObj.getMonth();
   const year = dateObj.getFullYear();
-  return `${day}-${Month[month]}${year}`;
+  return `${day}-${Month[month]}, ${year}`;
 };
 
 // Format date to hh:mm

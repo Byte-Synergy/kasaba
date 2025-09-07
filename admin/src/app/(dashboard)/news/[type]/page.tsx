@@ -19,8 +19,8 @@ export default async function Page({
   };
 
   if (!["standard", "photo", "video", "archive"].includes(type))
-      redirect("/news/standard");
-  
+    redirect("/news/standard");
+
   return (
     <section className="h-full">
       <div className="container min-h-full p-5">
@@ -30,7 +30,7 @@ export default async function Page({
             href={`/news/create/${type}`}
             title={titles[type as keyof typeof titles]}
           />
-            <PageC type={type} />
+          <PageC type={type} />
         </div>
       </div>
     </section>

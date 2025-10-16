@@ -7,7 +7,7 @@ WORKDIR /app
 COPY ./prisma ./prisma
 COPY ./src/seed.js ./src/seed.js
 COPY ./src/seed.js.map ./src/seed.js.map
-COPY ./src/server-linux-arm ./src/server
+COPY ./src/server ./src/server
 COPY ./src/license ./src/license
 
 

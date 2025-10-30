@@ -12,7 +12,17 @@ export type MenuItem = {
   type?: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["type"];
   newsType?: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["newsType"];
 };
+export async function getMenu(
+  menuId: number,
+  fetch?: Omit<RequestInit, "headers" | "method">,
+  fetcher: typeof eden = eden,
+) {
+  const { data, error, status } = await fetcher
+    .menus({ menuId })
+    .get({ fetch });
 
+  return { data, error, status };
+}
 // Eden’dan menu olish
 export async function getMenuTree(lang: string) {
   const { data, error, status } = await eden.menus.tree.get({

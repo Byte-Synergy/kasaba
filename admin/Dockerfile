@@ -13,7 +13,6 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-# ENV BUN_JSC_forceRAMSize=1073741824
 
 RUN addgroup --system --gid 1001 new_group
 RUN adduser --system --uid 1001 new_user

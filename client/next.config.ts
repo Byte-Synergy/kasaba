@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "s3bucket.api.digitalaggregator.team",
+        hostname: "s3bucket-api.kasaba.uz",
         port: "",
         pathname: "/kasaba/**",
       },

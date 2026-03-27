@@ -24,6 +24,12 @@ export async function middleware(request: NextRequest) {
 async function middlewareAuth(req: NextRequest) {
   const nextUrl = req.nextUrl;
 
+  const isMaintenance = process.env.NEXT_PUBLIC_MAINTENANCE === "true";
+
+  if (isMaintenance && req.nextUrl.pathname !== "/maintenance") {
+    return NextResponse.redirect(new URL("/maintenance", req.url));
+  }
+
   const isAPIRoute = nextUrl.pathname.startsWith("/api");
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 

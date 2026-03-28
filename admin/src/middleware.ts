@@ -9,9 +9,9 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/maintenance", request.url));
   }
 
-  const isApiRoute = request.nextUrl.pathname.startsWith("/api");
+  // const isApiRoute = request.nextUrl.pathname.startsWith("/api");
 
-  if (isApiRoute) return NextResponse.next();
+  // if (isApiRoute) return NextResponse.next();
   // const response = (await middlewareAuth(request)) ?? NextResponse.next();
 
   // await updateUserSessionExpiration({

@@ -20,28 +20,27 @@ function getLocale(request: NextRequest): string | undefined {
 
 export default function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-
   const isMaintenance = process.env.NEXT_PUBLIC_MAINTENANCE === "true";
 
-  if (isMaintenance && req.nextUrl.pathname !== "/maintenance") {
-    return NextResponse.redirect(new URL("/maintenance", req.url));
+  // ✅ 1. maintenance page ni skip qil
+  if (pathname.startsWith("/maintenance")) {
+    return;
   }
 
-  // Check if there is any supported locale in the pathname
+  // ✅ 2. maintenance redirect
+  if (isMaintenance) {
+    return NextResponse.redirect(new URL("/maintenance", request.url));
+  }
+
+  // ✅ 3. locale check
   const pathnameIsMissingLocale = i18n.locales.every(
     (locale: string) =>
-      !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+      !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`,
   );
 
-  // Redirect if there is no locale
   if (pathnameIsMissingLocale) {
-    // const locale = getLocale(request);
-
-    // e.g. incoming request is /products
-    // The new URL is now /en-US/products
-    // return NextResponse.redirect(new URL(`/${locale}${pathname}`, request.url));
     return NextResponse.redirect(
-      new URL(`/${i18n.defaultLocale}${pathname}`, request.url)
+      new URL(`/${i18n.defaultLocale}${pathname}`, request.url),
     );
   }
 }

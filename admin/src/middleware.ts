@@ -6,6 +6,12 @@ import {
 const authRoutes = ["/login"];
 
 export async function middleware(request: NextRequest) {
+  const isMaintenance = process.env.NEXT_PUBLIC_MAINTENANCE === "true";
+
+  if (isMaintenance && request.nextUrl.pathname !== "/maintenance") {
+    return NextResponse.redirect(new URL("/maintenance", request.url));
+  }
+
   const isApiRoute = request.nextUrl.pathname.startsWith("/api");
 
   if (isApiRoute) return NextResponse.next();

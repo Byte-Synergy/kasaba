@@ -96,6 +96,7 @@ export interface NewsFilter {
     lang?: Locale;
     isTop?: boolean;
     isArchive?: boolean;
+    q?: string;
   };
   tags?: string[];
   sortBy?: "date" | "title" | "views";

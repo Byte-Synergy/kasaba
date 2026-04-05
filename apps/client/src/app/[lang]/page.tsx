@@ -4,8 +4,8 @@ import UsefulLinks from "@/components/root/home/useful-links";
 import { Locale } from "@/configs/i18n";
 import { getDictionary } from "@/utils/directory";
 import { getPlaces } from "@/action/place";
+import { getNews } from "@/action/news";
 import { redirect } from "next/navigation";
-// import { redirect } from "next/dist/server/api-utils";
 
 export default async function Page({
   params,
@@ -15,36 +15,37 @@ export default async function Page({
   const { lang } = await params;
   const t = await getDictionary(lang as Locale);
 
-  if(!lang.length) redirect("/not-found")
+  if (!lang.length) redirect("/not-found");
   const { data: places } = await getPlaces({
     limit: 50,
     page: 1,
     filter: {
-      languageCode: lang || "uz"
-    }
+      languageCode: lang || "uz",
+    },
   });
 
   const { data: adsData } = await eden.banner.get();
-  const { data: topNewsData } = await eden.news.get({
-    query: {
-      limit: 50,
-      page: 1,
-      filter: {
-        isTop: true,
-        lang,
-      },
+
+  const { data: topNewsDataResp } = await getNews({
+    limit: 50,
+    page: 1,
+    filter: {
+      isTop: true,
+      lang,
     },
   });
-  const { data: standardNewsData } = await eden.news.get({
-    query: {
-      limit: 50,
-      page: 1,
-      filter: {
-        type: ["standard"],
-        lang,
-      },
+
+  const { data: standardNewsDataResp } = await getNews({
+    limit: 50,
+    page: 1,
+    filter: {
+      type: ["standard"],
+      lang,
     },
   });
+
+  const topNewsData = topNewsDataResp?.data || [];
+  const standardNewsData = standardNewsDataResp?.data || [];
 
   return (
     <>
@@ -62,8 +63,8 @@ export default async function Page({
         archive_label={t.archive_label}
         areas_label={t.areas_label}
         news_label={t.news_label}
-        standardNews={standardNewsData?.data || []}
-        topNewsData={topNewsData?.data || []}
+        standardNews={standardNewsData}
+        topNewsData={topNewsData}
         ads={adsData || []}
       />
       <section id="useful-links" className="w-full max-w-[1440px] mx-auto">

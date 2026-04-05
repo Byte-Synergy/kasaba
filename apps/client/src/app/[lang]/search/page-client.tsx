@@ -7,8 +7,8 @@ import SearchCard from "@/components/shared/search-card";
 import { Locale } from "@/configs/i18n";
 import { AppType } from "@/types/server";
 import Image from "next/image";
-import { useParams } from "next/navigation";
 import React, { useCallback, useEffect, useState } from "react";
+import { NewsApi } from "@/utils/newsApi";
 
 function SearchPageClient({
   lang,
@@ -42,16 +42,12 @@ function SearchPageClient({
     const timeoutId = setTimeout(async () => {
       setLoading(true);
       try {
-        const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-        const sanitizedQuery = query
-          .replace(/\\/g, "\\\\")
-          .replace(/"/g, '\\"');
-
-        const response = await fetch(
-          `${API_BASE_URL}/api/rest/news?page=1&limit=10&filter=${encodeURIComponent(JSON.stringify({ q: sanitizedQuery, limit: 50, page: 1, lang }))}`
-        );
-        const result = await response.json();
-        setItems(result.data || []);
+        const result = await NewsApi.getNewsList({
+          page: 1,
+          limit: 50,
+          filter: { q: query, lang }
+        });
+        setItems(result?.data || []);
       } catch (error) {
         console.error("Search error:", error);
         setItems([]);

@@ -30,8 +30,10 @@ const WeatherHeader = () => {
     };
 
     useEffect(() => {
-        getGeolocationWeather();
-    });
+        if (!current) {
+            getGeolocationWeather();
+        }
+    }, [current]);
 
     return (
         <button type='button' onClick={() => openModal("weather")} className='inline-flex items-center justify-start gap-x-0 max-md:p-0 max-md:flex-row-reverse max-md:bg-[#ffffff31] max-md:rounded-3xl max-md:px-2 max-md:border-1 max-md:border-[#ffffff4e]' role='button'>

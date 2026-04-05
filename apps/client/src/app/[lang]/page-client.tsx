@@ -83,7 +83,7 @@ const HomePage = ({
         lang={lang}
         all_label={all_label}
         news_label={news_label}
-        news={standardNews.slice(0, 15)}
+        news={standardNews.slice(7, 22)}
       />
       <PopularNews
         all_label={all_label}

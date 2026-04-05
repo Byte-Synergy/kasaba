@@ -2,7 +2,7 @@ import { Container } from "@/components/shared";
 import Breadcrumb from "@/components/shared/breadcrumb";
 import StandardNewsCard from "@/components/shared/standart-news-card";
 import { Locale } from "@/configs/i18n";
-import eden from "@/libs/eden";
+import { getNews } from "@/action/news";
 import { getDictionary } from "@/utils/directory";
 import React from "react";
 import PageC from "./page-c";
@@ -16,16 +16,16 @@ const NewsPage = async ({
 
   const t = await getDictionary(lang);
 
-  const { data } = await eden.news.get({
-    query: {
-      limit: 50,
-      page: 1,
-      filter: {
-        lang,
-        type: [type as any],
-      },
+  const { data: newsResp } = await getNews({
+    limit: 50,
+    page: 1,
+    filter: {
+      lang,
+      type: [type as any],
     },
   });
+
+  const newsData = newsResp?.data || [];
 
   return (
     <div className="max-w-[1440px] w-full mx-auto">
@@ -34,7 +34,7 @@ const NewsPage = async ({
       </Container>
       <section id="standart-news" className="my-5 ">
         <Container className="my-5">
-          {data?.data && <PageC data={data?.data} lang={lang} type={type} />}
+          {newsData && <PageC data={newsData} lang={lang} type={type} />}
         </Container>
       </section>
     </div>

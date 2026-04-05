@@ -1,7 +1,6 @@
 "use client";
 
 import { NewsDataType } from "@/types";
-import { formatDateToDateTime } from "@/utils/formatDate";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import React, { memo } from "react";
@@ -10,15 +9,6 @@ import { Locale } from "@/configs/i18n";
 
 const TopNewsCard = memo(
   ({ data, lang }: { lang: Locale; data: NewsDataType }) => {
-    const dateObj = new Date(data.createdAt || new Date());
-    const day = dateObj.getDate();
-    const month = dateObj.getMonth();
-
-    const MONTHS_LIST = [
-      "yanvar", "fevral", "mart", "aprel", "may", "iyun",
-      "iyul", "avgust", "sentabr", "oktabr", "noyabr", "dekabr"
-    ];
-
     return (
       <Link
         lang={lang}
@@ -35,14 +25,6 @@ const TopNewsCard = memo(
           wrapperClassName="size-full"
         />
         
-        {/* Date Blur Card */}
-        <div 
-          className="absolute right-5 bottom-8 z-20 flex flex-col items-center justify-center rounded-[10px] border border-white/10 bg-white/10 p-4 text-white backdrop-blur-[20px] md:w-[120px] md:h-[130px] w-20 h-24"
-        >
-          <span className="md:text-4xl text-2xl font-bold">{day}</span>
-          <span className="md:text-xl text-sm font-medium uppercase">{MONTHS_LIST[month]}</span>
-        </div>
-
         {/* Title Overlay */}
         <div 
           className="absolute inset-0 flex flex-col justify-end p-8 pb-20 md:p-14 md:pb-28 transition-all duration-300 rounded-[10px]"

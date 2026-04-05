@@ -4,10 +4,10 @@ import NewsTitle from "@/components/news/title";
 import { Container } from "@/components/shared";
 import StandardNewsCard from "@/components/shared/standart-news-card";
 import ScrollAnimation from "@/components/ui/scroll-animation";
-import { NewsDataType } from "@/types";
+import type { NewsDataType } from "@/types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import { Locale } from "@/configs/i18n";
+import type { Locale } from "@/configs/i18n";
 import "swiper/css";
 
 const PopularNews = ({
@@ -42,8 +42,8 @@ const PopularNews = ({
           }}
           spaceBetween={15}
           slidesPerView={3.7}
-          // Removed !overflow-visible to fix horizontal scroll throughout the site
-          className="!pb-10 !pt-4 !h-full"
+          // Added !overflow-visible to show card shadows on hover
+          className="pb-10! pt-4! h-full! overflow-visible!"
           breakpoints={{
             0: { slidesPerView: 1.2, spaceBetween: 10 },
             640: { slidesPerView: 2.2, spaceBetween: 15 },

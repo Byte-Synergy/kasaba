@@ -2,7 +2,6 @@ import { Container } from "@/components/shared";
 import Breadcrumb from "@/components/shared/breadcrumb";
 import OtherContent from "@/components/shared/other-news";
 import ShareCopy from "@/components/shared/share-copy";
-import eden from "@/libs/eden";
 import { formatDateToDateTime } from "@/utils/formatDate";
 import { redirect } from "next/navigation";
 import { CiCalendar } from "react-icons/ci";
@@ -11,6 +10,7 @@ import SocialAds from "@/components/shared/social-ads";
 import RelatedNews from "@/components/shared/related-news";
 import { getDictionary } from "@/utils/directory";
 import { Locale } from "@/configs/i18n";
+import { getNews, getNewsBySlug } from "@/action/news";
 
 const SingleNewsPage = async ({
   params,
@@ -20,32 +20,33 @@ const SingleNewsPage = async ({
   const { id, lang } = await params;
   const t = await getDictionary(lang);
 
-  const { data: currentNews } = await eden.news({ newsPath: id }).get();
+  const { data: currentNews } = await getNewsBySlug(id, lang);
 
-  const { data: otherNews } = await eden.news.get({
-    query: { limit: 4, page: 1, filter: {
-      lang
-    }},
+  const { data: otherNewsResp } = await getNews({
+    limit: 4,
+    page: 1,
+    filter: {
+      lang,
+    },
   });
+  const otherNews = otherNewsResp?.data || [];
 
-  console.log(currentNews);
-  
   if (!currentNews) redirect("/");
 
-  const breadcrumbs: Record<typeof currentNews.type, string> = {
+  const breadcrumbs: Record<string, string> = {
     standard: t.single_news_label,
     area: t.areas_label,
     photo: t.photo_news_label,
     video: t.video_news_label,
   };
-  
+
   return (
     <div className="">
       <section className="max-w-[1440px] w-full mx-auto">
         <Container className="my-5">
           <Breadcrumb
             main_label={t.main_label}
-            data={[t.news_label, breadcrumbs[currentNews.type]]}
+            data={[t.news_label, breadcrumbs[currentNews.type] || t.single_news_label]}
           />
         </Container>
       </section>
@@ -58,7 +59,7 @@ const SingleNewsPage = async ({
               </h1>
               <div className="flex items-center justify-start gap-6 mt-2 max-md:hidden">
                 <p className=" font-raleway font-medium text-sm text-gray-600 capitalize">
-                  {breadcrumbs[currentNews.type]}
+                  {breadcrumbs[currentNews.type] || t.single_news_label}
                 </p>
                 <div className="flex items-center justify-start gap-2">
                   <CiCalendar className="w-5 h-5 text-gray-600" />
@@ -71,13 +72,11 @@ const SingleNewsPage = async ({
               </div>
               <div className="flex flex-col gap-y-5 py-4">
                 {currentNews.content?.map((content: any, idx: number) => (
-                  <>
                     <Content
                       key={"cotent-" + idx}
                       content={content as any}
                       files={currentNews.files}
                     />
-                  </>
                 ))}
               </div>
               <ShareCopy
@@ -85,8 +84,8 @@ const SingleNewsPage = async ({
               />
             </div>
             <div className=" w-1/4 max-md:hidden">
-              {otherNews?.data.length && (
-                <OtherContent lang={lang} data={otherNews?.data.slice(0, 3)} />
+              {!!otherNews.length && (
+                <OtherContent lang={lang} data={otherNews.slice(0, 3)} />
               )}
             </div>
           </div>
@@ -100,12 +99,12 @@ const SingleNewsPage = async ({
         />
       </section>
       <section id="related-news" className="max-w-[1440px] w-full mx-auto">
-        {otherNews?.data.length && (
+        {!!otherNews.length && (
           <RelatedNews
             lang={lang}
             all_label={t.all_label}
             news_on_the_topic_label={t.news_on_the_topic_label}
-            data={otherNews.data}
+            data={otherNews}
           />
         )}
       </section>

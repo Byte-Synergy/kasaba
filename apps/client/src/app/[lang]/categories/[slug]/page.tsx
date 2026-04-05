@@ -1,7 +1,7 @@
 import { Locale } from "@/configs/i18n";
 import NewsPageClient from "./page-client";
 import { getDictionary } from "@/utils/directory";
-import eden from "@/libs/eden";
+import { getNews } from "@/action/news";
 import { placesData } from "@/data/place";
 
 export default async function Page({
@@ -18,20 +18,19 @@ export default async function Page({
 
   if (!category) return;
 
-  const data = await eden.news.get({
-    query: {
-      limit: 50,
-      page: 1,
-      filter: {
-        lang,
-        tags: [category.title],
-      },
+  const { data: newsResp } = await getNews({
+    limit: 50,
+    page: 1,
+    filter: {
+      lang,
+      tags: [category.title],
     },
   });
+  const newsData = newsResp?.data || [];
   return (
     <>
       <NewsPageClient
-        data={data.data?.data || []}
+        data={newsData}
         news_label={t.news_label}
         main_label={t.main_label}
       />

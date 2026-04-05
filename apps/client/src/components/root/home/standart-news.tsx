@@ -31,17 +31,17 @@ const StandardNews = ({
       <div className="grid grid-cols-1 md:grid-cols-4 gap-[15px] items-stretch">
         {/* Division 1: News with Images (Left Side, 3/4 width) */}
         <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-[15px] items-stretch">
-          {/* Row 1: 1st Small + 2nd Large */}
-          {news?.[0] && (
+          {/* Row 1: 1st Small (news[1]) + 2nd Large (news[0]) */}
+          {news?.[1] && (
             <ScrollAnimation className="h-full">
-              <StandardNewsCard data={news[0]} variant="card" />
+              <StandardNewsCard data={news[1]} variant="card" />
             </ScrollAnimation>
           )}
-          {news?.[1] && (
+          {news?.[0] && (
             <ScrollAnimation className="md:col-span-2 h-full">
               <StandardNewsCard
                 className="w-full"
-                data={news[1]}
+                data={news[0]}
                 variant="fit"
               />
             </ScrollAnimation>

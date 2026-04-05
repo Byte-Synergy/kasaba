@@ -42,13 +42,13 @@ const PopularNews = ({
           }}
           spaceBetween={15}
           slidesPerView={3.7}
-          // Using !overflow-visible and negative margins/paddings to prevent shadow clipping
-          className="!overflow-visible !pb-10 !pt-5 -mt-5 -mb-10 !h-full"
+          // Removed !overflow-visible to fix horizontal scroll throughout the site
+          className="!pb-10 !pt-4 !h-full"
           breakpoints={{
-            0: { slidesPerView: 1.2 },
-            640: { slidesPerView: 2.2 },
-            1024: { slidesPerView: 3.2 },
-            1280: { slidesPerView: 3.7 },
+            0: { slidesPerView: 1.2, spaceBetween: 10 },
+            640: { slidesPerView: 2.2, spaceBetween: 15 },
+            1024: { slidesPerView: 3.2, spaceBetween: 15 },
+            1280: { slidesPerView: 3.7, spaceBetween: 15 },
           }}
         >
           {news?.map((data, index) => (

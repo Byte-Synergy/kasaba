@@ -5,10 +5,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  productionBrowserSourceMaps: false,
-  experimental: {
-    serverSourceMaps: false,
-  },
   images: {
     unoptimized: true,
     remotePatterns: [

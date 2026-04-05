@@ -3,7 +3,7 @@ import SocailMediaLinks from "./socail-media-links";
 import PartniersLink from "./partniers-links";
 import ScrollAnimation from "@/components/ui/scroll-animation";
 import { getDictionary } from "@/utils/directory";
-import { Locale } from "@/configs/i18n";
+import type { Locale } from "@/configs/i18n";
 
 const UsefulLinks = async ({ lang }: { lang: Locale }) => {
   const t = await getDictionary(lang);
@@ -16,11 +16,11 @@ const UsefulLinks = async ({ lang }: { lang: Locale }) => {
           <h3 className="text-[#ff8400] text-4xl font-bold  max-md:text-base max-md:text-[#000674]">
             {t.useful_links_label}
           </h3>
-          <div className="flex-auto h-1 bg-[#ff8400] max-md:bg-[#000674] max-md:h-[1px]"></div>
+          <div className="flex-auto h-1 bg-[#ff8400] max-md:bg-[#000674] max-md:h-px"></div>
         </div>
       </ScrollAnimation>
       <SocailMediaLinks lang={lang} />
-      <PartniersLink />
+      <PartniersLink enter_label={t.enter_label} />
     </Container>
   );
 };

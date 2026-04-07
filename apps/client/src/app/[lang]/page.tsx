@@ -5,6 +5,7 @@ import { Locale } from "@/configs/i18n";
 import { getDictionary } from "@/utils/directory";
 import { getPlaces } from "@/action/place";
 import { getNews } from "@/action/news";
+import { getBanners } from "@/action/banner";
 import { redirect } from "next/navigation";
 
 export default async function Page({
@@ -24,7 +25,7 @@ export default async function Page({
     },
   });
 
-  const { data: adsData } = await eden.banner.get();
+  const { data: adsData } = await getBanners();
 
   const { data: topNewsDataResp } = await getNews({
     limit: 50,

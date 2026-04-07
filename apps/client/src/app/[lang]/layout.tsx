@@ -14,6 +14,7 @@ import AOSProviderDynamic from "@/providers/aos-dynamic";
 import { i18n, Locale } from "@/configs/i18n";
 import { getDictionary } from "@/utils/directory";
 import { getMenuTree } from "../../action/menu";
+import { getLanguages } from "../../action/language";
 import { TranslationsProvider } from "@/utils/translation-provider";
 import { ModalProvider } from "@/providers/modal-provider";
 
@@ -55,6 +56,10 @@ export default async function RootLayout({
   const menuResult = await getMenuTree(lang);
   const menu = menuResult.success ? menuResult.data : [];
 
+  // ✅ Fillanguages server action orqali olish
+  const langResult = await getLanguages();
+  const languages = langResult.data || [];
+
   return (
     <html lang={lang} suppressHydrationWarning>
       <body
@@ -67,7 +72,7 @@ export default async function RootLayout({
         <AOSProviderDynamic>
           <TranslationsProvider dictionary={t}>
             <ModalProvider lang={lang} menu={menu}>
-              <Header header_desc={t.header.description} lang={lang} menu={menu} />
+              <Header header_desc={t.header.description} lang={lang} menu={menu} languages={languages} />
               <Navbar menu={menu} lang={lang} />
               <main className="py-5 max-md:p-0">{children}</main>
               <Footer lang={lang} />

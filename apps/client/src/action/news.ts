@@ -2,14 +2,13 @@
 
 import { getDirectusClient } from "@/utils/directus";
 import { readItems } from "@directus/sdk";
-import { NewsDataType } from "@/types";
 
 function normalizeLang(lang: string) {
   const mapping: Record<string, string> = {
-    "uz": "uz",
-    "ru": "ru",
-    "en": "en",
-    "uz-cyrl": "uz-cyrl"
+    "uz": "uz-UZ",
+    "ru": "ru-RU",
+    "en": "en-US",
+    "uz-cyrl": "uz-Cyrl"
   };
   return mapping[lang] || lang;
 }
@@ -22,9 +21,6 @@ export async function getNews(query: any = { page: 1, limit: 10 }) {
   try {
     const filters: any = {
       status: { _eq: "published" },
-      translations: {
-        languages_code: { _eq: lang },
-      },
     };
 
     if (query.filter?.isTop !== undefined) {
@@ -36,48 +32,32 @@ export async function getNews(query: any = { page: 1, limit: 10 }) {
       filters.type = { _in: typeArr };
     }
 
-    if (query.filter?.tags) {
-      const tagsArr = Array.isArray(query.filter.tags) ? query.filter.tags : [query.filter.tags];
-      filters.categories = {
-        translations: {
-          name: { _in: tagsArr }
-        }
-      };
-    }
-
     const response = await client.request(
       readItems("news", {
         fields: [
           "*",
           "translations.*",
-          "thumbnail.*",
+          "translations.thumbnail.*",
           "categories.translations.*",
-          "blocks.collection",
-          "blocks.item:block_richtext.translations.*",
-          "blocks.item:block_photo.file.*",
         ],
         filter: filters,
         deep: {
-          translations: {
-            _filter: { languages_code: { _eq: lang } },
-          },
           categories: {
             translations: {
               _filter: { languages_code: { _eq: lang } },
             },
           },
         },
-        search: query.filter?.q || undefined,
-        page: query.page || 1,
         limit: query.limit || 10,
-        sort: ["-published_at"],
+        page: query.page || 1,
+        sort: ["-published_at", "-date_created"],
       })
     );
 
-    const mappedData = (response as any[]).map((item) => mapNewsItem(item, lang));
+    const mapped = (response as any[]).map((item) => mapNewsItem(item, lang));
 
     return { 
-      data: { data: mappedData, total: 100 }, 
+      data: { data: mapped, total: mapped.length }, 
       error: null, 
       status: 200 
     };
@@ -87,36 +67,27 @@ export async function getNews(query: any = { page: 1, limit: 10 }) {
   }
 }
 
-export async function getNewsBySlug(slug: string, lang: string = "uz") {
+export async function getNewsBySlug(slug: string, rawLang: string = "uz") {
   const client = getDirectusClient();
-  const nLang = normalizeLang(lang);
+  const lang = normalizeLang(rawLang);
+
   try {
     const response = await client.request(
       readItems("news", {
         fields: [
           "*",
           "translations.*",
-          "thumbnail.*",
+          "translations.thumbnail.*",
+          "translations.blocks.*",
+          "translations.blocks.item:block_richtext.*",
+          "translations.blocks.item:block_gallery.files.directus_files_id.*",
           "categories.translations.*",
-          "blocks.collection",
-          "blocks.item:block_richtext.translations.*",
         ],
         filter: {
           translations: {
             slug: { _eq: slug },
-            languages_code: { _eq: nLang },
           },
           status: { _eq: "published" },
-        },
-        deep: {
-          translations: {
-            _filter: { languages_code: { _eq: nLang } },
-          },
-          categories: {
-            translations: {
-              _filter: { languages_code: { _eq: nLang } },
-            },
-          },
         },
         limit: 1,
       })
@@ -125,7 +96,7 @@ export async function getNewsBySlug(slug: string, lang: string = "uz") {
     const item = (response as any[])[0];
     if (!item) return { data: null, error: "Not Found", status: 404 };
 
-    return { data: mapNewsItem(item, nLang), error: null, status: 200 };
+    return { data: mapNewsItem(item, lang), error: null, status: 200 };
   } catch (error) {
     console.error("Directus getNewsBySlug Error:", error);
     return { data: null, error, status: 500 };
@@ -133,20 +104,33 @@ export async function getNewsBySlug(slug: string, lang: string = "uz") {
 }
 
 function mapNewsItem(item: any, lang: string) {
-  const translation =
-    item.translations?.find((t: any) => t.languages_code === lang) ||
-    item.translations?.[0];
+  const translation = item.translations?.find((t: any) => t.languages_code === lang) || item.translations?.[0];
+  
+  // Thumbnail resolving (it's in the translation record)
+  const thumbnail = translation?.thumbnail;
+  const thumbUrl = thumbnail ? `${process.env.NEXT_PUBLIC_API_URL}/assets/${thumbnail.id || thumbnail}` : null;
 
-  // Map blocks to content array for compatibility
+  // Blocks mapping (nested in translation)
   const content: any[] = [];
-  if (item.blocks) {
-    for (const b of item.blocks) {
-      if (b.collection === "block_richtext") {
-        const bTrans = b.item?.translations?.find((t: any) => t.languages_code === lang) || b.item?.translations?.[0];
-        if (bTrans?.content) {
-          content.push({ type: "text", value: bTrans.content });
-        }
+  const blocks = translation?.blocks || [];
+  for (const b of blocks) {
+    if (b.collection === "block_richtext") {
+      const bContent = b.item?.content;
+      if (bContent) {
+        content.push({ type: "text", value: bContent });
       }
+    } else if (b.collection === "block_gallery") {
+        const files = b.item?.files || [];
+        for (const fileItem of files) {
+           const file = fileItem.directus_files_id;
+           if (file) {
+               content.push({ 
+                   type: "photo", 
+                   fileId: file.id || file,
+                   value: file.filename_download
+               });
+           }
+        }
     }
   }
 
@@ -164,26 +148,33 @@ function mapNewsItem(item: any, lang: string) {
       const catTrans = cat.translations?.find((t: any) => t.languages_code === lang) || cat.translations?.[0];
       return catTrans?.name || "";
     }).filter(Boolean) || [],
-    files: item.thumbnail ? [{
-      href: `${process.env.NEXT_PUBLIC_API_URL}/assets/${item.thumbnail.id || item.thumbnail}`,
-      name: item.thumbnail.filename_download || "thumbnail",
-      mimeType: item.thumbnail.type || "image/jpeg",
-      extension: (item.thumbnail.filename_download || "").split(".").pop() || "jpg"
-    }] : [],
+    files: [
+      ...(thumbUrl ? [{
+        href: thumbUrl,
+        name: thumbnail?.filename_download || "thumbnail",
+        mimeType: thumbnail?.type || "image/jpeg",
+      }] : []),
+      ...content.filter(c => c.type === "photo").map(c => ({
+          href: `${process.env.NEXT_PUBLIC_API_URL}/assets/${c.fileId}`,
+          name: c.value || "image",
+          mimeType: "image/jpeg",
+      }))
+    ],
     content: content,
   };
 }
 
 export async function getNewsCategories() {
-  const client = getDirectusClient();
-  try {
-    const response = await client.request(
-      readItems("news_categories" as any, {
-        fields: ["*", { translations: ["*"] }],
-      })
-    );
-    return { data: response, error: null, status: 200 };
-  } catch (error) {
-    return { data: null, error, status: 500 };
-  }
+    const client = getDirectusClient();
+    try {
+      const response = await client.request(
+        readItems("news_categories" as any, {
+          fields: ["*", { translations: ["*"] }],
+        })
+      );
+      return { data: response, error: null, status: 200 };
+    } catch (error) {
+      console.error("Directus getNewsCategories Error:", error);
+      return { data: [], error, status: 500 };
+    }
 }

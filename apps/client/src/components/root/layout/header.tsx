@@ -19,11 +19,13 @@ const Clock = dynamic(() => import("./clock"), { ssr: false });
 const Header = ({
   lang,
   header_desc,
-  menu
+  menu,
+  languages
 }: {
   header_desc: string;
   lang: Locale;
-  menu: MenuItem[]
+  menu: MenuItem[];
+  languages: any[];
 }) => {
   // const openSidebar = useSidebarStore((state) => state.open)
   const {openModal} = useModalStore()
@@ -43,7 +45,7 @@ const Header = ({
           <WeatherHeader />
           <Clock lang={lang} />
           <div className="flex items-center gap-x-1">
-            <LanguageSwitcher lang={lang}/>
+            <LanguageSwitcher lang={lang} languages={languages}/>
             <Link lang={lang} href="/search" prefetch={false} >
               <button
                 role="button"

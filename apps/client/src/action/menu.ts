@@ -1,7 +1,7 @@
 "use server";
 
-import eden from "@/libs/eden";
-import { AppType } from "@/types/server";
+import { getDirectusClient } from "@/utils/directus";
+import { readItems } from "@directus/sdk";
 
 export type MenuItem = {
   id: string;
@@ -9,55 +9,75 @@ export type MenuItem = {
   path: string;
   docCount?: number;
   sub_menu: MenuItem[];
-  type?: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["type"];
-  newsType?: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["newsType"];
+  type?: string;
+  newsType?: string;
 };
-export async function getMenu(
-  menuId: number,
-  fetch?: Omit<RequestInit, "headers" | "method">,
-  fetcher: typeof eden = eden,
-) {
-  const { data, error, status } = await fetcher
-    .menus({ menuId })
-    .get({ fetch });
 
-  return { data, error, status };
-}
-// Eden’dan menu olish
-export async function getMenuTree(lang: string) {
-  const { data, error, status } = await eden.menus.tree.get({
-    query: {
-      page: 1,
-      filter: {
-        lang,
-        orderBy: "asc",
-        parentId: null,
-      },
-    },
-  });
-
-  if (error) {
-    return { success: false, error, status, data: [] };
-  }
-
-  // Menuni mapping qilish
-  function mapMenuTree(
-    menu: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]
-  ): MenuItem {
-    return {
-      type: menu.type,
-      id: menu.id.toString(),
-      title: menu.name,
-      path: menu.path || "",
-      newsType: menu.newsType,
-      docCount: menu.type === "document" ? menu.files?.length : undefined,
-      sub_menu: (menu.children || []).map(mapMenuTree),
-    };
-  }
-
-  return {
-    success: true,
-    status,
-    data: (data || []).map(mapMenuTree),
+function normalizeLang(lang: string) {
+  const mapping: Record<string, string> = {
+    "uz": "uz-UZ",
+    "ru": "ru-RU",
+    "en": "en-US",
+    "uz-cyrl": "uz-Cyrl"
   };
+  return mapping[lang] || lang;
+}
+
+export async function getMenuTree(lang: string) {
+  const client = getDirectusClient();
+  const nLang = normalizeLang(lang);
+
+  try {
+    // Barcha sahifalarni o'qiymiz
+    const pages = await client.request(
+      readItems("pages", {
+        fields: [
+          "*",
+          "translations.*"
+        ],
+        filter: {
+          status: { _eq: "published" }
+        },
+        // Sahifalar soni kam bo'lgani uchun hammasini olamiz
+        limit: -1,
+      })
+    );
+
+    // Tree qurish
+    const mapPage = (p: any): MenuItem => {
+      const trans = p.translations?.find((t: any) => t.languages_code === nLang) || p.translations?.[0];
+      return {
+        id: p.id.toString(),
+        title: trans?.name || "",
+        path: trans?.slug ? `/${lang}/${trans.slug}` : "",
+        sub_menu: [],
+      };
+    };
+
+    const allItems = (pages as any[]).map(mapPage);
+    const itemMap: Record<string, MenuItem> = {};
+    allItems.forEach(item => {
+        itemMap[item.id] = item;
+    });
+
+    const rootItems: MenuItem[] = [];
+    (pages as any[]).forEach(p => {
+        const item = itemMap[p.id.toString()];
+        if (p.parent) {
+            const parentItem = itemMap[p.parent.toString()];
+            if (parentItem) {
+                parentItem.sub_menu.push(item);
+            } else {
+                rootItems.push(item);
+            }
+        } else {
+            rootItems.push(item);
+        }
+    });
+
+    return { success: true, data: rootItems, status: 200 };
+  } catch (error: any) {
+    console.error("Directus getMenuTree Error:", error?.errors || error?.message || error);
+    return { success: false, data: [], error, status: 500 };
+  }
 }

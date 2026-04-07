@@ -7,36 +7,46 @@ import Image from 'next/image';
 import React, { useEffect } from 'react';
 
 const WeatherHeader = () => {
-    const { current, selectedRegion, fetchWeatherByCoordinates } = useWeatherStore();
+    const { current, selectedRegion, fetchWeatherByCoordinates, fetchWeather } = useWeatherStore();
     const {openModal} = useModalStore()
     const t = useTranslations()
 
-    const getGeolocationWeather = async () => {
+    const getGeolocationWeather = React.useCallback(() => {
+        if (typeof window === 'undefined' || !navigator.geolocation) {
+            fetchWeather();
+            return;
+        }
 
-        await navigator.geolocation.getCurrentPosition(
-            (position) => {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
                 const { latitude, longitude } = position.coords;
                 if (!current) {
-                    fetchWeatherByCoordinates(
+                    await fetchWeatherByCoordinates(
                         Number(latitude),
                         Number(longitude)
                     );
                 }
             },
             (error) => {
-                console.error("❌ Geolocation error:", error);
+                console.warn("⚠️ Geolocation error:", error);
+                // Geolocation failed or denied, fallback to default region weather
+                fetchWeather();
             }
         );
-    };
+    }, [current, fetchWeather, fetchWeatherByCoordinates]);
 
     useEffect(() => {
         if (!current) {
             getGeolocationWeather();
         }
-    }, [current]);
+    }, [current, getGeolocationWeather]);
 
     return (
-        <button type='button' onClick={() => openModal("weather")} className='inline-flex items-center justify-start gap-x-0 max-md:p-0 max-md:flex-row-reverse max-md:bg-[#ffffff31] max-md:rounded-3xl max-md:px-2 max-md:border-1 max-md:border-[#ffffff4e]' role='button'>
+        <button 
+            type='button' 
+            onClick={() => openModal("weather")} 
+            className='inline-flex items-center justify-start gap-x-0 max-md:p-0 max-md:flex-row-reverse max-md:bg-[#ffffff31] max-md:rounded-3xl max-md:px-2 max-md:border-1 max-md:border-[#ffffff4e]'
+        >
             <div className='w-12 h-12 flex items-center justify-center rounded-full max-md:w-9 max-md:h-9 max-md:bg-transparent max-md:border-transparent max-md:p-0'>
                 <Image
                     src='/icon/weather.svg'

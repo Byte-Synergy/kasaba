@@ -1,15 +1,29 @@
 import { create } from 'zustand';
 
 interface WeatherData {
-    current: any | null;
-    daily: any | null;
-    hourly: any | null;
+    current: {
+        temperature: number;
+        windspeed: number;
+        winddirection: number;
+        weathercode: number;
+        time: string;
+    } | null;
+    daily: {
+        time: string[];
+        temperature_2m_max: number[];
+        temperature_2m_min: number[];
+    } | null;
+    hourly: {
+        time: string[];
+        temperature_2m: number[];
+        precipitation: number[];
+    } | null;
     loading: boolean;
     error: string | null;
     selectedRegion: string;
     setRegion: (region: string) => void;
     fetchWeather: (region?: string) => Promise<void>;
-    fetchWeatherByCoordinates: (lat: number, lon: number) => Promise<void>;
+    fetchWeatherByCoordinates: (lat?: number, lon?: number) => Promise<void>;
 }
 
 export const useWeatherStore = create<WeatherData>((set, get) => ({
@@ -38,18 +52,34 @@ export const useWeatherStore = create<WeatherData>((set, get) => ({
             const lon = geoData[0].lon;
 
             await get().fetchWeatherByCoordinates(Number(lat), Number(lon)); // ✅ Shunday qilib ishlatilsa bo‘ladi
-        } catch (error: any) {
-            set({ error: error.message, loading: false });
+        } catch (error) {
+            const err = error as Error;
+            set({ error: err.message, loading: false });
         }
     },
 
-    fetchWeatherByCoordinates: async (lat: number = 41.311081, lon: number = 69.240562) => {
+    fetchWeatherByCoordinates: async (lat?: number, lon?: number) => {
+        // Default to Tashkent coordinates if none provided or invalid
+        const latitude = lat ?? 41.311081;
+        const longitude = lon ?? 69.240562;
+
+        if (Number.isNaN(latitude) || Number.isNaN(longitude)) {
+            console.error("❌ Invalid coordinates:", { latitude, longitude });
+            set({ error: "Koordinatalar noto'g'ri", loading: false });
+            return;
+        }
+
         set({ loading: true, error: null });
         
         try {
-            const weatherRes = await fetch(
-                `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=temperature_2m,precipitation&daily=temperature_2m_max,temperature_2m_min&timezone=auto`
-            );
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true&hourly=temperature_2m,precipitation&daily=temperature_2m_max,temperature_2m_min&timezone=auto`;
+            
+            const weatherRes = await fetch(url);
+            
+            if (!weatherRes.ok) {
+                throw new Error(`Server xatosi: ${weatherRes.status}`);
+            }
+
             const weatherData = await weatherRes.json();
     
             if (!weatherData.current_weather) {
@@ -62,9 +92,15 @@ export const useWeatherStore = create<WeatherData>((set, get) => ({
                 hourly: weatherData.hourly,
                 loading: false,
             });
-        } catch (error: any) {
-            console.error("❌ Weather fetch error:", error);
-            set({ error: error.message, loading: false });
+        } catch (error) {
+            const err = error as Error;
+            console.error("❌ Weather fetch error:", err);
+            set({ 
+                error: err.name === 'TypeError' && err.message === 'Failed to fetch' 
+                    ? "Internet aloqasi yoki API bloklangan bo'lishi mumkin" 
+                    : err.message, 
+                loading: false 
+            });
         }
     },    
 }));

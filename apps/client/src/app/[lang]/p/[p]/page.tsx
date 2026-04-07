@@ -13,7 +13,7 @@ const PPage = async ({
   params: Promise<{ p: string; lang: Locale }>;
 }) => {
   const { lang, p } = await params;
-  const menu = await getMenu(+p);
+  const menu = await getMenu(p, lang);
 
   return (
     <div className="max-x-[1440px] mx-auto">
@@ -23,47 +23,44 @@ const PPage = async ({
             <>
               {menu.data.type === "document" && (
                 <div className="gap-5 grid grid-cols-4 pb-5 w-full">
-                  {(menu.data?.content as ContentType[]).map((docFile, key) => {
-                    if (docFile.type === "document") {
-                      const fileId = menu.data?.files?.find(
-                        (file) => file.name === docFile.fileId
-                      );
-                      if (fileId && docFile.docName)
+                  {(menu.data?.content || []).map((docFile: any, key: number) => {
+                    if (docFile.type === "document" || docFile.type === "text") {
+                      // Hozirgi Directus bloklarida hujjatlar richtext ichida bo'lishi mumkin
+                      // Lekin agar document turi bo'lsa:
+                      if (docFile.href) {
                         return (
                           <DocumentsCard
                             lang={lang}
                             key={key}
-                            fileId={fileId.href}
-                            name={docFile.docName}
+                            fileId={docFile.href}
+                            name={docFile.docName || docFile.value || "Hujjat"}
                           />
                         );
-                      return null;
+                      }
                     }
+                    return null;
                   })}
                 </div>
               )}
               {menu.data.type === "member" &&
-                (menu.data?.content as ContentType[]).map(
-                  (member, key) =>
+                (menu.data?.content || []).map(
+                  (member: any, key: number) =>
                     member.type === "member" && (
                       <div
                         className="grid md:grid-cols-4 w-full gap-5"
                         key={key}
                       >
-                        {member.members.reverse().map((mem, key) => {
-                          const fileId = menu.data?.files?.find(
-                            (file) => file.name === mem.fileId
-                          );
-                          if (!fileId) return null;
+                        {member.members.map((mem: any, mk: number) => {
+                          if (!mem.href) return null;
 
                           return (
                             <div
-                              key={key}
+                              key={mk}
                               className="bg-white min-h-[500px] relative"
                             >
                               <Image
-                                src={fileId.href}
-                                alt={fileId.name}
+                                src={mem.href}
+                                alt={mem.fullName}
                                 width={1080}
                                 height={1080}
                                 className="size-full object-cover"
@@ -79,28 +76,6 @@ const PPage = async ({
                                     <hr className="border-2 mt-1.5 border-[#FF8500]" />
                                   </div>
                                   <div className="mt-2">
-                                    {mem.acceptanceDay && (
-                                      <div className="flex gap-1">
-                                        <p className="text-nowrap">
-                                          Qabul kuni:
-                                        </p>
-                                        <p className="w-full">
-                                          {mem.acceptanceDay} {mem.workingTime}
-                                        </p>
-                                      </div>
-                                    )}
-                                    {/* {mem.acceptanceDay ? (
-                                      <>
-                                        <p>
-                                          {mem.acceptanceDay} {mem.workingTime}
-                                        </p>
-                                        <p>{mem.address}</p>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <p>{mem.address}</p>
-                                      </>
-                                    )} */}
                                     <p>Tel: {mem.phoneNumber}</p>
                                     {mem.email && <p>Email: {mem.email}</p>}
                                   </div>
@@ -113,39 +88,27 @@ const PPage = async ({
                     )
                 )}
               {menu.data.type === "text" && (
-                <div className="grid gap-5 max-w-[1000px] mx-auto">
-                  {(menu.data?.content as ContentType[]).map(
-                    (txt, key) =>
+                <div className="grid gap-5 max-w-[1000px] mx-auto w-full prose prose-lg">
+                  {(menu.data?.content || []).map(
+                    (txt: any, key: number) =>
                       txt.type === "text" && (
-                        <p key={key}>
-                          {txt.value &&
-                            txt.value.split("\n").map((line, i) => (
-                              <React.Fragment key={i}>
-                                {line}
-                                <br />
-                              </React.Fragment>
-                            ))}
-                        </p>
+                        <div key={key} dangerouslySetInnerHTML={{ __html: txt.value }} />
                       )
                   )}
                 </div>
               )}
               {menu.data.type === "photo" && (
-                <div className="grid gap-5 max-w-[1000px] mx-auto">
-                  {(menu.data?.content as ContentType[]).map((txt, key) => {
-                    if (txt.type !== "photo") return null;
-
-                    const fileId = menu.data?.files?.find(
-                      (file) => file.name === txt.fileId
-                    );
-                    if (!fileId) return null;
-
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-5 w-full">
+                  {(menu.data?.content || []).map((pic: any, key: number) => {
+                    if (pic.type !== "photo" || !pic.href) return null;
                     return (
                       <Image
-                        src={fileId.href}
-                        alt={fileId.name}
-                        width={1920}
-                        height={1080}
+                        key={key}
+                        src={pic.href}
+                        alt="photo"
+                        width={800}
+                        height={600}
+                        className="rounded-lg object-cover aspect-video"
                       />
                     );
                   })}

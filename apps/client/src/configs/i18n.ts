@@ -1,7 +1,6 @@
 export const i18n = {
-  defaultLocale: "uz-cyrl",
-  locales: ["uz", "uz-cyrl", "en", "ru"],
+  defaultLocale: "uz-Cyrl",
+  locales: ["uz-UZ", "uz-Cyrl", "en-US", "ru-RU"],
 } as const;
 
 export type Locale = (typeof i18n)["locales"][number];
-  

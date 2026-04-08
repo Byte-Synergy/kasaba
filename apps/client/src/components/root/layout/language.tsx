@@ -8,42 +8,31 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { Locale } from "@/configs/i18n";
-import { useModalStore } from "@/hooks/useModal";
-import { useParams, useRouter } from "next/navigation";
-
-const languages = {
-  uz: {
-    name: "O'zbek",
-    icon: "🇺🇿",
-  },
-  ru: {
-    name: "Русский",
-    icon: "🇷🇺",
-  },
-  en: {
-    name: "English",
-    icon: "🇰🇷",
-  },
-  "uz-cyrl": {
-    name: "Ўзбек",
-    icon: "🇰🇷",
-  },
-};
+import { usePathname, useRouter } from "next/navigation";
 
 export default function LanguageSwitcher({
   lang,
-  languages
+  languages,
 }: {
   lang: Locale;
   languages: any[];
 }) {
   const router = useRouter();
+  const pathname = usePathname();
 
-  const changeLanguage = (lang: string) => {
-    router.replace(`/${lang}`);
+  const changeLanguage = (newLang: string) => {
+    // pathname /en-US/news/1 -> /uz-Cyrl/news/1
+    const segments = pathname.split("/");
+    if (segments.length > 1) {
+      segments[1] = newLang;
+      const newPath = segments.join("/");
+      router.replace(newPath);
+    } else {
+      router.replace(`/${newLang}`);
+    }
   };
 
-  const currentLang = languages.find(l => l.slug === lang) || languages[0];
+  const currentLang = languages.find((l) => l.slug === lang) || languages[0];
 
   return (
     <Menubar>
@@ -59,17 +48,19 @@ export default function LanguageSwitcher({
           </button>
         </MenubarTrigger>
         <MenubarContent className="bg-white border-none max-md:text-black max-md:w-full !z-[9999]">
-          {languages.filter((l) => l.slug !== lang).map((l) => (
-            <MenubarItem key={l.slug} className="max-md:w-full">
-              <button
-                type="button"
-                className="cursor-pointer"
-                onClick={() => changeLanguage(l.slug)}
-              >
-                {l.name}
-              </button>
-            </MenubarItem>
-          ))}
+          {languages
+            .filter((l) => l.slug !== lang)
+            .map((l) => (
+              <MenubarItem key={l.slug} className="max-md:w-full">
+                <button
+                  type="button"
+                  className="cursor-pointer w-full text-left"
+                  onClick={() => changeLanguage(l.slug)}
+                >
+                  {l.name}
+                </button>
+              </MenubarItem>
+            ))}
         </MenubarContent>
       </MenubarMenu>
     </Menubar>

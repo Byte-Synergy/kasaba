@@ -117,7 +117,8 @@ export async function getMenu(p: string | number, lang: string) {
                     item: {
                       block_richtext: ["*"],
                       block_employee: ["*", "image.*"],
-                      block_photo: ["*", "image.*"]
+                      block_photo: ["*", "image.*"],
+                      block_file: ["*", "file.*"]
                     }
                   }
                 ]
@@ -174,6 +175,14 @@ export async function getMenu(p: string | number, lang: string) {
             type: "photo",
             fileId: item.image?.id,
             href: item.image ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://davadmin.kasaba.uz"}/assets/${item.image.id}` : null
+          };
+        }
+        if (b.collection === "block_file") {
+          return {
+            type: "document",
+            fileId: item.file?.id,
+            docName: item.file?.title || item.file?.filename_download,
+            href: item.file ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://davadmin.kasaba.uz"}/assets/${item.file.id}` : null
           };
         }
         return null;

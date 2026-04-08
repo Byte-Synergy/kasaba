@@ -2,9 +2,6 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  typescript: {
-    ignoreBuildErrors: true,
-  },
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -13,6 +10,12 @@ const nextConfig: NextConfig = {
         hostname: "s3bucket-api.kasaba.uz",
         port: "",
         pathname: "/kasaba/**",
+      },
+      {
+        protocol: "https",
+        hostname: "davadmin.kasaba.uz",
+        port: "",
+        pathname: "/assets/**",
       },
       {
         protocol: "http",

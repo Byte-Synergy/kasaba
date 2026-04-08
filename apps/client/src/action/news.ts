@@ -21,6 +21,9 @@ export async function getNews(query: any = { page: 1, limit: 10 }) {
   try {
     const filters: any = {
       status: { _eq: "published" },
+      translations: {
+        languages_code: { _eq: lang },
+      },
     };
 
     if (query.filter?.isTop !== undefined) {
@@ -38,19 +41,11 @@ export async function getNews(query: any = { page: 1, limit: 10 }) {
           "*",
           "translations.*",
           "translations.thumbnail.*",
-          "categories.translations.*",
         ],
         filter: filters,
-        deep: {
-          categories: {
-            translations: {
-              _filter: { languages_code: { _eq: lang } },
-            },
-          },
-        },
         limit: query.limit || 10,
         page: query.page || 1,
-        sort: ["-published_at", "-date_created"],
+        sort: ["-date_created"],
       })
     );
 
@@ -61,8 +56,8 @@ export async function getNews(query: any = { page: 1, limit: 10 }) {
       error: null, 
       status: 200 
     };
-  } catch (error) {
-    console.error("Directus getNews Error:", error);
+  } catch (error: any) {
+    console.error("Directus getNews Error:", error?.errors || error?.message || error);
     return { data: { data: [], total: 0 }, error, status: 500 };
   }
 }
@@ -79,9 +74,7 @@ export async function getNewsBySlug(slug: string, rawLang: string = "uz") {
           "translations.*",
           "translations.thumbnail.*",
           "translations.blocks.*",
-          "translations.blocks.item:block_richtext.*",
-          "translations.blocks.item:block_gallery.files.directus_files_id.*",
-          "categories.translations.*",
+          "translations.blocks.item:block_richtexts.*",
         ],
         filter: {
           translations: {
@@ -114,23 +107,11 @@ function mapNewsItem(item: any, lang: string) {
   const content: any[] = [];
   const blocks = translation?.blocks || [];
   for (const b of blocks) {
-    if (b.collection === "block_richtext") {
+    if (b.collection === "block_richtexts") {
       const bContent = b.item?.content;
       if (bContent) {
         content.push({ type: "text", value: bContent });
       }
-    } else if (b.collection === "block_gallery") {
-        const files = b.item?.files || [];
-        for (const fileItem of files) {
-           const file = fileItem.directus_files_id;
-           if (file) {
-               content.push({ 
-                   type: "photo", 
-                   fileId: file.id || file,
-                   value: file.filename_download
-               });
-           }
-        }
     }
   }
 
@@ -142,7 +123,8 @@ function mapNewsItem(item: any, lang: string) {
     title: translation?.title || "",
     description: translation?.description || "",
     path: translation?.slug || "",
-    languageCode: lang,
+    languageCode: translation?.languages_code || lang,
+    isFallback: !item.translations?.some((t: any) => t.languages_code === lang),
     authorId: item.user_created || null,
     tags: item.categories?.map((cat: any) => {
       const catTrans = cat.translations?.find((t: any) => t.languages_code === lang) || cat.translations?.[0];

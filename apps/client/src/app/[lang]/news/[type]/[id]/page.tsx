@@ -33,6 +33,12 @@ const SingleNewsPage = async ({
 
   if (!currentNews) redirect("/");
 
+  // AGAR: Till almashtirilganda slug eski tildagi bo'lib qolgan bo'lsa va 
+  // yangi tilda boshqa slug bo'lsa, to'g'ri slugga redirect qilamiz.
+  if (currentNews.path && currentNews.path !== id && !currentNews.isFallback) {
+    redirect(`/${lang}/news/${currentNews.type}/${currentNews.path}`);
+  }
+
   const breadcrumbs: Record<string, string> = {
     standard: t.single_news_label,
     area: t.areas_label,
@@ -42,6 +48,15 @@ const SingleNewsPage = async ({
 
   return (
     <div className="">
+      {currentNews.isFallback && (
+        <div className="bg-amber-50 border-b border-amber-200 py-2">
+          <Container>
+            <p className="text-amber-800 text-sm font-medium">
+              {t.fallback_message}
+            </p>
+          </Container>
+        </div>
+      )}
       <section className="max-w-[1440px] w-full mx-auto">
         <Container className="my-5">
           <Breadcrumb

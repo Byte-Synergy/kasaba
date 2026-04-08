@@ -28,9 +28,8 @@ export async function getMenuTree(lang: string) {
   const nLang = normalizeLang(lang);
 
   try {
-    // Directus'dan faqat so'ralgan tilda tarjimasi bor va nashr qilingan sahifalarni olamiz
-    const pages = await client.request(
-      readItems("pages", {
+    const items = await client.request(
+      readItems("menus", {
         fields: ["*", "translations.*"],
         filter: {
           _and: [
@@ -46,38 +45,33 @@ export async function getMenuTree(lang: string) {
       }),
     );
 
-    // 1. Dastlab hamma sahifalarni MenuItem formatiga o'tkazib, map'ga joylaymiz
     const itemMap: Record<string, MenuItem> = {};
-    (pages as any[]).forEach((p) => {
+    (items as any[]).forEach((p) => {
       const trans = p.translations?.find((t: any) => t.languages_code === nLang);
       
-      // Agar bu tilda tarjimasi bo'lmasa, uni menyuga qo'shmaymiz (tillar aralashmasligi uchun)
       if (!trans) return;
 
       itemMap[p.id.toString()] = {
         id: p.id.toString(),
         title: trans.name || "",
         path: trans.slug ? `/p/${trans.slug}` : "",
-        type: p.type,
-        newsType: p.news_type,
+        type: trans.type,
+        newsType: trans.news_type,
         sub_menu: [],
       };
     });
 
-    // 2. Ierarxiyani quramiz
     const rootItems: MenuItem[] = [];
-    (pages as any[]).forEach((p) => {
+    (items as any[]).forEach((p) => {
       const item = itemMap[p.id.toString()];
-      if (!item) return; // Tarjimasi yo'qlar o'tkazib yuborilgan
+      if (!item) return;
 
       const pId = typeof p.parent === "object" ? p.parent?.id : p.parent;
       const parentIdStr = pId?.toString();
 
       if (parentIdStr && itemMap[parentIdStr]) {
-        // Ota-onasi topilsa, uning sub_menu'siga qo'shiladi
         itemMap[parentIdStr].sub_menu.push(item);
       } else {
-        // Ota-onasi bo'lmasa yoki topilmasa, root (asosiy) menyu bo'ladi
         rootItems.push(item);
       }
     });
@@ -91,6 +85,7 @@ export async function getMenuTree(lang: string) {
     return { success: false, data: [], error, status: 500 };
   }
 }
+
 export async function getMenu(p: string | number, lang: string) {
   const client = getDirectusClient();
   const nLang = normalizeLang(lang);
@@ -102,8 +97,8 @@ export async function getMenu(p: string | number, lang: string) {
       ? { id: { _eq: Number(p) } }
       : { translations: { slug: { _eq: p } } };
 
-    const pages = await client.request(
-      readItems("pages", {
+    const items = await client.request(
+      readItems("menus", {
         fields: [
           "*",
           "translations.*",
@@ -111,15 +106,22 @@ export async function getMenu(p: string | number, lang: string) {
             translations: [
               "*",
               {
-                blocks: [
+                content_blocks: [
                   "*",
                   {
-                    item: {
-                      block_richtext: ["*"],
-                      block_employee: ["*", "image.*"],
-                      block_photo: ["*", "image.*"],
-                      block_file: ["*", "file.*"]
-                    }
+                    item: ["*"]
+                  }
+                ],
+                member_blocks: [
+                  "*",
+                  {
+                    item: [
+                      "*",
+                      "image.*",
+                      {
+                        translations: ["*"]
+                      }
+                    ]
                   }
                 ]
               }
@@ -136,57 +138,57 @@ export async function getMenu(p: string | number, lang: string) {
       }),
     );
 
-    if (!pages || pages.length === 0) {
+    if (!items || items.length === 0) {
       return { success: false, data: null, status: 404 };
     }
 
-    const page = pages[0];
+    const page = items[0];
     const trans = page.translations?.find((t: any) => t.languages_code === nLang);
 
     if (!trans) {
        return { success: false, data: null, status: 404 };
     }
 
-    // Directus formatini frontend tushunadigan sodda formatga o'giramiz
+    const content: any[] = [];
+    
+    // Add content blocks
+    if (trans.content_blocks) {
+      trans.content_blocks.forEach((b: any) => {
+        if (b.collection === "block_richtexts" && b.item) {
+          content.push({ type: "text", value: b.item.content });
+        }
+      });
+    }
+
+    // Add member blocks
+    if (trans.member_blocks) {
+      const members: any[] = [];
+      trans.member_blocks.forEach((b: any) => {
+        if (b.collection === "internal_employees" && b.item) {
+          const emp = b.item;
+          const empTrans = emp.translations?.find((et: any) => et.languages_code === nLang) || emp.translations?.[0];
+          members.push({
+            fullName: empTrans?.full_name || "",
+            position: empTrans?.position || "",
+            phoneNumber: emp.phone_number,
+            email: emp.email,
+            fileId: emp.image?.id,
+            href: emp.image ? `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${emp.image.id}` : null
+          });
+        }
+      });
+      if (members.length > 0) {
+        content.push({ type: "member", members });
+      }
+    }
+
     const normalizedData = {
       ...page,
       title: trans.name,
       slug: trans.slug,
-      content: trans.blocks?.map((b: any) => {
-        const item = b.item;
-        if (b.collection === "block_richtext") {
-          return { type: "text", value: item.content };
-        }
-        if (b.collection === "block_employee") {
-          return { 
-            type: "member", 
-            members: [{
-              fullName: item.full_name,
-              position: item.position,
-              phoneNumber: item.phone_number,
-              email: item.email,
-              fileId: item.image?.id,
-              href: item.image ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://davadmin.kasaba.uz"}/assets/${item.image.id}` : null
-            }]
-          };
-        }
-        if (b.collection === "block_photo") {
-          return {
-            type: "photo",
-            fileId: item.image?.id,
-            href: item.image ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://davadmin.kasaba.uz"}/assets/${item.image.id}` : null
-          };
-        }
-        if (b.collection === "block_file") {
-          return {
-            type: "document",
-            fileId: item.file?.id,
-            docName: item.file?.title || item.file?.filename_download,
-            href: item.file ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://davadmin.kasaba.uz"}/assets/${item.file.id}` : null
-          };
-        }
-        return null;
-      }).filter(Boolean) || []
+      type: trans.type,
+      newsType: trans.news_type,
+      content: content
     };
 
     return { success: true, data: normalizedData, status: 200 };
@@ -195,3 +197,4 @@ export async function getMenu(p: string | number, lang: string) {
     return { success: false, data: null, error, status: 500 };
   }
 }
+

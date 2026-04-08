@@ -142,5 +142,6 @@
     "syrdarya": "Sirdaryo",
     "khorezm": "Xorazm"
   },
-  "tashkent_region": "Toshkent viloyati"
+  "tashkent_region": "Toshkent viloyati",
+  "fallback_message": "Ushbu ma'lumot tanlangan tilda mavjud emas. Quyida uning asl tildagi varianti keltirilgan."
 }

@@ -142,6 +142,6 @@
     "syrdarya": "Syrdarya",
     "khorezm": "Khorezm"
   },
-  "tashkent_region": "Tashkent Region"
-  
+  "tashkent_region": "Tashkent Region",
+  "fallback_message": "This information is not available in the selected language. Below is the version in the original language."
 }

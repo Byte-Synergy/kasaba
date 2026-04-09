@@ -100,6 +100,6 @@ export interface MenuItem {
   path: string;
   docCount?: number;
   sub_menu: MenuItem[];
-  type?: "photo" | "text" | "news" | "document" | "member";
+  type?: "photo" | "text" | "news" | "document" | "member" | "main_menu";
   newsType?: "standard" | "photo" | "video" | "area";
 }

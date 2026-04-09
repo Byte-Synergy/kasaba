@@ -36,4 +36,11 @@ export type ContentType =
         acceptanceDay?: string;
         workingTime?: string;
       }[];
+    }
+  | {
+      type: "gallery";
+      images: Array<{
+        href: string;
+        name: string;
+      }>;
     };

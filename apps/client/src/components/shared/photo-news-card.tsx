@@ -57,7 +57,7 @@ const PhotoNewsCard = memo(
     const styles = PhotoNewsVariants(variant);
 
     // Filter main image or use first file
-    const thumbnailPhoto = data.files?.find(d => data.content?.find((c: any) => c.type === 'image' || c.type === 'photo')?.value === d.name) || data.files?.[0];
+    const thumbnailPhoto = data.files?.find(d => (data.content?.find((c: any) => c.type === 'image' || c.type === 'photo') as any)?.value === d.name) || data.files?.[0];
     const imageCount = data.files?.length || 0;
 
     return (

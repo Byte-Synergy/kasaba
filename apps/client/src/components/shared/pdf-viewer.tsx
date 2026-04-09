@@ -1,37 +1,20 @@
 "use client";
-import { memo, useState, useEffect, useMemo } from "react";
-import { Download, FileText, FileSearch } from "lucide-react";
+import { memo, useState, useEffect } from "react";
+import { Download, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "@/utils/translation-provider";
-import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
-import "@cyntler/react-doc-viewer/dist/index.css";
 
 const PdfViewer = memo(({ DocumentName, title, hideHeader = false }: { DocumentName: string, title?: string, hideHeader?: boolean }) => {
   const [loading, setLoading] = useState(true);
   const t = useTranslations() as any;
-
-  const getExtension = (url: string) => {
-    const parts = url.split('.');
-    const lastPart = parts.length > 1 ? parts.pop()?.split('?')[0]?.toLowerCase() : "";
-    if (lastPart && lastPart.length >= 2 && lastPart.length <= 4) return lastPart;
-    return "pdf";
-  };
-
-  const extension = useMemo(() => getExtension(DocumentName), [DocumentName]);
-  const isPdf = extension === "pdf";
-  const displayTitle = title || "Menu";
-  const displayFileName = displayTitle.toLowerCase().endsWith(`.${extension}`) 
-    ? displayTitle 
-    : `${displayTitle}.${extension}`;
-
-  // For DocViewer
-  const docs = useMemo(() => [{ uri: DocumentName }], [DocumentName]);
 
   useEffect(() => {
     setLoading(true);
   }, [DocumentName]);
 
   if (!DocumentName) return null;
+
+  const displayTitle = title || "Hujjat";
 
   return (
     <div className="w-full flex flex-col gap-y-6">
@@ -49,9 +32,6 @@ const PdfViewer = memo(({ DocumentName, title, hideHeader = false }: { DocumentN
                <h2 className="text-[#000573] font-bold text-lg md:text-xl truncate leading-tight">
                  {displayTitle}
                </h2>
-               <span className="text-gray-400 text-sm font-medium truncate">
-                  {displayFileName}
-               </span>
             </div>
           </div>
 
@@ -97,19 +77,6 @@ const PdfViewer = memo(({ DocumentName, title, hideHeader = false }: { DocumentN
             title={displayTitle}
         />
       </div>
-      
-      <style jsx global>{`
-        .doc-viewer-wrapper #rt-doc-viewer-header {
-            display: none !important;
-        }
-        .doc-viewer-wrapper #proxy-renderer {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            text-align: center;
-        }
-      `}</style>
     </div>
   );
 });

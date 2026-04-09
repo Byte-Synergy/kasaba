@@ -1,4 +1,3 @@
-import { form } from 'elysia'
 import React from 'react'
 
 const SearchComponent = () => {

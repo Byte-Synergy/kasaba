@@ -17,7 +17,7 @@ interface ModalContextType {
 
 const ModalContext = createContext<ModalContextType | null>(null);
 
-export const ModalProvider = ({ children, lang, menu }: { children: ReactNode, lang: Locale, menu: MenuItem[]; }) => {
+export const ModalProvider = ({ children, lang, menu, languages }: { children: ReactNode, lang: Locale, menu: MenuItem[], languages: any[]; }) => {
     const { modal, closeModal } = useModalStore();
 
     return (
@@ -49,7 +49,7 @@ export const ModalProvider = ({ children, lang, menu }: { children: ReactNode, l
                                 onClick={(e) => e.stopPropagation()} // <- Ichki bosishda yopilmasin
                             >
                                 {/* Sidebar content goes here */}
-                                <Sidebar lang={lang} menu={menu} />
+                                <Sidebar lang={lang} menu={menu} languages={languages} />
                             </div>
                         )
                     }

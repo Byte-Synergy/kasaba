@@ -29,18 +29,24 @@ const Content = ({
         if (content.value) return <Motto data={content.value} />;
         break;
       case "photo":
-        if (content.fileId)
-          return <Photo data={content.fileId} files={files} />;
+        if (content.fileUrl || content.fileId)
+          return <Photo data={content.fileUrl || content.fileId || ""} files={files} />;
         break;
       case "document":
-        if (content.fileId) {
+        if (content.documents || content.fileId) {
+          const docs = content.documents || [
+            { fileId: content.fileId, name: content.docName || "Hujjat" },
+          ];
           return (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              <DocumentsCard
-                lang={lang}
-                fileId={content.fileId}
-                name={content.docName || "Hujjat"}
-              />
+              {docs.map((doc: any, idx: number) => (
+                <DocumentsCard
+                  key={idx}
+                  lang={lang}
+                  fileId={doc.fileUrl || doc.fileId}
+                  name={doc.name || "Hujjat"}
+                />
+              ))}
             </div>
           );
         }

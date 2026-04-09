@@ -23,21 +23,35 @@ export default function Navbar({
         {items.map((item) => {
           const hasSub = Array.isArray(item.sub_menu) && item.sub_menu.length > 0;
           const href = item.type === "news" ? `/news/${item.newsType}` : item.path || `/p/${item.id}`;
+          const isLink = item.type !== "main_menu";
 
           return (
             <div key={item.id} className={`relative flex items-center h-full ${g[level]}`}>
-              <Link
-                lang={lang}
-                href={href}
-                className={cn(
-                  "flex items-center gap-1 transition-all h-full px-4 text-nowrap",
-                  level === 0 
-                    ? "text-[#141348] text-lg font-semibold uppercase hover:text-[#ff7a00]" 
-                    : "text-white text-base font-medium hover:bg-white/10 w-full py-3 px-6 uppercase"
-                )}
-              >
-                {item.title}
-              </Link>
+              {isLink ? (
+                <Link
+                  lang={lang}
+                  href={href}
+                  className={cn(
+                    "flex items-center gap-1 transition-all h-full px-4 text-nowrap",
+                    level === 0 
+                      ? "text-[#141348] text-lg font-semibold uppercase hover:text-[#ff7a00]" 
+                      : "text-white text-base font-medium hover:bg-white/10 w-full py-3 px-6 uppercase"
+                  )}
+                >
+                  {item.title}
+                </Link>
+              ) : (
+                <div
+                  className={cn(
+                    "flex items-center gap-1 transition-all h-full px-4 text-nowrap cursor-default",
+                    level === 0 
+                      ? "text-[#141348] text-lg font-semibold uppercase hover:text-[#ff7a00]" 
+                      : "text-white text-base font-medium hover:bg-white/10 w-full py-3 px-6 uppercase"
+                  )}
+                >
+                  {item.title}
+                </div>
+              )}
 
               {hasSub && (
                 <div

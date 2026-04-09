@@ -7,7 +7,7 @@ export default async function Page({
   params,
 }: {
   params: Promise<{
-    lang: Locale;
+    lang: string;
     date: string;
   }>;
 }) {

@@ -14,7 +14,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { RiPlayFill } from "react-icons/ri";
 
-const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
+const ReactPlayer = dynamic(() => import("react-player"), { ssr: false }) as any;
 
 const VideoNews = ({
   all_label,

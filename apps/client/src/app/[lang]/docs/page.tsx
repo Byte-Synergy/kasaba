@@ -11,7 +11,7 @@ const DocumentDetailPage = async ({
   searchParams,
   params,
 }: {
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
   searchParams: Promise<{ fileUrl: string }>;
 }) => {
   const { lang } = await params;

@@ -12,4 +12,26 @@ const dictionaries = {
     import("@/data/messages/ru-RU.json").then((module) => module.default),
 };
 
-export const getDictionary = async (locale: Locale) => dictionaries[locale]();
+export const getDictionary = async (locale: Locale | string) => {
+  const mapping: Record<string, keyof typeof dictionaries> = {
+    uz: "uz-UZ",
+    "uz-uz": "uz-UZ",
+    ru: "ru-RU",
+    "ru-ru": "ru-RU",
+    en: "en-US",
+    "en-us": "en-US",
+    "uz-cyrl": "uz-Cyrl",
+    "uz-Cyrl": "uz-Cyrl",
+  };
+
+  const normalizedLocale =
+    mapping[locale?.toLowerCase()] || (locale as keyof typeof dictionaries);
+
+  if (!dictionaries[normalizedLocale]) {
+    console.error("Dictionary not found for locale:", locale);
+    // Fallback to default locale if not found
+    return dictionaries["uz-Cyrl"]();
+  }
+
+  return dictionaries[normalizedLocale]();
+};

@@ -47,7 +47,7 @@ export default async function RootLayout({
   params,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 }>) {
   const { lang } = await params;
   const t = await getDictionary(lang);
@@ -71,11 +71,11 @@ export default async function RootLayout({
       >
         <AOSProviderDynamic>
           <TranslationsProvider dictionary={t}>
-            <ModalProvider lang={lang} menu={menu}>
-              <Header header_desc={t.header.description} lang={lang} menu={menu} languages={languages} />
-              <Navbar menu={menu} lang={lang} />
+            <ModalProvider lang={lang as any} menu={menu} languages={languages}>
+              <Header header_desc={t.header.description} lang={lang as any} menu={menu} languages={languages} />
+              <Navbar menu={menu} lang={lang as any} />
               <main className="py-5 max-md:p-0">{children}</main>
-              <Footer lang={lang} />
+              <Footer lang={lang as any} />
             </ModalProvider>
           </TranslationsProvider>
         </AOSProviderDynamic>

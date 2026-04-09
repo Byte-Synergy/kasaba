@@ -7,7 +7,7 @@ import { placesData } from "@/data/place";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string; lang: Locale }>;
+  params: Promise<{ slug: string; lang: string }>;
 }) {
   const { lang, slug } = await params;
   const t = await getDictionary(lang);

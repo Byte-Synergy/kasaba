@@ -10,7 +10,7 @@ import PageC from "./page-c";
 const NewsPage = async ({
   params,
 }: {
-  params: Promise<{ type: string; lang: Locale }>;
+  params: Promise<{ type: string; lang: string }>;
 }) => {
   const { type, lang } = await params;
 
@@ -34,7 +34,7 @@ const NewsPage = async ({
       </Container>
       <section id="standart-news" className="my-5 ">
         <Container className="my-5">
-          {newsData && <PageC data={newsData} lang={lang} type={type} />}
+          {newsData && <PageC data={newsData} lang={lang as any} type={type} />}
         </Container>
       </section>
     </div>

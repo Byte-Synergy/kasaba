@@ -67,7 +67,7 @@ const SocailMediaLinks = async ({ lang }: { lang: Locale }) => {
   return (
     <div className="w-full max-h-[350px] max-md:max-h-[280px] rounded-xl relative custom-gradient-overlay p-10 z-0 overflow-hidden max-md:p-5 bg-[url('/img/image.png')] bg-no-repeat bg-cover bg-center">
       <h3 className="w-2/3 text-2xl md:text-3xl xl:text-4xl 2xl:text-4xl text-white max-md:text-lg max-md:w-full relative z-10">
-        {lang === 'uz-cyrl' || lang === 'ru' 
+        {lang === 'uz-Cyrl' || lang === 'ru-RU' 
           ? "Ўзбекистон давлат муассасалари ва жамоат хизмати ходимлари касаба уюшмаси Республика Кенгаши ижтимоий тармоқларда:"
           : t.header.description + " ijtimoiy tarmoqlarda:"}
       </h3>

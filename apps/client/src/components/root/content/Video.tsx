@@ -1,9 +1,7 @@
 "use client";
 
 import React from "react";
-import { dataType } from "./Content";
-
-function Video({ data }: dataType) {
+function Video({ data }: { data: string }) {
   if (typeof data !== "string") return <>error</>;
   return (
     <iframe

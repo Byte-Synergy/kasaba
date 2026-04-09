@@ -1,6 +1,6 @@
 "use client";
 
-import { MenuItem } from "@/app/[lang]/layout";
+import { MenuItem } from "@/types";
 import Link from "@/components/link";
 import { Locale } from "@/configs/i18n";
 import { cn } from "@/libs/utils";
@@ -53,7 +53,19 @@ export default function NavbarC({
 
           return (
             <div key={item.id} className={`relative ${g[level]}`}>
-              {!hasSub ? (
+              {hasSub || item.type === "main_menu" ? (
+                <div
+                  className={cn(
+                    c,
+                    level > 0
+                      ? "text-white text-base hover:bg-white hover:text-[#ff7a00] px-4 py-2 relative"
+                      : "hover:text-[#ff7a00]",
+                    item.type === "main_menu" && "cursor-default"
+                  )}
+                >
+                  <span>{item.title}</span>
+                </div>
+              ) : (
                 <Link
                   lang={lang}
                   href={href}
@@ -66,17 +78,6 @@ export default function NavbarC({
                 >
                   <span>{item.title}</span>
                 </Link>
-              ) : (
-                <div
-                  className={cn(
-                    c,
-                    level > 0
-                      ? "text-white text-base hover:bg-white hover:text-[#ff7a00] px-4 py-2 relative"
-                      : "hover:text-[#ff7a00]"
-                  )}
-                >
-                  <span>{item.title}</span>
-                </div>
               )}
 
               {hasSub && (

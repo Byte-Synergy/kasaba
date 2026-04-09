@@ -3,37 +3,38 @@ import { Container } from "@/components/shared";
 import { Locale } from "@/configs/i18n";
 import React from "react";
 import Content from "@/components/root/content/Content";
+import { getDictionary } from "@/utils/directory";
 
 const PPage = async ({
   params,
 }: {
-  params: Promise<{ p: string; lang: Locale }>;
+  params: Promise<{ p: string; lang: string }>;
 }) => {
   const { lang, p } = await params;
   const menu = await getMenu(p, lang);
+  const t = await getDictionary(lang);
 
   if (!menu.data) {
     return (
       <Container className="my-10">
-        <h1 className="text-2xl font-bold text-center">Ma'lumot topilmadi</h1>
+        <h1 className="text-2xl font-bold text-center">
+          {t.search_results_empty_label}
+        </h1>
       </Container>
     );
   }
 
   return (
-    <div className="max-w-[1440px] mx-auto px-4">
+    <div className="w-full mx-auto">
       <Container className="my-10">
         <h1 className="text-3xl font-bold mb-8 text-[#141348] border-b pb-4">
           {menu.data.title}
         </h1>
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-10">
           {(menu.data.content || []).map((block: any, index: number) => (
-            <Content
-              key={`${block.type}-${index}`}
-              content={block}
-              lang={lang}
-              files={null}
-            />
+            <div key={`${block.type}-${index}`} className="w-full">
+              <Content content={block} lang={lang as any} files={null} />
+            </div>
           ))}
         </div>
       </Container>

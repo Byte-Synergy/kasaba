@@ -91,10 +91,11 @@ const Render = ({
 };
 
 const Sidebar = ({
-    lang, menu
+    lang, menu, languages
 }: {
     lang: Locale,
-    menu: MenuItem[]
+    menu: MenuItem[],
+    languages: any[]
 }) => {
     const [activeMenuMap, setActiveMenuMap] = useState<Record<string, boolean>>({});
 
@@ -169,7 +170,7 @@ const Sidebar = ({
             </nav>
             {/* <Navbar lang={lang} menu={menu} /> */}
             <div id="sidebar__footer" className='p-5 flex flex-col gap-y-2'>
-                <LanguageSwitcher lang={lang}/>
+                <LanguageSwitcher lang={lang} languages={languages}/>
                 <CurrencyBox />
             </div>
         </section>

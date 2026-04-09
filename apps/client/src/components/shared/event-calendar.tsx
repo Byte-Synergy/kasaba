@@ -37,11 +37,11 @@ const uzbekMonths = [
   "Dekabr",
 ];
 
-const wDays = {
-  uz: ["Ya", "Du", "Se", "Cho", "Pa", "Ju", "Sha"], // Yakshanba, Dushanba, Seshanba, Chorshanba, Payshanba, Juma, Shanba
-  "uz-cyrl": ["Яш", "Дш", "Сш", "Чш", "Пш", "Жм", "Шн"], // Якшанба, Душанба, Сешанба, Чоршанба, Пайшанба, Жума, Шанба
-  ru: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"], // Воскресенье, Понедельник, Вторник, Среда, Четверг, Пятница, Суббота
-  en: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"], // Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
+const wDays: any = {
+  "uz-UZ": ["Ya", "Du", "Se", "Cho", "Pa", "Ju", "Sha"],
+  "uz-Cyrl": ["Яш", "Дш", "Сш", "Чш", "Пш", "Жм", "Шн"],
+  "ru-RU": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+  "en-US": ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
 };
 
 const EventCalendar = ({
@@ -59,7 +59,7 @@ const EventCalendar = ({
       limit: 50,
       filter: { type: ["standard"], isArchive: true },
     }).then((res) => {
-      setEvents(res);
+      setEvents(res || []);
     });
   }, []);
 

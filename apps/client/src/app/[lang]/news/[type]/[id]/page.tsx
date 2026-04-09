@@ -15,7 +15,7 @@ import { getNews, getNewsBySlug } from "@/action/news";
 const SingleNewsPage = async ({
   params,
 }: {
-  params: Promise<{ id: string; lang: Locale }>;
+  params: Promise<{ id: string; lang: string }>;
 }) => {
   const { id, lang } = await params;
   const t = await getDictionary(lang);
@@ -90,6 +90,7 @@ const SingleNewsPage = async ({
                     <Content
                       key={"cotent-" + idx}
                       content={content as any}
+                      lang={lang as any}
                       files={currentNews.files}
                     />
                 ))}
@@ -100,7 +101,7 @@ const SingleNewsPage = async ({
             </div>
             <div className=" w-1/4 max-md:hidden">
               {!!otherNews.length && (
-                <OtherContent lang={lang} data={otherNews.slice(0, 3)} />
+                <OtherContent lang={lang as any} data={otherNews.slice(0, 3)} />
               )}
             </div>
           </div>
@@ -116,7 +117,7 @@ const SingleNewsPage = async ({
       <section id="related-news" className="max-w-[1440px] w-full mx-auto">
         {!!otherNews.length && (
           <RelatedNews
-            lang={lang}
+            lang={lang as any}
             all_label={t.all_label}
             news_on_the_topic_label={t.news_on_the_topic_label}
             data={otherNews}

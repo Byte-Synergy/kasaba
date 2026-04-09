@@ -40,7 +40,7 @@ export async function getPlaces(query: any = { page: 1, limit: 100 }) {
     };
   } catch (error) {
     console.error("Directus getPlaces Error:", error);
-    return { data: { data: [], total: 0 }, error, status: 500 };
+    return { data: [], error, status: 500 };
   }
 }
 

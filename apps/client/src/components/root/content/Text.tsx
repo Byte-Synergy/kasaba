@@ -4,9 +4,7 @@ import DOMPurify from "isomorphic-dompurify";
 import parse, { domToReact, Element, HTMLReactParserOptions } from "html-react-parser";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { dataType } from "./Content";
-
-function Text({ data }: dataType) {
+function Text({ data }: { data: string }) {
   if (typeof data !== "string") return <>error</>;
 
   const options: HTMLReactParserOptions = {

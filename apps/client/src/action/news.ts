@@ -135,11 +135,13 @@ function mapNewsItem(item: any, lang: string) {
         href: thumbUrl,
         name: thumbnail?.filename_download || "thumbnail",
         mimeType: thumbnail?.type || "image/jpeg",
+        extension: thumbnail?.filename_download?.split('.').pop() || "jpg"
       }] : []),
       ...content.filter(c => c.type === "photo").map(c => ({
           href: `${process.env.NEXT_PUBLIC_API_URL}/assets/${c.fileId}`,
           name: c.value || "image",
           mimeType: "image/jpeg",
+          extension: "jpg"
       }))
     ],
     content: content,

@@ -20,7 +20,7 @@ const DocumentsCard = memo(
         </div>
       </Link>
     );
-  }
+  },
 );
 
 export default DocumentsCard;

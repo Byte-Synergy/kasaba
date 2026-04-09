@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
   const t = await getDictionary(lang as Locale);
@@ -53,14 +53,14 @@ export default async function Page({
       <HomePage
         select_area_placeholder={t.select_area_placeholder}
         search_label={t.search_label}
-        lang={lang}
+        lang={lang as any}
         public_news_label={t.public_news_label}
         interactive_areas_label={t.interactive_areas_label}
         all_label={t.all_label}
         photo_news_label={t.photo_news_label}
         share_label={t.share_label}
         video_news_label={t.video_news_label}
-        places={places?.data || []}
+        places={(places as any) || []}
         archive_label={t.archive_label}
         areas_label={t.areas_label}
         news_label={t.news_label}
@@ -69,7 +69,7 @@ export default async function Page({
         ads={adsData || []}
       />
       <section id="useful-links" className="w-full max-w-[1440px] mx-auto">
-        <UsefulLinks lang={lang} />
+        <UsefulLinks lang={lang as any} />
       </section>
     </>
   );

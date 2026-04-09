@@ -5,7 +5,7 @@ import { getDictionary } from "@/utils/directory";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
 
@@ -19,7 +19,7 @@ export default async function Page({
       main_label={t.main_label}
       no_result_label={t.no_result_label}
       no_result_description={t.no_result_description}
-      lang={lang}
+      lang={lang as any}
     />
   );
 }

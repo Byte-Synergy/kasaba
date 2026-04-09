@@ -47,8 +47,10 @@ export async function getMenuTree(lang: string) {
 
     const itemMap: Record<string, MenuItem> = {};
     (items as any[]).forEach((p) => {
-      const trans = p.translations?.find((t: any) => t.languages_code === nLang);
-      
+      const trans = p.translations?.find(
+        (t: any) => t.languages_code === nLang,
+      );
+
       if (!trans) return;
 
       itemMap[p.id.toString()] = {
@@ -92,70 +94,71 @@ export async function getMenu(p: string | number, lang: string) {
 
   try {
     const isId = !isNaN(Number(p));
-    
-    const filter: any = isId 
+
+    const filter: any = isId
       ? { id: { _eq: Number(p) } }
-      : { translations: { slug: { _eq: p } } };
+      : {
+          translations: {
+            _and: [
+              { slug: { _eq: p } },
+              { languages_code: { _eq: nLang } }
+            ]
+          }
+        };
 
     const items = await client.request(
       readItems("menus", {
         fields: [
           "*",
           "translations.*",
-          {
-            translations: [
-              "*",
-              {
-                content_blocks: [
-                  "*",
-                  {
-                    item: ["*"]
-                  }
-                ],
-                member_blocks: [
-                  "*",
-                  {
-                    item: [
-                      "*",
-                      "image.*",
-                      {
-                        translations: ["*"]
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
+          "translations.content_blocks.*",
+          "translations.content_blocks.item:block_richtexts.*",
+          "translations.content_blocks.item:block_images.image.*",
+          "translations.member_blocks.*",
+          "translations.member_blocks.item:internal_employees.*",
+          "translations.member_blocks.item:internal_employees.image.*",
+          "translations.member_blocks.item:internal_employees.translations.*",
+          "translations.document_blocks.*",
+          "translations.document_blocks.item:block_documents.file.*",
         ],
         filter: {
-          _and: [
-            { status: { _eq: "published" } },
-            filter
-          ],
+          _and: [{ status: { _eq: "published" } }, filter],
         },
         limit: 1,
       }),
     );
+
+    console.log("Directus getMenu Raw Items:", JSON.stringify(items, null, 2));
 
     if (!items || items.length === 0) {
       return { success: false, data: null, status: 404 };
     }
 
     const page = items[0];
-    const trans = page.translations?.find((t: any) => t.languages_code === nLang);
+    const trans = page.translations?.find(
+      (t: any) => t.languages_code === nLang,
+    );
 
     if (!trans) {
-       return { success: false, data: null, status: 404 };
+      return { success: false, data: null, status: 404 };
     }
 
     const content: any[] = [];
-    
+
     // Add content blocks
     if (trans.content_blocks) {
       trans.content_blocks.forEach((b: any) => {
         if (b.collection === "block_richtexts" && b.item) {
           content.push({ type: "text", value: b.item.content });
+        } else if (b.collection === "block_images" && b.item) {
+          const image = b.item.image;
+          content.push({
+            type: "photo",
+            fileId: image?.id,
+            fileUrl: image?.id
+              ? `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${image.id}`
+              : null,
+          });
         }
       });
     }
@@ -166,19 +169,46 @@ export async function getMenu(p: string | number, lang: string) {
       trans.member_blocks.forEach((b: any) => {
         if (b.collection === "internal_employees" && b.item) {
           const emp = b.item;
-          const empTrans = emp.translations?.find((et: any) => et.languages_code === nLang) || emp.translations?.[0];
+          const empTrans =
+            emp.translations?.find((et: any) => et.languages_code === nLang) ||
+            emp.translations?.[0];
           members.push({
             fullName: empTrans?.full_name || "",
             position: empTrans?.position || "",
             phoneNumber: emp.phone_number,
             email: emp.email,
             fileId: emp.image?.id,
-            href: emp.image ? `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${emp.image.id}` : null
+            href: emp.image
+              ? `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${emp.image.id}`
+              : null,
           });
         }
       });
       if (members.length > 0) {
         content.push({ type: "member", members });
+      }
+    }
+
+    // Add document blocks
+    if (trans.document_blocks) {
+      const documents: any[] = [];
+      trans.document_blocks.forEach((b: any) => {
+        if (b.collection === "block_documents" && b.item) {
+          const file = b.item.file;
+          const fileId = typeof file === "string" ? file : file?.id;
+          const fileName = typeof file === "object" ? file?.title : null;
+
+          documents.push({
+            fileId: fileId,
+            fileUrl: fileId
+              ? `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${fileId}`
+              : null,
+            name: fileName || trans.name || "Hujjat",
+          });
+        }
+      });
+      if (documents.length > 0) {
+        content.push({ type: "document", documents });
       }
     }
 
@@ -188,7 +218,7 @@ export async function getMenu(p: string | number, lang: string) {
       slug: trans.slug,
       type: trans.type,
       newsType: trans.news_type,
-      content: content
+      content: content,
     };
 
     return { success: true, data: normalizedData, status: 200 };
@@ -197,4 +227,3 @@ export async function getMenu(p: string | number, lang: string) {
     return { success: false, data: null, error, status: 500 };
   }
 }
-

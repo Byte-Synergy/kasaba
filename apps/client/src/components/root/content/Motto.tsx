@@ -1,5 +1,4 @@
 import React from "react";
-import { dataType } from "./Content";
 import Image from "next/image";
 
 function Motto({ data }: { data: string }) {

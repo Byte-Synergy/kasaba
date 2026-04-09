@@ -1,4 +1,3 @@
-import eden from "@/libs/eden";
 import HomePage from "./page-client";
 import UsefulLinks from "@/components/root/home/useful-links";
 import { Locale } from "@/configs/i18n";

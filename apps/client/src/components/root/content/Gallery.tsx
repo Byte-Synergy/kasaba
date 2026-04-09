@@ -1,65 +1,87 @@
-// 'use client'
-// import React, { useState } from "react";
-// import { dataType } from "./Content";
-// import {
-//   Carousel,
-//   CarouselContent,
-//   CarouselItem,
-//   CarouselNext,
-//   CarouselPrevious,
-// } from "@/components/ui/carousel";
-// import Image from "next/image";
+"use client";
 
-// function Gallery({ data }: dataType) {
-//   if (!Array.isArray(data)) return <>Xatolik</>;
+import React, { useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode, Navigation, Thumbs, Autoplay } from "swiper/modules";
+import Image from "next/image";
 
-//   const [select, setSelect] = useState<string>(data[0]);
-//   const [fade, setFade] = useState(false);
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
 
-//   const changeImage = (src: string) => {
-//     setFade(true);
-//     setTimeout(() => {
-//       setSelect(src);
-//       setFade(false);
-//     }, 300);
-//   };
+interface GalleryProps {
+  images: {
+    id: string;
+    url: string;
+    title?: string;
+  }[];
+}
 
-//   return (
-//     <div className="w-full">
-//       <div className="relative w-full h-[498px] overflow-hidden mb-4 bg-black/70">
-//         <div
-//           className={`absolute inset-0 transition-opacity duration-300 ${fade ? "opacity-0" : "opacity-100"
-//             }`}
-//         >
-//           <Image
-//             width={925}
-//             height={520}
-//             src={select}
-//             alt={`Gallery image `}
-//             className=" object-cover w-full h-full "
-//           />
-//         </div>
-//       </div>
-//       <Carousel>
-//         <CarouselContent>
-//           {data?.map((src, index) => (
-//             <CarouselItem key={index} className="flex justify-center basis-1/5">
-//               <Image
-//                 src={src}
-//                 onClick={() => changeImage(src)}
-//                 alt={`Gallery image ${index + 1}`}
-//                 width={180}
-//                 height={100}
-//                 className=" object-cover w-full h-[100px]"
-//               />
-//             </CarouselItem>
-//           ))}
-//         </CarouselContent>
-//         <CarouselPrevious className=" left-5 scale-125 " />
-//         <CarouselNext className=" right-5 scale-125" />
-//       </Carousel>
-//     </div>
-//   );
-// }
+const Gallery: React.FC<GalleryProps> = ({ images }) => {
+  const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
 
-// export default Gallery;
+  if (!images || images.length === 0) return null;
+
+  return (
+    <div className="w-full space-y-4">
+      <Swiper
+        style={
+          {
+            "--swiper-navigation-color": "#fff",
+            "--swiper-pagination-color": "#fff",
+          } as React.CSSProperties
+        }
+        spaceBetween={10}
+        navigation={true}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
+        thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
+        modules={[FreeMode, Navigation, Thumbs, Autoplay]}
+        className="w-full aspect-video rounded-lg overflow-hidden"
+      >
+        {images.map((image) => (
+          <SwiperSlide key={image.id}>
+            <div className="relative w-full h-full">
+              <Image
+                src={image.url}
+                alt={image.title || "Gallery image"}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+              />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      <Swiper
+        onSwiper={setThumbsSwiper}
+        spaceBetween={10}
+        slidesPerView={4}
+        freeMode={true}
+        watchSlidesProgress={true}
+        modules={[FreeMode, Navigation, Thumbs]}
+        className="w-full !mt-2 sm:!mt-4 h-20 sm:h-24 md:h-28"
+      >
+        {images.map((image) => (
+          <SwiperSlide key={image.id} className="cursor-pointer rounded-md overflow-hidden opacity-50 [.swiper-slide-thumb-active&]:opacity-100 transition-opacity">
+            <div className="relative w-full h-full">
+              <Image
+                src={image.url}
+                alt={image.title || "Thumbnail"}
+                fill
+                className="object-cover"
+                sizes="100px"
+              />
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+  );
+};
+
+export default Gallery;

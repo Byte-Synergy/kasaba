@@ -1,6 +1,5 @@
 import { Locale } from "@/configs/i18n";
 import { ContentType } from "./content";
-import { AppType } from "./server";
 
 export type WithOptional<T, K extends keyof T> = Omit<T, K> &
   Partial<Pick<T, K>>;
@@ -14,33 +13,25 @@ export interface ChildrenProps {
   children: React.ReactNode;
 }
 
-export type NewsDataType =
-  AppType["~Routes"]["api"]["rest"]["news"][":newsPath"]["get"]["response"]["200"];
-//  & {
-//   content: ContentType[];
-// };
-//  {
-//   files?:
-//     | {
-//         name: string;
-//         mimeType: string;
-//         extension: string;
-//         href: string;
-//       }[]
-//     | undefined;
-//   type: "standard" | "photo" | "video";
-//   content: {
-//     [x: string]: any;
-//   }[];
-//   title: string;
-//   description: string;
-//   tags: string[];
-//   isTop: boolean;
-//   path: string;
-//   id: number;
-//   createdAt: string;
-//   authorId: number;
-// }
+export interface NewsDataType {
+  id: number;
+  title: string;
+  description: string;
+  type: "standard" | "photo" | "video" | "area";
+  createdAt: string;
+  path: string;
+  languageCode: string;
+  isFallback?: boolean;
+  authorId?: number | null;
+  tags?: string[];
+  files?: {
+    name: string;
+    mimeType: string;
+    extension: string;
+    href: string;
+  }[];
+  content?: ContentType[];
+}
 
 export interface SearchDataType {
   id: string;
@@ -103,12 +94,12 @@ export interface NewsFilter {
   sortOrder?: "asc" | "desc";
 }
 
-export type MenuItem = {
+export interface MenuItem {
   id: string;
   title: string;
   path: string;
   docCount?: number;
   sub_menu: MenuItem[];
-  type?: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["type"];
-  newsType?: AppType["~Routes"]["api"]["rest"]["menus"]["tree"]["get"]["response"]["200"][number]["newsType"];
-};
+  type?: "photo" | "text" | "news" | "document" | "member";
+  newsType?: "standard" | "photo" | "video" | "area";
+}

@@ -2,10 +2,13 @@ import Motto from "./Motto";
 import Photo from "./Photo";
 import Text from "./Text";
 import Video from "./Video";
+import Gallery from "./Gallery";
 import type { ContentType } from "@/types/content";
 import React from "react";
 import MemberCards from "../../shared/member-card";
 import DocumentsCard from "../../shared/documents-card";
+import PdfViewer from "@/components/shared/pdf-viewer";
+import DocumentAccordion from "./DocumentAccordion";
 import type { Locale } from "@/configs/i18n";
 
 const Content = ({
@@ -34,19 +37,21 @@ const Content = ({
         if (content.fileUrl || content.fileId)
           return <Photo data={content.fileUrl || content.fileId || ""} files={files} />;
         break;
+      case "gallery":
+        if (content.images) return <Gallery images={content.images} />;
+        break;
       case "document":
-        if (content.documents || content.fileId) {
+        if (content.documents || content.fileId || content.fileUrl) {
           const docs = content.documents || [
-            { fileId: content.fileId, name: content.docName || "Hujjat" },
+            { fileUrl: content.fileUrl, fileId: content.fileId, name: content.docName || "Hujjat" },
           ];
           return (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="flex flex-col gap-4">
               {docs.map((doc: any, idx: number) => (
-                <DocumentsCard
-                  key={idx}
-                  lang={lang}
-                  fileId={doc.fileUrl || doc.fileId}
-                  name={doc.name || "Hujjat"}
+                <DocumentAccordion 
+                   key={idx}
+                   fileUrl={doc.fileUrl || doc.fileId} 
+                   name={doc.name || "Hujjat"} 
                 />
               ))}
             </div>

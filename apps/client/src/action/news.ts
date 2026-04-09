@@ -44,6 +44,10 @@ export async function getNews(query: any = { page: 1, limit: 10 }) {
           "translations.thumbnail.*",
           "translations.blocks.*",
           "translations.blocks.item:block_richtexts.*",
+          "translations.blocks.item:block_galleries.*",
+          "translations.blocks.item:block_galleries.files.directus_files_id.*",
+          "translations.blocks.item:block_documents.*",
+          "translations.blocks.item:block_documents.file.*",
         ],
         filter: filters,
         limit: query.limit || 10,
@@ -78,6 +82,10 @@ export async function getNewsBySlug(slug: string, rawLang: string = "uz") {
           "translations.thumbnail.*",
           "translations.blocks.*",
           "translations.blocks.item:block_richtexts.*",
+          "translations.blocks.item:block_galleries.*",
+          "translations.blocks.item:block_galleries.files.directus_files_id.*",
+          "translations.blocks.item:block_documents.*",
+          "translations.blocks.item:block_documents.file.*",
         ],
         filter: {
           translations: {
@@ -115,12 +123,50 @@ function mapNewsItem(item: any, lang: string) {
       if (bContent) {
         content.push({ type: "text", value: bContent });
 
-        // Extract YouTube ID if present in iframe
+        // Extract YouTube URL if present in iframe
         const iframeMatch = typeof bContent === "string" ? bContent.match(/<iframe.*?src=["'](.*?)["']/) : null;
         if (iframeMatch && iframeMatch[1]) {
-           content.push({ type: "video-url", value: iframeMatch[1] });
+          content.push({ type: "video-url", value: iframeMatch[1] });
+        }
+
+        // Extract all <img> tags — photo news images are stored embedded in richtext HTML
+        if (typeof bContent === "string") {
+          const imgRegex = /<img[^>]+src=["']([^"']+)["']/g;
+          let match;
+          while ((match = imgRegex.exec(bContent)) !== null) {
+            content.push({ type: "photo", fileUrl: match[1] });
+          }
         }
       }
+    } else if (b.collection === "block_images" && b.item?.image) {
+      const img = b.item.image;
+      content.push({
+        type: "photo",
+        fileId: img.id,
+        fileUrl: `${process.env.NEXT_PUBLIC_API_URL}/assets/${img.id}`,
+      });
+    } else if (b.collection === "block_galleries" && b.item) {
+      const images = b.item.files?.map((img: any) => {
+        const file = img.directus_files_id;
+        if (!file) return null;
+        return {
+          id: typeof file === "string" ? file : file.id,
+          url: `${process.env.NEXT_PUBLIC_API_URL}/assets/${typeof file === "string" ? file : file.id}`,
+          title: typeof file === "object" ? (file.title || file.filename_download) : "Image"
+        };
+      }).filter(Boolean) || [];
+      content.push({
+        type: "gallery",
+        images
+      });
+    } else if (b.collection === "block_documents" && b.item?.file) {
+      const file = b.item.file;
+      content.push({
+        type: "document",
+        fileId: file.id || file,
+        fileUrl: `${process.env.NEXT_PUBLIC_API_URL}/assets/${file.id || file}`,
+        docName: file.title || file.filename_download || "Hujjat"
+      });
     }
   }
 
@@ -147,10 +193,10 @@ function mapNewsItem(item: any, lang: string) {
         extension: thumbnail?.filename_download?.split('.').pop() || "jpg"
       }] : []),
       ...content.filter(c => c.type === "photo").map(c => ({
-          href: `${process.env.NEXT_PUBLIC_API_URL}/assets/${c.fileId}`,
-          name: c.value || "image",
-          mimeType: "image/jpeg",
-          extension: "jpg"
+        href: c.fileUrl || `${process.env.NEXT_PUBLIC_API_URL}/assets/${c.fileId}`,
+        name: c.fileId || "image",
+        mimeType: "image/jpeg",
+        extension: "jpg"
       }))
     ],
     content: content,

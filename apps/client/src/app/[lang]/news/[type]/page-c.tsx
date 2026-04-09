@@ -3,7 +3,7 @@
 import { getNews } from "@/action/news";
 import StandardNewsCard from "@/components/shared/standart-news-card";
 import { Locale } from "@/configs/i18n";
-import { AppType } from "@/types/server";
+import { NewsDataType } from "@/types";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -14,15 +14,13 @@ export default function PageC({
 }: {
   lang: Locale;
   type: string;
-  data: AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"];
+  data: NewsDataType[];
 }) {
   const limit = 20; // max 50
   const [page, setPage] = useState(2);
   const [hasMore, setHasMore] = useState(true);
   const [data, setData] =
-    useState<
-      AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"]
-    >(initialData);
+    useState<NewsDataType[]>(initialData);
 
   useEffect(() => {
     const fetchData = async () => {

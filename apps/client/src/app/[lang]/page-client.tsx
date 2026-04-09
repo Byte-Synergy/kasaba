@@ -10,7 +10,6 @@ import StandardNews from "@/components/root/home/standart-news";
 import { Container } from "@/components/shared";
 import Ads from "@/components/shared/ads";
 import ScrollAnimation from "@/components/ui/scroll-animation";
-import { AppType } from "@/types/server";
 import { NewsDataType } from "@/types";
 import { Locale } from "@/configs/i18n";
 
@@ -44,8 +43,15 @@ const HomePage = ({
   share_label: string;
   video_news_label: string;
   lang: Locale;
-  ads: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
-  // areas: AppType["~Routes"]["api"]["rest"]["places"]["get"]["response"]["200"]["data"];
+  ads: Array<{
+    id: string;
+    url: string;
+    type: string;
+    file: {
+      href: string;
+    };
+  }>;
+  // areas: any[];
   places:
     | { id: number; name?: string; areasCount: number; title: string }[]
     | [];

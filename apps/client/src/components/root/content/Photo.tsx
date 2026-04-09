@@ -1,13 +1,15 @@
 import React from "react";
 import Image from "next/image";
-import { AppType } from "@/types/server";
 
 function Photo({
   data,
   files,
 }: {
   data: string;
-  files?: AppType["~Routes"]["api"]["rest"]["news"][":newsPath"]["get"]["response"]["200"]["files"];
+  files?: Array<{
+    href: string;
+    name: string;
+  }>;
 }) {
   const isUrl = data?.startsWith("http");
   const image = isUrl ? null : files?.find((file) => file.href.includes(data));

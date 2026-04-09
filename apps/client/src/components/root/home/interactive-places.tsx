@@ -12,7 +12,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import NewsTitle from "@/components/news/title";
-import { AppType } from "@/types/server";
 import { Locale } from "@/configs/i18n";
 import { getInteractiveAreasByFetch } from "@/utils/placesApi";
 import { cn } from "@/libs/utils";

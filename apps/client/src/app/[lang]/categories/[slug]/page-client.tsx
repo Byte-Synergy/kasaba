@@ -4,27 +4,9 @@ import { Container } from "@/components/shared";
 import Breadcrumb from "@/components/shared/breadcrumb";
 import StandardNewsCard from "@/components/shared/standart-news-card";
 import { Locale } from "@/configs/i18n";
-import eden from "@/libs/eden";
 import { NewsDataType } from "@/types";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-
-const fetchData = async (name: string) => {
-  try {
-    const res = await eden.news.get({
-      query: {
-        limit: 50,
-        page: 1,
-        filter: {
-          tags: [name],
-        },
-      },
-    });
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 const NewsPageClient = ({
   main_label,

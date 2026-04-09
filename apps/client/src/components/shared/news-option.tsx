@@ -10,7 +10,6 @@ import { cn } from "@/libs/utils";
 import { placesData } from "@/data/place";
 import { getNewsCategories } from "@/action/news";
 import Image from "next/image";
-import { AppType } from "@/types/server";
 import Link from "../link";
 
 const NewsOption = ({
@@ -22,7 +21,15 @@ const NewsOption = ({
   search_label: string;
   areas_label: string;
   archive_label: string;
-  ads: AppType["~Routes"]["api"]["rest"]["banner"]["get"]["response"]["200"];
+  ads: Array<{
+    id: string;
+    url: string;
+    type: string;
+    file: {
+      href: string;
+      name: string;
+    };
+  }>;
 }) => {
   const params = useParams<{ lang: string }>();
   const [places, setPlaces] = useState<

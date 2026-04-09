@@ -5,7 +5,7 @@ import Breadcrumb from "@/components/shared/breadcrumb";
 import NoResultsFound from "@/components/shared/no-results-found";
 import SearchCard from "@/components/shared/search-card";
 import { Locale } from "@/configs/i18n";
-import { AppType } from "@/types/server";
+import { NewsDataType } from "@/types";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import { NewsApi } from "@/utils/newsApi";
@@ -28,9 +28,7 @@ function SearchPageClient({
   no_result_label: string;
 }) {
   const [query, setQuery] = useState("");
-  const [items, setItems] = useState<
-    AppType["~Routes"]["api"]["rest"]["news"]["get"]["response"]["200"]["data"]
-  >([]);
+  const [items, setItems] = useState<NewsDataType[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {

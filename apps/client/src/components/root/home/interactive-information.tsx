@@ -1,7 +1,6 @@
 "use client";
 import ScrollAnimation from "@/components/ui/scroll-animation";
 import { cn } from "@/libs/utils";
-import { AppType } from "@/types/server";
 import { useTranslations } from "@/utils/translation-provider";
 import { Building2, ChevronDown, ChevronLeft, Clock, EllipsisVertical } from "lucide-react";
 import Image from "next/image";

@@ -97,7 +97,7 @@ const PartniersLink = ({ enter_label }: { enter_label: string }) => {
             1280: { slidesPerView: 4.5, spaceBetween: 20 },
           }}
         >
-          {PartniersData.filter((p) => p.lang === lang).map((data) => (
+          {PartniersData.filter((p) => p.lang.toLowerCase() === lang.toLowerCase()).map((data) => (
             <SwiperSlide key={data.link} className="h-full flex!">
               <PartniersCard data={data} enter_label={enter_label} />
             </SwiperSlide>

@@ -42,6 +42,7 @@ export async function getNews(query: any = { page: 1, limit: 10 }) {
           "*",
           "translations.*",
           "translations.thumbnail.*",
+          "translations.seo",
           "translations.blocks.*",
           "translations.blocks.item:block_richtexts.*",
           "translations.blocks.item:block_galleries.*",
@@ -80,6 +81,7 @@ export async function getNewsBySlug(slug: string, rawLang: string = "uz") {
           "*",
           "translations.*",
           "translations.thumbnail.*",
+          "translations.seo",
           "translations.blocks.*",
           "translations.blocks.item:block_richtexts.*",
           "translations.blocks.item:block_galleries.*",
@@ -200,6 +202,7 @@ function mapNewsItem(item: any, lang: string) {
       }))
     ],
     content: content,
+    seo: translation?.seo || null,
   };
 }
 

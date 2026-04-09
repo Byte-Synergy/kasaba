@@ -11,6 +11,43 @@ import RelatedNews from "@/components/shared/related-news";
 import { getDictionary } from "@/utils/directory";
 import { Locale } from "@/configs/i18n";
 import { getNews, getNewsBySlug } from "@/action/news";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string; lang: string }>;
+}): Promise<Metadata> {
+  const { id, lang } = await params;
+  const { data: news } = await getNewsBySlug(id, lang);
+
+  if (!news) return {};
+
+  const title = news.seo?.title || news.title;
+  const description = news.seo?.description || news.description;
+  const noindex = news.seo?.noindex;
+  const nofollow = news.seo?.nofollow;
+
+  return {
+    title,
+    description,
+    robots: {
+      index: !noindex,
+      follow: !nofollow,
+    },
+    openGraph: {
+      title,
+      description,
+      images: news.files?.[0] ? [{ url: news.files[0].href }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: news.files?.[0] ? [news.files[0].href] : [],
+    },
+  };
+}
 
 const SingleNewsPage = async ({
   params,

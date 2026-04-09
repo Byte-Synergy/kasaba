@@ -31,6 +31,13 @@ export interface NewsDataType {
     href: string;
   }[];
   content?: ContentType[];
+  seo?: {
+    title?: string;
+    description?: string;
+    noindex?: boolean;
+    nofollow?: boolean;
+    og_image?: string;
+  } | null;
 }
 
 export interface SearchDataType {

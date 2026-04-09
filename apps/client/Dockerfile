@@ -1,38 +1,26 @@
 # 1. Base image
 FROM oven/bun:1.1-alpine AS base
 
-# 2. Prune stage: Monorepo'dan faqat 'client' app va uning dependencylarini ajratib olamiz
-FROM base AS pruner
+# 2. Dependencies
+FROM base AS deps
 WORKDIR /app
-# turbo ni o'rnatamiz
-RUN bun add -g turbo
-COPY . .
-# 'client' app uchun build contextni qirqib olamiz
-RUN turbo prune client --out-dir=out
+# Lockfile bo'lmasligi mumkin (monorepo root'da bo'lsa), shuning uchun faqat package.json nusxalaymiz
+COPY package.json ./
+RUN bun install
 
-# 3. Installer stage: Faqat pruned package.json larni nusxalab, install qilamiz
-FROM base AS installer
-WORKDIR /app
-
-# Avval faqat package.json va lockfile nusxalanadi (caching uchun)
-COPY --from=pruner /app/out/json/ .
-RUN bun install --frozen-lockfile
-
-# 4. Builder stage: Kodni build qilamiz
+# 3. Builder
 FROM base AS builder
 WORKDIR /app
 # Installer dagi node_modules ni nusxalaymiz
-COPY --from=installer /app/ .
-# Prune qilingan to'liq kodni nusxalaymiz
-COPY --from=pruner /app/out/full/ .
-
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
-# Build jarayoni (Turborepo orqali)
-RUN bun run build --filter=client
+# Build jarayoni
+RUN bun run build
 
-# 5. Runner stage: Minimal production image
+# 4. Runner stage: Minimal production image
 FROM base AS runner
 WORKDIR /app
 
@@ -45,9 +33,10 @@ USER new_user
 
 # Next.js standalone output'ni nusxalaymiz
 # Standalone mode node_modules'larni production uchun minimal ko'rinishga keltiradi
-COPY --from=builder --chown=new_user:new_group /app/apps/client/.next/standalone ./
-COPY --from=builder --chown=new_user:new_group /app/apps/client/.next/static ./apps/client/.next/static
-COPY --from=builder --chown=new_user:new_group /app/apps/client/public ./apps/client/public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
 
 # Standalone server'ni ishga tushirish
-CMD ["bun", "run", "apps/client/server.js"]
+# Standalone mode'da server.js har doim standalone papkasining ildizida bo'ladi
+CMD ["bun", "server.js"]

@@ -34,6 +34,7 @@ const HomePage = ({
   public_news_label,
   video_news_label,
   select_area_placeholder,
+  mediateka_label,
 }: {
   select_area_placeholder: string;
   all_label: string;
@@ -56,6 +57,7 @@ const HomePage = ({
   search_label: string;
   archive_label: string;
   areas_label: string;
+  mediateka_label: string;
 }) => {
   return (
     <>
@@ -105,6 +107,7 @@ const HomePage = ({
             lang={lang}
             videoNews={videoNewsData}
             photoNews={photoNewsData}
+            mediateka_label={mediateka_label}
           />
         </section>
       </section>

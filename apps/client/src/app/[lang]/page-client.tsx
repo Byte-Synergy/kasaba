@@ -95,7 +95,7 @@ const HomePage = ({
         id="media"
         className="relative bg-[#171717] py-10"
       >
-        <section id="vide-news" className="max-w-[1600px] w-full mx-auto">
+        <section id="vide-news" className="max-w-[1780px] w-full mx-auto">
           <MediaNews
             all_label={all_label}
             photo_news_label={photo_news_label}

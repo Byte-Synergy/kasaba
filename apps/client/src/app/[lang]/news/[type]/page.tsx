@@ -28,7 +28,7 @@ const NewsPage = async ({
   const newsData = newsResp?.data || [];
 
   return (
-    <div className="max-w-[1440px] w-full mx-auto">
+    <div className="max-w-[1780px] w-full mx-auto">
       <Container className="my-5">
         <Breadcrumb main_label={t.main_label} data={[t.news_label]} />
       </Container>

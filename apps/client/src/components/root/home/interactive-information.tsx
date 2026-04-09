@@ -140,24 +140,25 @@ const InteractiveInformation = ({
           selectedArea.placeData.map((place, idx) => (
             <ScrollAnimation key={idx} idx={idx}>
               <div
-                className="flex items-center justify-between gap-x-4 rounded-lg hover:shadow-xl cursor-pointer"
+                className="flex items-center justify-between gap-x-4 rounded-xl hover:shadow-2xl hover:bg-gray-50/50 p-2 transition-all cursor-pointer border border-transparent hover:border-gray-100/50 mb-2"
                 onClick={() => selectedPlaceHandler(place.id)}
               >
-                <div className="flex gap-x-4 items-center">
-                  <div className=" bg-[#000573] py-4 px-4 rounded-lg">
-                    <Building2 className="w-12 h-12 text-white" />
+                <div className="flex gap-x-4 items-center min-w-0">
+                  <div className="bg-[#000573] py-4 px-4 rounded-xl flex-shrink-0 shadow-lg">
+                    <Building2 className="w-10 h-10 text-white" />
                   </div>
-                  <div className="flex flex-col gap-y-1 ">
-                    <div className="flex items-center gap-x-2 text-[#777] text-[12px]">
-                      <Clock className="w-4 h-4" />
-                      <p>{place.workingTime}</p>
+                  <div className="flex flex-col gap-y-1 min-w-0">
+                    <h4 className="text-[#000573] font-bold text-base leading-tight line-clamp-2">
+                       {place.name}
+                    </h4>
+                    <div className="flex items-start gap-x-1.5 text-gray-400 mt-0.5">
+                      <p className="text-[13px] leading-snug line-clamp-2">{place.address}</p>
                     </div>
-                    <div className="text-sm">{place.address}</div>
                   </div>
                 </div>
-                <div className="">
-                  <button className="p-3">
-                    <EllipsisVertical />
+                <div className="flex-shrink-0">
+                  <button className="p-2 text-gray-300 hover:text-[#ff8400] transition-colors">
+                    <EllipsisVertical className="w-5 h-5" />
                   </button>
                 </div>
               </div>

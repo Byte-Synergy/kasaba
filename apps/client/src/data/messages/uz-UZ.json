@@ -152,7 +152,6 @@
     "preparing_description": "Bu bir necha soniya vaqt olishi mumkin",
     "unsupported_format_title": "Ushbu formatni ko'rib bo'lmaydi",
     "unsupported_format_description": "Ushbu hujjat (DOCX/XLSX) formatida bo'lgani uchun uni brauzerda ko'rsatib bo'lmaydi. Uni o'qish uchun pastdagi tugma orqali yuklab oling.",
-    "view_modes_label": "PDF, DOC va DOCX fayllarini ko'rish rejimi yoqilgan.",
     "fallback_label": "Hujjatlar"
   }
 }

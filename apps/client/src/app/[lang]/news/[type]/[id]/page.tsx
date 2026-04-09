@@ -57,7 +57,7 @@ const SingleNewsPage = async ({
           </Container>
         </div>
       )}
-      <section className="max-w-[1440px] w-full mx-auto">
+      <section className="max-w-[1780px] w-full mx-auto">
         <Container className="my-5">
           <Breadcrumb
             main_label={t.main_label}
@@ -65,7 +65,7 @@ const SingleNewsPage = async ({
           />
         </Container>
       </section>
-      <section id="content" className="max-w-[1440px] w-full mx-auto mb-10">
+      <section id="content" className="max-w-[1780px] w-full mx-auto mb-10">
         <Container>
           <div className="flex gap-9">
             <div className="w-3/4 max-md:w-full">
@@ -107,14 +107,14 @@ const SingleNewsPage = async ({
           </div>
         </Container>
       </section>
-      <section id="social-news" className="max-w-[1440px] w-full mx-auto">
+      <section id="social-news" className="max-w-[1780px] w-full mx-auto">
         <SocialAds
           connect_button={t.link_sections.telegram.connect_button}
           description={t.link_sections.telegram.description}
           title={t.link_sections.telegram.title}
         />
       </section>
-      <section id="related-news" className="max-w-[1440px] w-full mx-auto">
+      <section id="related-news" className="max-w-[1780px] w-full mx-auto">
         {!!otherNews.length && (
           <RelatedNews
             lang={lang as any}

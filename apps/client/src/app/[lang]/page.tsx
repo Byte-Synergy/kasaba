@@ -68,7 +68,7 @@ export default async function Page({
         topNewsData={topNewsData}
         ads={adsData || []}
       />
-      <section id="useful-links" className="w-full max-w-[1440px] mx-auto">
+      <section id="useful-links" className="w-full max-w-[1780px] mx-auto">
         <UsefulLinks lang={lang as any} />
       </section>
     </>

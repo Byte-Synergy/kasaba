@@ -89,7 +89,7 @@ const StandardNewsCard = memo(
         lang={lang}
         href={`/news/${data.type}/${data.path}`}
         className={cn(
-          "inline-block relative overflow-hidden group h-full transition-all",
+          "flex flex-col relative overflow-hidden group h-full transition-all",
           variant === "card" ? "rounded-[5px]" : "rounded-sm",
           styles?.parentDiv,
           className

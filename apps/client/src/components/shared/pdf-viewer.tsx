@@ -101,11 +101,6 @@ const PdfViewer = memo(({ DocumentName, title }: { DocumentName: string, title?:
           )}
         </AnimatePresence>
       </div>
-
-      <div className="flex items-center justify-center gap-x-2 text-gray-400 text-xs font-medium">
-         <FileSearch className="w-4 h-4 text-[#000573]" />
-         {t.document_viewer?.view_modes_label || "PDF, DOC va DOCX fayllarini ko'rish rejimi yoqilgan."}
-      </div>
     </div>
   );
 });

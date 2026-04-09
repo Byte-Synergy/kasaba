@@ -32,7 +32,7 @@ const PopularNews = ({
         />
       </ScrollAnimation>
       
-      <div className="relative mt-8">
+      <div className="relative mt-8 overflow-x-clip -mx-4 px-4">
         <Swiper
           modules={[Autoplay]}
           autoplay={{
@@ -40,21 +40,20 @@ const PopularNews = ({
             delay: 4000,
             disableOnInteraction: false
           }}
-          spaceBetween={15}
+          spaceBetween={20}
           slidesPerView={3.7}
-          // Added !overflow-visible to show card shadows on hover
-          className="pb-10! pt-4! h-full! overflow-visible!"
+          className="pb-12! pt-4! overflow-visible!"
           breakpoints={{
             0: { slidesPerView: 1.2, spaceBetween: 10 },
             640: { slidesPerView: 2.2, spaceBetween: 15 },
-            1024: { slidesPerView: 3.2, spaceBetween: 15 },
-            1280: { slidesPerView: 3.7, spaceBetween: 15 },
+            1024: { slidesPerView: 3.2, spaceBetween: 20 },
+            1280: { slidesPerView: 3.7, spaceBetween: 20 },
           }}
         >
           {news?.map((data, index) => (
-            <SwiperSlide key={data.id} className="h-full">
-              <ScrollAnimation idx={index / 2} className="h-full">
-                <StandardNewsCard data={data} variant="card" />
+            <SwiperSlide key={data.id} className="!h-auto flex">
+              <ScrollAnimation idx={index / 2} className="flex flex-col w-full h-full">
+                <StandardNewsCard data={data} variant="card" className="flex-grow flex flex-col h-full" />
               </ScrollAnimation>
             </SwiperSlide>
           ))}

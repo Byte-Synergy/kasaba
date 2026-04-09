@@ -156,7 +156,6 @@
     "preparing_description": "Это может занять несколько секунд",
     "unsupported_format_title": "Этот формат не поддерживается для просмотра",
     "unsupported_format_description": "Так как этот документ в формате (DOCX/XLSX), его нельзя просмотреть в браузере. Пожалуйста, скачайте его, чтобы прочитать.",
-    "view_modes_label": "Включен режим просмотра PDF, DOC и DOCX файлов.",
     "fallback_label": "Документы"
   }
 }

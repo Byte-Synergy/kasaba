@@ -151,8 +151,7 @@
     "preparing_label": "Ҳужжат тайёрланмоқда...",
     "preparing_description": "Бу бир неча сония вақт олиши мумкин",
     "unsupported_format_title": "Ушбу форматни кўриб бўлмайди",
-    "unsupported_format_description": "Ушбу ҳужжат (DOCX/XLSX) форматида бўлгани учун уни браузерда кўрсатиб бўлмайди. Уни ўқиш учун пастдаги тугма орқали юклаб олинг.",
-    "view_modes_label": "PDF, DOC ва DOCX файлларини кўриш режими ёқилган.",
+    "unsupported_format_description": "Ушбу ҳужжат (DOCX/XLSX) форматида бўлгани учун uni браузерда кўрсатиб бўлмайди. Уни ўқиш учун пастдаги тугма орқаali юклаб олинг.",
     "fallback_label": "Ҳужжатлар"
   }
 }

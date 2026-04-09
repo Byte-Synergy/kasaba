@@ -1,11 +1,13 @@
 "use client";
 
-import { Map, Methods } from "@/components/root/contact";
+import { Map as ContactMap, Methods } from "@/components/root/contact";
 import Select from "@/components/root/contact/select";
 import { Container } from "@/components/shared";
 import Breadcrumb from "@/components/shared/breadcrumb";
 import { useContactStore } from "@/store/contact-store";
 import { Option } from "@/types";
+import { useState } from "react";
+import { submitAppeal } from "@/action/appeal";
 
 const ContactPageClient = ({
   main_label,
@@ -47,7 +49,42 @@ const ContactPageClient = ({
   const {
     data: { name, phoneNumber, answers, appeal },
     setData,
+    clearData,
   } = useContactStore((state) => state);
+
+  const [loading, setLoading] = useState(false);
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+
+  const handleSubmit = async () => {
+    if (!name || !phoneNumber || !appeal) {
+      setFeedback({ type: "error", message: "Barcha maydonlarni to'ldiring." });
+      return;
+    }
+
+    setLoading(true);
+    setFeedback(null);
+
+    // Map appeal label to internal type
+    const appealTypeIndex = contact_options.indexOf(appeal);
+    const typeMapping: ("question" | "offer" | "appeal")[] = ["question", "offer", "appeal"];
+    const type = appealTypeIndex !== -1 ? typeMapping[appealTypeIndex] : ("appeal" as any);
+
+    const result = await submitAppeal({
+      full_name: name,
+      phone_number: phoneNumber,
+      type: type,
+      message: answers,
+    });
+
+    setLoading(false);
+
+    if (result.success) {
+      setFeedback({ type: "success", message: "Murojaatingiz muvaffaqiyatli yuborildi." });
+      clearData();
+    } else {
+      setFeedback({ type: "error", message: "Xatolik yuz berdi. Keyinroq qayta urinib ko'ring." });
+    }
+  };
 
   return (
     <div className=" bg-zinc-50">
@@ -107,7 +144,7 @@ const ContactPageClient = ({
                   name: c,
                   value: c,
                 }))}
-                selected={contact_options.find((item) => item == appeal)}
+                selected={contact_options.find((item) => item === appeal)}
                 onChange={(option: Option) => setData("appeal", option.value)}
               />
             </div>
@@ -143,23 +180,27 @@ const ContactPageClient = ({
                 className="w-full px-3 py-2 border border-gray-300 bg-zinc-100 font-medium text-base focus:outline-hidden focus:ring-2 focus:ring-blue-500 resize-none"
               />
             </div>
-            <div className=" col-span-2 flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-5">
-              <a
-                className=" py-3 px-12 bg-orange-500 font-semibold text-sm disabled:bg-zinc-500 text-white"
-                href={`mailto:davlat@kasaba.uz?subject=${encodeURIComponent(appeal)}&body=${encodeURIComponent(
-                  mail_content
-                    .replace("$name", name)
-                    .replace("$phoneNumber", phoneNumber)
-                    .replace("$answers", answers)
-                )}`}
-              >
-                {send_label}
-              </a>
+            <div className=" col-span-2 flex flex-col gap-4">
+              <div className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-5">
+                <button
+                  type="button"
+                  disabled={loading}
+                  onClick={handleSubmit}
+                  className=" py-3 px-12 bg-orange-500 font-semibold text-sm disabled:bg-zinc-500 text-white cursor-pointer"
+                >
+                  {loading ? "Yuborilmoqda..." : send_label}
+                </button>
+              </div>
+              {feedback && (
+                <div className={`p-3 text-sm font-medium ${feedback.type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+                  {feedback.message}
+                </div>
+              )}
             </div>
           </div>
         </div>
         <div className="flex flex-col gap-8">
-          <Map />
+          <ContactMap />
           <Methods
             email_label={email_label}
             helpline_phone_number={helpline_phone_number}

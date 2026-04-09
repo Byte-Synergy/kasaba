@@ -6,8 +6,12 @@ export async function getInteractiveAreasByFetch(
     placeId: number,
     fetchOptions?: Omit<RequestInit, "headers" | "method">
 ) {
-    const params = new URLSearchParams(query);
-    const url = `${API_BASE_URL}/api/rest/places/${placeId}/interactive_areas?`;
+    const params = new URLSearchParams({
+        ...query,
+        "filter[place][_eq]": placeId.toString(),
+        "fields": "*,translations.*,employees.*,employees.translations.*,employees.image.*"
+    });
+    const url = `${API_BASE_URL}/items/interactive_areas?${params.toString()}`;
     
     try {
         const response = await fetch(url, {

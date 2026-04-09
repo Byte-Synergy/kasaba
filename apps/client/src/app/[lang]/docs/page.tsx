@@ -12,24 +12,23 @@ const DocumentDetailPage = async ({
   params,
 }: {
   params: Promise<{ lang: string }>;
-  searchParams: Promise<{ fileUrl: string }>;
+  searchParams: Promise<{ fileUrl: string, title?: string }>;
 }) => {
   const { lang } = await params;
-  const { fileUrl } = await searchParams;
+  const { fileUrl, title } = await searchParams;
   const t = await getDictionary(lang);
 
   if (!fileUrl) redirect("/");
-  console.log(fileUrl);
 
   return (
     <div className="max-w-[1440px] w-full mx-auto">
       <Container className="my-5 max-md:hidden">
-        <Breadcrumb main_label={t.main_label} data={["hujjatlar"]} />
+        <Breadcrumb main_label={t.main_label} data={[title || "hujjatlar"]} />
       </Container>
       <Container>
         <div className="flex items-start justify-between gap-x-4">
           <div className="w-full max-md:w-full max-md:py-5">
-            <PdfViewer DocumentName={fileUrl} />
+            <PdfViewer DocumentName={fileUrl} title={title} />
             {/* {!fileUrl.includes(".pdf") ? (
               <iframe
                 className="w-full min-h-[800px]"

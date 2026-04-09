@@ -3,7 +3,7 @@ import HomePage from "./page-client";
 import UsefulLinks from "@/components/root/home/useful-links";
 import { Locale } from "@/configs/i18n";
 import { getDictionary } from "@/utils/directory";
-import { getPlaces } from "@/action/place";
+import { getRegions } from "@/action/place";
 import { getNews } from "@/action/news";
 import { getBanners } from "@/action/banner";
 import { redirect } from "next/navigation";
@@ -17,8 +17,8 @@ export default async function Page({
   const t = await getDictionary(lang as Locale);
 
   if (!lang.length) redirect("/not-found");
-  const { data: places } = await getPlaces({
-    limit: 50,
+  const { data: regions } = await getRegions({
+    limit: 100,
     page: 1,
     filter: {
       languageCode: lang || "uz",
@@ -60,7 +60,7 @@ export default async function Page({
         photo_news_label={t.photo_news_label}
         share_label={t.share_label}
         video_news_label={t.video_news_label}
-        places={(places as any) || []}
+        places={(regions as any) || []}
         archive_label={t.archive_label}
         areas_label={t.areas_label}
         news_label={t.news_label}

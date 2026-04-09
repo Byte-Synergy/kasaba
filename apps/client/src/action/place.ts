@@ -44,6 +44,42 @@ export async function getPlaces(query: any = { page: 1, limit: 100 }) {
   }
 }
 
+export async function getRegions(query: any = { page: 1, limit: 100 }) {
+  const client = getDirectusClient();
+  const lang = query.filter?.languageCode || "uz-UZ";
+  const nLang = normalizeLang(lang);
+
+  try {
+    const response = await client.request(
+      readItems("places", {
+        fields: [
+          "*",
+          "translations.*",
+          "interactive_areas"
+        ],
+        deep: {
+          translations: {
+            _filter: { languages_code: { _eq: nLang } }
+          }
+        },
+        limit: query.limit || 100,
+        page: query.page || 1,
+      })
+    );
+
+    const mapped = (response as any[]).map(item => mapRegion(item, nLang));
+
+    return { 
+      data: mapped, 
+      error: null, 
+      status: 200 
+    };
+  } catch (error) {
+    console.error("Directus getRegions Error:", error);
+    return { data: [], error, status: 500 };
+  }
+}
+
 export async function getPlace(placeId: string, langSlug: string = "uz") {
     const client = getDirectusClient();
     const nLang = normalizeLang(langSlug);
@@ -79,6 +115,16 @@ function normalizeLang(lang: string) {
     "uz-cyrl": "uz-Cyrl"
   };
   return mapping[lang] || lang;
+}
+
+function mapRegion(item: any, lang: string) {
+  const trans = item.translations?.find((t: any) => t.languages_code === lang) || item.translations?.[0];
+  return {
+    id: item.id,
+    name: trans?.name || item.id.toString(),
+    title: trans?.name || "",
+    areasCount: item.interactive_areas?.length || 0
+  };
 }
 
 function mapArea(item: any, lang: string) {

@@ -5,7 +5,7 @@ import { readItems, readItem } from "@directus/sdk";
 
 export async function getPlaces(query: any = { page: 1, limit: 100 }) {
   const client = getDirectusClient();
-  const lang = query.filter?.languageCode || "uz-UZ";
+  const lang = query.filter?.languageCode || "uz-Cyrl";
   const nLang = normalizeLang(lang);
 
   try {
@@ -46,7 +46,7 @@ export async function getPlaces(query: any = { page: 1, limit: 100 }) {
 
 export async function getRegions(query: any = { page: 1, limit: 100 }) {
   const client = getDirectusClient();
-  const lang = query.filter?.languageCode || "uz-UZ";
+  const lang = query.filter?.languageCode || "uz-Cyrl";
   const nLang = normalizeLang(lang);
 
   try {
@@ -109,12 +109,13 @@ export async function getPlace(placeId: string, langSlug: string = "uz") {
 
 function normalizeLang(lang: string) {
   const mapping: Record<string, string> = {
-    "uz": "uz-UZ",
+    "uz": "uz-Cyrl",
+    "uz-uz": "uz-UZ",
     "ru": "ru-RU",
     "en": "en-US",
     "uz-cyrl": "uz-Cyrl"
   };
-  return mapping[lang] || lang;
+  return mapping[lang?.toLowerCase()] || lang;
 }
 
 function mapRegion(item: any, lang: string) {

@@ -9,7 +9,7 @@ const DocumentsCard = memo(
     return (
       <Link
         lang={lang}
-        href={`/docs?fileUrl=${encodeURIComponent(fileId)}`}
+        href={`/docs?fileUrl=${encodeURIComponent(fileId)}&title=${encodeURIComponent(name)}`}
         className="group bg-gray-100 rounded-sm flex flex-col"
       >
         <div className="p-10 flex items-center justify-center">

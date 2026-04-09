@@ -19,7 +19,7 @@ function getLocale(request: NextRequest): string | undefined {
   return matchLocale(languages, locales, i18n.defaultLocale);
 }
 
-export function proxy(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const isMaintenance = process.env.NEXT_PUBLIC_MAINTENANCE === "true";
 

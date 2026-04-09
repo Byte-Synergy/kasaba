@@ -15,12 +15,13 @@ export type MenuItem = {
 
 function normalizeLang(lang: string) {
   const mapping: Record<string, string> = {
-    uz: "uz-UZ",
+    uz: "uz-Cyrl",
+    "uz-uz": "uz-UZ",
     ru: "ru-RU",
     en: "en-US",
     "uz-cyrl": "uz-Cyrl",
   };
-  return mapping[lang] || lang;
+  return mapping[lang?.toLowerCase()] || lang;
 }
 
 export async function getMenuTree(lang: string) {

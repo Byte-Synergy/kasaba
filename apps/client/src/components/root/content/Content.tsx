@@ -12,10 +12,12 @@ const Content = ({
   content,
   files,
   lang,
+  menuTitle,
 }: {
   content: ContentType;
   files: any;
   lang: Locale;
+  menuTitle?: string;
 }) => {
   const renderFn = (content: ContentType) => {
     switch (content.type) {

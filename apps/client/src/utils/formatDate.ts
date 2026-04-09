@@ -36,7 +36,7 @@ export const formatDate = (date: string | Date): Object => {
 };
 
 export const formatTime = (data: string | Date): string => {
-  return new Date(data).toLocaleString("uz-UZ", {
+  return new Date(data).toLocaleString("uz-Cyrl", {
     timeZone: "Asia/Tashkent",
     hour: "2-digit",
     minute: "2-digit",

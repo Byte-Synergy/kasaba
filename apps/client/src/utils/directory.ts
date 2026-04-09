@@ -14,7 +14,7 @@ const dictionaries = {
 
 export const getDictionary = async (locale: Locale | string) => {
   const mapping: Record<string, keyof typeof dictionaries> = {
-    uz: "uz-UZ",
+    uz: "uz-Cyrl",
     "uz-uz": "uz-UZ",
     ru: "ru-RU",
     "ru-ru": "ru-RU",

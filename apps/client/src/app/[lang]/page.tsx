@@ -88,6 +88,8 @@ export default async function Page({
         videoNewsData={videoNewsData}
         photoNewsData={photoNewsData}
         mediateka_label={t.mediateka_label}
+        image_count_label={t.image_count_label}
+        month_labels={t.month}
         ads={adsData || []}
       />
       <section id="useful-links" className="w-full max-w-[1780px] mx-auto">

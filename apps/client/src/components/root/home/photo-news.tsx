@@ -11,9 +11,11 @@ const PhotoNews = ({
   all_label,
   lang,
   photo_news_label,
+  image_count_label,
 }: {
   photo_news_label: string;
   all_label: string;
+  image_count_label: string;
   lang: Locale;
   data: NewsDataType[];
 }) => {
@@ -37,12 +39,12 @@ const PhotoNews = ({
         <div className="flex flex-col gap-[15px] md:order-1 h-full">
           {newsItems[0] && (
             <ScrollAnimation className="h-full">
-              <PhotoNewsCard data={newsItems[0]} variant="standard" />
+              <PhotoNewsCard data={newsItems[0]} variant="standard" image_count_label={image_count_label} />
             </ScrollAnimation>
           )}
           {newsItems[3] && (
             <ScrollAnimation className="h-full">
-              <PhotoNewsCard data={newsItems[3]} variant="standard" />
+              <PhotoNewsCard data={newsItems[3]} variant="standard" image_count_label={image_count_label} />
             </ScrollAnimation>
           )}
         </div>
@@ -51,7 +53,7 @@ const PhotoNews = ({
         {newsItems[1] && (
           <div className="md:col-span-2 md:order-2 h-full">
              <ScrollAnimation className="h-full">
-               <PhotoNewsCard data={newsItems[1]} variant="hero" />
+               <PhotoNewsCard data={newsItems[1]} variant="hero" image_count_label={image_count_label} />
              </ScrollAnimation>
           </div>
         )}
@@ -60,12 +62,12 @@ const PhotoNews = ({
         <div className="flex flex-col gap-[15px] md:order-3 h-full">
           {newsItems[2] && (
             <ScrollAnimation className="h-full">
-              <PhotoNewsCard data={newsItems[2]} variant="standard" />
+              <PhotoNewsCard data={newsItems[2]} variant="standard" image_count_label={image_count_label} />
             </ScrollAnimation>
           )}
           {newsItems[4] && (
             <ScrollAnimation className="h-full">
-              <PhotoNewsCard data={newsItems[4]} variant="standard" />
+              <PhotoNewsCard data={newsItems[4]} variant="standard" image_count_label={image_count_label} />
             </ScrollAnimation>
           )}
         </div>

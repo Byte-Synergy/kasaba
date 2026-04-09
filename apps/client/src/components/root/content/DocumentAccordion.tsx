@@ -19,13 +19,21 @@ const DocumentAccordion: React.FC<DocumentAccordionProps> = ({
   defaultOpen = false 
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
+  const [hasOpened, setHasOpened] = useState(defaultOpen);
+
+  const toggleAccordion = () => {
+    if (!isOpen && !hasOpened) {
+      setHasOpened(true);
+    }
+    setIsOpen(!isOpen);
+  };
 
   return (
     <div className="w-full bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm transition-all hover:shadow-md mb-4">
       {/* Header / Trigger */}
       <div 
         className="flex items-center justify-between p-4 md:p-5 cursor-pointer select-none"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleAccordion}
       >
         <div className="flex items-center gap-x-4">
           <div className="w-10 h-10 bg-[#00057308] rounded-lg flex items-center justify-center border border-[#00057310]">
@@ -62,25 +70,25 @@ const DocumentAccordion: React.FC<DocumentAccordionProps> = ({
       </div>
 
       {/* Expandable Content */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="border-t border-gray-100"
-          >
-            <div className="p-4 md:p-6 bg-gray-50">
-              <PdfViewer 
-                DocumentName={fileUrl} 
-                title={name} 
-                hideHeader={true} 
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.div
+        initial={false}
+        animate={{ 
+          height: isOpen ? "auto" : 0,
+          opacity: isOpen ? 1 : 0
+        }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="border-t border-gray-100 overflow-hidden"
+      >
+        <div className="p-4 md:p-6 bg-gray-50">
+          {(hasOpened || isOpen) && (
+            <PdfViewer 
+              DocumentName={fileUrl} 
+              title={name} 
+              hideHeader={true} 
+            />
+          )}
+        </div>
+      </motion.div>
     </div>
   );
 };

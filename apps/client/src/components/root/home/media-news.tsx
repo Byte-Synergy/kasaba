@@ -15,6 +15,7 @@ const MediaNews = ({
   videoNews,
   photoNews,
   mediateka_label,
+  image_count_label,
 }: {
   photo_news_label: string;
   video_news_label: string;
@@ -24,6 +25,7 @@ const MediaNews = ({
   videoNews: NewsDataType[];
   photoNews: NewsDataType[];
   mediateka_label: string;
+  image_count_label: string;
 }) => {
   return (
     <Container className="py-12 relative max-md:py-5">
@@ -46,6 +48,7 @@ const MediaNews = ({
         <PhotoNews
           all_label={all_label}
           photo_news_label={photo_news_label}
+          image_count_label={image_count_label}
           lang={lang}
           data={photoNews}
         />

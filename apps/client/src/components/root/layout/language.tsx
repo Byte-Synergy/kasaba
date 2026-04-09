@@ -13,9 +13,11 @@ import { usePathname, useRouter } from "next/navigation";
 export default function LanguageSwitcher({
   lang,
   languages,
+  onLanguageChange,
 }: {
   lang: Locale;
   languages: any[];
+  onLanguageChange?: () => void;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -30,6 +32,7 @@ export default function LanguageSwitcher({
     } else {
       router.replace(`/${newLang}`);
     }
+    onLanguageChange?.();
   };
 
   const currentLang = languages.find((l) => l.slug === lang) || languages[0];

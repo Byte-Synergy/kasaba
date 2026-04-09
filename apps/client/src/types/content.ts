@@ -1,12 +1,12 @@
-export type ContentType =
+export type ContentType = (
   | {
       type: "quote" | "text" | "video-url";
       value: string | null;
     }
   | {
       type: "photo";
-      filePreview: string | null;
-      fileId: string | null;
+      filePreview?: string | null;
+      fileId?: string | null;
       fileUrl?: string | null;
       href?: string | null;
     }
@@ -43,4 +43,5 @@ export type ContentType =
         href: string;
         name: string;
       }>;
-    };
+    }
+) & { isHidden?: boolean };

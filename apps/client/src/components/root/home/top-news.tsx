@@ -10,12 +10,12 @@ import { useParams } from "next/navigation";
 import { Locale } from "@/configs/i18n";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const TopNews = ({ news }: { news: NewsDataType[] }) => {
+const TopNews = ({ news, month_labels }: { news: NewsDataType[], month_labels?: Record<string, string> }) => {
   const { lang } = useParams<{ lang: Locale }>();
 
   return (
     Boolean(news.length) && (
-      <Container className="relative max-md:w-full my-5 group/swiper">
+      <Container className="relative max-md:w-full max-md:px-0 max-md:mt-0 max-md:mb-6 md:my-6 group/swiper">
         <ScrollAnimation>
           <div className="relative">
             <Swiper
@@ -33,11 +33,11 @@ const TopNews = ({ news }: { news: NewsDataType[] }) => {
                 prevEl: ".swiper-button-prev-custom",
                 nextEl: ".swiper-button-next-custom",
               }}
-              className="w-full h-full [&_.swiper-pagination-bullet]:!bg-white [&_.swiper-pagination-bullet]:w-[17px] [&_.swiper-pagination-bullet]:h-[17px] [&_.swiper-pagination-bullet]:!opacity-100 [&_.swiper-pagination-bullet-active]:!w-[63px] [&_.swiper-pagination-bullet-active]:!rounded-[10px] [&_.swiper-pagination-bullet]:shadow-[0px_2px_4px_rgba(0,0,0,0.45)] [&_.swiper-pagination]:!bottom-10 transition-all [&_.swiper-pagination-bullet]:transition-all [&_.swiper-pagination-bullet]:duration-300"
+              className="w-full h-full [&_.swiper-pagination-bullet]:!bg-white [&_.swiper-pagination-bullet]:w-[10px] md:[&_.swiper-pagination-bullet]:w-[17px] [&_.swiper-pagination-bullet]:h-[10px] md:[&_.swiper-pagination-bullet]:h-[17px] [&_.swiper-pagination-bullet]:!opacity-100 [&_.swiper-pagination-bullet-active]:!w-[40px] md:[&_.swiper-pagination-bullet-active]:!w-[63px] [&_.swiper-pagination-bullet-active]:!rounded-[10px] [&_.swiper-pagination-bullet]:shadow-[0px_2px_4px_rgba(0,0,0,0.45)] [&_.swiper-pagination]:!bottom-5 md:[&_.swiper-pagination]:!bottom-10 transition-all [&_.swiper-pagination-bullet]:transition-all [&_.swiper-pagination-bullet]:duration-300"
             >
               {news.map((data) => (
-                <SwiperSlide key={data.id} className="max-md:px-5">
-                  <TopNewsCard lang={lang} data={data} />
+                <SwiperSlide key={data.id} className="">
+                  <TopNewsCard lang={lang} data={data} month_labels={month_labels} />
                 </SwiperSlide>
               ))}
             </Swiper>

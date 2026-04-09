@@ -8,7 +8,12 @@ const config: Config = {
     './components/**/*.{ts,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        raleway: ['var(--font-raleway)'],
+        sans: ['var(--font-raleway)', 'ui-sans-serif', 'system-ui'],
+      },
+    },
   },
   plugins: [lineClamp],
 };

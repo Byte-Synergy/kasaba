@@ -12,7 +12,7 @@ function Motto({ data }: { data: string }) {
           alt="icon"
           className="m-4"
         />
-        <p className=" font-montserrat font-medium italic text-xl leading-6">
+        <p className=" font-raleway font-medium italic text-xl leading-6">
           {data}
         </p>
       </div>

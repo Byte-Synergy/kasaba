@@ -47,17 +47,25 @@ const Content = ({
       case "document":
         if (content.documents || content.fileId || content.fileUrl) {
           const docs = content.documents || [
-            { fileUrl: content.fileUrl, fileId: content.fileId, name: content.docName || "Hujjat" },
+            {
+              fileUrl: content.fileUrl,
+              fileId: content.fileId,
+              name: content.docName || "Hujjat",
+            },
           ];
+          // If there is only 1 document and parent requested defaultOpen, it should be open.
+          // Otherwise, they should all be closed by default.
+          const shouldBeOpen = defaultOpen && docs.length === 1;
+
           return (
             <div className="flex flex-col gap-4">
               {docs.map((doc: any, idx: number) => (
-                <DocumentAccordion 
-                   key={idx}
-                   fileUrl={doc.fileUrl || doc.fileId} 
-                   name={doc.name || "Hujjat"} 
-                   showViewer={showViewer}
-                   defaultOpen={defaultOpen}
+                <DocumentAccordion
+                  key={idx}
+                  fileUrl={doc.fileUrl || doc.fileId}
+                  name={doc.name || "Hujjat"}
+                  showViewer={showViewer}
+                  defaultOpen={shouldBeOpen}
                 />
               ))}
             </div>
@@ -70,6 +78,8 @@ const Content = ({
         return null;
     }
   };
+
+  if (content.isHidden) return null;
 
   return <div className="w-full">{renderFn(content)}</div>;
 };

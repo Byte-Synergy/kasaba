@@ -122,15 +122,32 @@ function mapNewsItem(item: any, lang: string) {
   for (const b of blocks) {
     if (b.collection === "block_richtexts") {
       const bContent = b.item?.content;
-      if (bContent) {
+      if (bContent && typeof bContent === "string") {
         content.push({ type: "text", value: bContent });
 
         // Extract YouTube URL if present in iframe
-        const iframeMatch = typeof bContent === "string" ? bContent.match(/<iframe.*?src=["'](.*?)["']/) : null;
+        const iframeMatch = bContent.match(/<iframe.*?src=["'](.*?)["']/);
         if (iframeMatch && iframeMatch[1]) {
           content.push({ type: "video-url", value: iframeMatch[1] });
         }
 
+        // Extract images from richtext
+        const imgMatches = bContent.match(/<img.*?src=["'](.*?)["']/g);
+        if (imgMatches) {
+          imgMatches.forEach(m => {
+            const srcMatch = m.match(/src=["'](.*?)["']/);
+            if (srcMatch && srcMatch[1]) {
+              const src = srcMatch[1];
+              // Avoid adding the same image multiple times if it's already in files
+              content.push({ 
+                type: "photo", 
+                fileId: src.split('/').pop(), // Best effort ID extraction
+                fileUrl: src,
+                isHidden: true // Mark as hidden so it doesn't render twice in the detail page
+              });
+            }
+          });
+        }
       }
     } else if (b.collection === "block_images" && b.item?.image) {
       const img = b.item.image;
@@ -192,7 +209,13 @@ function mapNewsItem(item: any, lang: string) {
         name: c.fileId || "image",
         mimeType: "image/jpeg",
         extension: "jpg"
-      }))
+      })),
+      ...content.filter(c => c.type === "gallery").flatMap(c => c.images.map((img: any) => ({
+        href: img.href,
+        name: img.name || "gallery-image",
+        mimeType: "image/jpeg",
+        extension: "jpg"
+      })))
     ],
     content: content,
     seo: translation?.seo || null,

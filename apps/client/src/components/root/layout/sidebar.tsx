@@ -18,13 +18,15 @@ const Render = ({
     level = 0,
     lang,
     handleOpenMenu,
-    activeMenuMap
+    activeMenuMap,
+    onClose
 }: {
     menu: MenuItem[],
     level: number,
     lang: Locale,
     handleOpenMenu: (id: string) => void,
-    activeMenuMap: Record<string, boolean>
+    activeMenuMap: Record<string, boolean>,
+    onClose: () => void
 }) => {
     return (
         <>
@@ -46,6 +48,7 @@ const Render = ({
                             <Link
                                 lang={lang}
                                 href={href}
+                                onClick={onClose}
                                 className={cn(
                                     'relative flex items-center space-x-2 text-lg font-semibold uppercase p-4',
                                     "hover:text-[#ff7a00]",
@@ -78,6 +81,7 @@ const Render = ({
                                             lang={lang}
                                             activeMenuMap={activeMenuMap}
                                             handleOpenMenu={handleOpenMenu}
+                                            onClose={onClose}
                                         />
                                     </ul>
                                 )}
@@ -111,7 +115,7 @@ const Sidebar = ({
     const {modal, closeModal} = useModalStore()
 
     return (
-        <section id="sidebar" className={cn("min-h-[100vh] fixed inset-0 z-10 w-full bg-white hidden max-md:block top-0 overflow-hidden", modal === "sidebar" ? "left-[0%]" : "-left-[100%]", "transition-transform duration-300 ease-in-out")}>
+        <section id="sidebar" className={cn("min-h-[100vh] fixed inset-0 z-[9999] w-full bg-white hidden max-md:block top-0 overflow-hidden", modal === "sidebar" ? "left-[0%]" : "-left-[100%]", "transition-transform duration-300 ease-in-out")}>
             <div id="sidebar__header" className='py-5 px-5 overflow-hidden relative z-10  after:w-full after:h-full after:absolute after:top-0 after:left-0 after:bg-linear-to-r after:from-[#141348] after:to-[#030239] after:blur-[40px] after:-z-10 max-md:bg-linear-to-r max-md:from-[#000674] max-md:to-[#000BDA]'>
                 <div className="text-xl font-bold flex justify-between items-center">
                     <Image
@@ -148,6 +152,7 @@ const Sidebar = ({
                     className="flex items-center space-x-2 text-[#141348] text-lg font-semibold hover:text-[#ff7a00] uppercase p-4"
                     href={"/"}
                     lang={lang}
+                    onClick={closeModal}
                 >
                     {t("menu.main")}
                 </Link>
@@ -157,6 +162,7 @@ const Sidebar = ({
                     lang={lang}
                     activeMenuMap={activeMenuMap}
                     handleOpenMenu={handleOpenMenu}
+                    onClose={closeModal}
                 />
 
 
@@ -164,13 +170,18 @@ const Sidebar = ({
                     className="flex items-center space-x-2 text-[#141348] text-lg font-semibold hover:text-[#ff7a00] uppercase p-4"
                     href={"/contact"}
                     lang={lang}
+                    onClick={closeModal}
                 >
                     {t("menu.contact")}
                 </Link>
             </nav>
             {/* <Navbar lang={lang} menu={menu} /> */}
-            <div id="sidebar__footer" className='p-5 flex flex-col gap-y-2'>
-                <LanguageSwitcher lang={lang} languages={languages}/>
+            <div id="sidebar__footer" className='p-5 flex flex-col gap-y-2' onClick={() => {
+                // We add a catch-all click listener for footer content (LanguageSwitcher)
+                // but since LanguageSwitcher uses stopPropagation or internal events, 
+                // it might not work perfectly. Better to update LanguageSwitcher.
+            }}>
+                <LanguageSwitcher lang={lang} languages={languages} onLanguageChange={closeModal}/>
                 <CurrencyBox />
             </div>
         </section>

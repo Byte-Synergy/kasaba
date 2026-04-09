@@ -3,6 +3,7 @@
   "news_label": "News",
   "single_news_label": "News",
   "public_news_label": "Popular News",
+  "image_count_label": "{{count}} photos",
   "photo_news_label": "Photo News",
   "share_label": "Share",
   "video_news_label": "Video News",

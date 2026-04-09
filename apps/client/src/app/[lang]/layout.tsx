@@ -8,7 +8,7 @@ import Header from "@/components/root/layout/header";
 import Navbar from "@/components/root/layout/navbar";
 import Footer from "@/components/root/layout/footer";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Raleway } from "next/font/google";
 import { cn } from "@/libs/utils";
 import AOSProviderDynamic from "@/providers/aos-dynamic";
 import { i18n, Locale } from "@/configs/i18n";
@@ -17,6 +17,10 @@ import { getMenuTree } from "../../action/menu";
 import { getLanguages } from "../../action/language";
 import { TranslationsProvider } from "@/utils/translation-provider";
 import { ModalProvider } from "@/providers/modal-provider";
+const raleway = Raleway({
+  variable: "--font-raleway",
+  subsets: ["latin", "cyrillic"],
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -64,7 +68,9 @@ export default async function RootLayout({
     <html lang={lang} suppressHydrationWarning>
       <body
         className={cn(
-          "antialiased flex flex-col min-h-screen",
+          "antialiased flex flex-col min-h-screen font-sans",
+          raleway.className,
+          raleway.variable,
           geistSans.variable,
           geistMono.variable
         )}

@@ -24,6 +24,13 @@ const PPage = async ({
     );
   }
 
+  const totalDocs = (menu.data.content || []).reduce((acc: number, block: any) => {
+    if (block.type === "document") {
+      return acc + (block.documents?.length || 1);
+    }
+    return acc;
+  }, 0);
+
   return (
     <div className="w-full mx-auto">
       <Container className="my-10">
@@ -33,7 +40,12 @@ const PPage = async ({
         <div className="flex flex-col gap-10">
           {(menu.data.content || []).map((block: any, index: number) => (
             <div key={`${block.type}-${index}`} className="w-full">
-              <Content content={block} lang={lang as any} files={null} defaultOpen={true} />
+              <Content
+                content={block}
+                lang={lang as any}
+                files={null}
+                defaultOpen={totalDocs === 1}
+              />
             </div>
           ))}
         </div>

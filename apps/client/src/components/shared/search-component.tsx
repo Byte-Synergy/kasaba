@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const SearchComponent = () => {
   return (
@@ -20,7 +20,7 @@ const SearchComponent = () => {
         Search
       </button>
     </form>
-  )
-}
+  );
+};
 
-export default SearchComponent
+export default SearchComponent;

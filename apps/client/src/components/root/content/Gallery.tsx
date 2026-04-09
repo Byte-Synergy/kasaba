@@ -44,17 +44,17 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
         {images.map((image, idx) => {
           if (!image.href) return null;
           return (
-            <SwiperSlide key={idx}>
-            <div className="relative w-full h-full">
-              <Image
-                src={image.href}
-                alt={image.name || "Gallery image"}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
-              />
-            </div>
-          </SwiperSlide>
+            <SwiperSlide key={idx} className="w-full h-full">
+              <div className="relative w-full h-full">
+                <Image
+                  src={image.href}
+                  alt={image.name || "Gallery image"}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 75vw"
+                />
+              </div>
+            </SwiperSlide>
           );
         })}
       </Swiper>
@@ -72,16 +72,16 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
           if (!image.href) return null;
           return (
             <SwiperSlide key={idx} className="cursor-pointer rounded-md overflow-hidden opacity-50 [.swiper-slide-thumb-active&]:opacity-100 transition-opacity">
-            <div className="relative w-full h-full">
-              <Image
-                src={image.href}
-                alt={image.name || "Thumbnail"}
-                fill
-                className="object-cover"
-                sizes="100px"
-              />
-            </div>
-          </SwiperSlide>
+              <div className="relative w-full h-full">
+                <Image
+                  src={image.href}
+                  alt={image.name || "Thumbnail"}
+                  fill
+                  className="object-cover"
+                  sizes="120px"
+                />
+              </div>
+            </SwiperSlide>
           );
         })}
       </Swiper>

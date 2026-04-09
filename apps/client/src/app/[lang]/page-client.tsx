@@ -34,6 +34,8 @@ const HomePage = ({
   video_news_label,
   select_area_placeholder,
   mediateka_label,
+  image_count_label,
+  month_labels,
 }: {
   select_area_placeholder: string;
   all_label: string;
@@ -43,6 +45,8 @@ const HomePage = ({
   share_label: string;
   video_news_label: string;
   lang: Locale;
+  image_count_label: string;
+  month_labels: Record<string, string>;
   ads: Array<{
     id: string;
     url: string;
@@ -67,7 +71,7 @@ const HomePage = ({
 }) => {
   return (
     <>
-      <TopNews news={topNewsData} />
+      <TopNews news={topNewsData} month_labels={month_labels} />
       <Container className="py-2 max-md:py-5">
         <ScrollAnimation>
           <Swiper
@@ -114,6 +118,7 @@ const HomePage = ({
             videoNews={videoNewsData}
             photoNews={photoNewsData}
             mediateka_label={mediateka_label}
+            image_count_label={image_count_label}
           />
         </section>
       </section>

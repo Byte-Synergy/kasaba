@@ -3,6 +3,7 @@
   "news_label": "Новости",
   "single_news_label": "Новость",
   "public_news_label": "Популярные новости",
+  "image_count_label": "{{count}} фото",
   "photo_news_label": "Фотоновости",
   "share_label": "Поделиться",
   "video_news_label": "Видеоновости",

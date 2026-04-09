@@ -51,6 +51,7 @@ const Link = React.forwardRef<
         <NextLink
           scroll={false}
           className={cn(
+            "cursor-pointer",
             className,
             isActive ? activeClassName : inActiveClassName,
           )}
@@ -68,6 +69,7 @@ const Link = React.forwardRef<
     return (
       <button
         className={cn(
+          "cursor-pointer",
           className,
           isActive ? activeClassName : inActiveClassName,
         )}

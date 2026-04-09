@@ -18,13 +18,17 @@ function Photo({
   if (!src) return null;
 
   return (
-    <Image
-      width={920}
-      height={512}
-      src={src}
-      alt={image?.name || "Photo"}
-      className="aspect-video object-cover"
-    />
+    <div className="w-full flex justify-center">
+      <div className="relative w-full aspect-video rounded-lg overflow-hidden shadow-md">
+        <Image
+          src={src}
+          alt={image?.name || "Photo"}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
+        />
+      </div>
+    </div>
   );
 }
 

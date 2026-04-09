@@ -29,7 +29,7 @@ const PartniersCard = ({
       className="group relative w-full bg-[#f4f4f4] rounded-[5px] shadow-lg hover:shadow-2xl transition-all duration-300 h-full flex flex-col min-h-[300px] overflow-hidden"
     >
       {/* Logo Section - Top part of the card */}
-      <div className="relative w-full h-52 bg-[#f4f4f4] flex items-center justify-center p-6 overflow-hidden shrink-0">
+      <div className="relative w-full h-52 bg-[#f4f4f4] flex items-center justify-center p-1 overflow-hidden shrink-0">
         <Image
           width={500}
           height={300}
@@ -48,7 +48,7 @@ const PartniersCard = ({
           stiffness: 300,
           damping: 30,
         }}
-        className="absolute bottom-0 left-0 w-full bg-[#000573] p-5 md:p-6 z-20"
+        className="absolute bottom-0 left-0 w-full bg-[#000573] p-5 md:p-6 z-20 min-h-[100px] flex flex-col justify-center"
       >
         <motion.p className="font-montserrat font-extrabold text-[14px] md:text-[16px] text-white uppercase line-clamp-2 leading-tight">
           {data.title}
@@ -97,7 +97,9 @@ const PartniersLink = ({ enter_label }: { enter_label: string }) => {
             1280: { slidesPerView: 4.5, spaceBetween: 20 },
           }}
         >
-          {PartniersData.filter((p) => p.lang.toLowerCase() === lang.toLowerCase()).map((data) => (
+          {PartniersData.filter(
+            (p) => p.lang.toLowerCase() === lang.toLowerCase(),
+          ).map((data) => (
             <SwiperSlide key={data.link} className="h-full flex!">
               <PartniersCard data={data} enter_label={enter_label} />
             </SwiperSlide>

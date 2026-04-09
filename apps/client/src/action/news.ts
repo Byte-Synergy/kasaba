@@ -41,6 +41,8 @@ export async function getNews(query: any = { page: 1, limit: 10 }) {
           "*",
           "translations.*",
           "translations.thumbnail.*",
+          "translations.blocks.*",
+          "translations.blocks.item:block_richtexts.*",
         ],
         filter: filters,
         limit: query.limit || 10,
@@ -111,6 +113,12 @@ function mapNewsItem(item: any, lang: string) {
       const bContent = b.item?.content;
       if (bContent) {
         content.push({ type: "text", value: bContent });
+
+        // Extract YouTube ID if present in iframe
+        const iframeMatch = typeof bContent === "string" ? bContent.match(/<iframe.*?src=["'](.*?)["']/) : null;
+        if (iframeMatch && iframeMatch[1]) {
+           content.push({ type: "video-url", value: iframeMatch[1] });
+        }
       }
     }
   }

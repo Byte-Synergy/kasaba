@@ -116,19 +116,17 @@ const VideoNews = ({
                   )}
                   onClick={() => changeSelectedData(item.title)}
                 >
-                  <div className="relative w-[150px] h-20 rounded-sm ">
-                    <ReactPlayer
-                      url={
-                        (
-                          item.content?.find(
-                            (item: any) => item.type === "video-url"
-                          ) as any
-                        )?.value || ""
-                      }
-                      width={"150px"}
-                      height={"100%"}
-                    />
-                    <div className="absolute w-full h-full flex items-center justify-center top-0 left-0 bg-gray-800/25">
+                  <div className="relative w-[150px] h-20 rounded-sm overflow-hidden flex-shrink-0">
+                    {item.files?.[0]?.href ? (
+                      <img
+                        src={item.files[0].href}
+                        alt={item.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-800" />
+                    )}
+                    <div className="absolute w-full h-full flex items-center justify-center top-0 left-0 bg-black/20 group-hover:bg-black/40 duration-200">
                       <RiPlayFill className="w-7 h-7 text-white bg-[#FF8500] p-1 rounded-full" />
                     </div>
                   </div>

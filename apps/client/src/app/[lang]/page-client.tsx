@@ -20,6 +20,8 @@ const HomePage = ({
   interactive_areas_label,
   news_label,
   standardNews,
+  videoNewsData,
+  photoNewsData,
   // areas,
   places,
   areas_label,
@@ -48,6 +50,8 @@ const HomePage = ({
     | [];
   topNewsData: NewsDataType[];
   standardNews: NewsDataType[];
+  videoNewsData: NewsDataType[];
+  photoNewsData: NewsDataType[];
   news_label: string;
   search_label: string;
   archive_label: string;
@@ -91,17 +95,16 @@ const HomePage = ({
         lang={lang}
         news={standardNews}
       />
-      <section
-        id="media"
-        className="relative bg-[#171717] py-10"
-      >
-        <section id="vide-news" className="max-w-[1780px] w-full mx-auto">
+      <section id="media" className="relative bg-[#171717] py-10">
+        <section id="video-news" className="max-w-[1780px] w-full mx-auto">
           <MediaNews
             all_label={all_label}
             photo_news_label={photo_news_label}
             share_label={share_label}
             video_news_label={video_news_label}
             lang={lang}
+            videoNews={videoNewsData}
+            photoNews={photoNewsData}
           />
         </section>
       </section>

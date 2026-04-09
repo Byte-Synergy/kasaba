@@ -45,8 +45,28 @@ export default async function Page({
     },
   });
 
+  const { data: videoNewsDataResp } = await getNews({
+    limit: 10,
+    page: 1,
+    filter: {
+      type: ["video"],
+      lang,
+    },
+  });
+
+  const { data: photoNewsDataResp } = await getNews({
+    limit: 10,
+    page: 1,
+    filter: {
+      type: ["photo"],
+      lang,
+    },
+  });
+
   const topNewsData = topNewsDataResp?.data || [];
   const standardNewsData = standardNewsDataResp?.data || [];
+  const videoNewsData = videoNewsDataResp?.data || [];
+  const photoNewsData = photoNewsDataResp?.data || [];
 
   return (
     <>
@@ -66,6 +86,8 @@ export default async function Page({
         news_label={t.news_label}
         standardNews={standardNewsData}
         topNewsData={topNewsData}
+        videoNewsData={videoNewsData}
+        photoNewsData={photoNewsData}
         ads={adsData || []}
       />
       <section id="useful-links" className="w-full max-w-[1780px] mx-auto">

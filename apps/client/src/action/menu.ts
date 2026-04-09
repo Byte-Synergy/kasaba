@@ -188,14 +188,14 @@ export async function getMenu(p: string | number, lang: string) {
         if (b.collection === "block_documents" && b.item) {
           const file = b.item.file;
           const fileId = typeof file === "string" ? file : file?.id;
-          const fileName = typeof file === "object" ? file?.title : null;
-
+          const fileName = typeof file === "object" ? file?.filename_download : "document.pdf";
+          
           documents.push({
             fileId: fileId,
             fileUrl: fileId
-              ? `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${fileId}`
+              ? `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${fileId}?filename=${fileName}`
               : null,
-            name: fileName || trans.name || "Hujjat",
+            name: (typeof file === "object" ? file?.title : null) || trans.name || "Hujjat",
           });
         }
       });

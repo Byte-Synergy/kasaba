@@ -132,6 +132,7 @@ const SingleNewsPage = async ({
                       content={content as any}
                       lang={lang as any}
                       files={currentNews.files}
+                      showViewer={true}
                     />
                 ))}
               </div>

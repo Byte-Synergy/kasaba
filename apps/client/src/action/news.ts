@@ -154,11 +154,13 @@ function mapNewsItem(item: any, lang: string) {
       });
     } else if (b.collection === "block_documents" && b.item?.file) {
       const file = b.item.file;
+      const fileId = file.id || file;
+      const fileName = file.filename_download || "document.pdf";
       content.push({
         type: "document",
-        fileId: file.id || file,
-        fileUrl: `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${file.id || file}`,
-        docName: file.title || file.filename_download || "Hujjat"
+        fileId: fileId,
+        fileUrl: `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${fileId}?filename=${fileName}`,
+        docName: file.title || fileName || "Hujjat"
       });
     }
   }

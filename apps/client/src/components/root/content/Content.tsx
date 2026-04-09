@@ -16,11 +16,15 @@ const Content = ({
   files,
   lang,
   menuTitle,
+  showViewer = false,
+  defaultOpen = false,
 }: {
   content: ContentType;
   files: any;
   lang: Locale;
   menuTitle?: string;
+  showViewer?: boolean;
+  defaultOpen?: boolean;
 }) => {
   const renderFn = (content: ContentType) => {
     switch (content.type) {
@@ -52,6 +56,8 @@ const Content = ({
                    key={idx}
                    fileUrl={doc.fileUrl || doc.fileId} 
                    name={doc.name || "Hujjat"} 
+                   showViewer={showViewer}
+                   defaultOpen={defaultOpen}
                 />
               ))}
             </div>

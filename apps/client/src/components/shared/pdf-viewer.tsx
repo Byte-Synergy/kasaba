@@ -29,12 +29,7 @@ const PdfViewer = memo(({ DocumentName, title, hideHeader = false }: { DocumentN
 
   useEffect(() => {
     setLoading(true);
-    // Short timer to show loading state initially
-    const timer = setTimeout(() => {
-        if (isPdf) setLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, [DocumentName, isPdf]);
+  }, [DocumentName]);
 
   if (!DocumentName) return null;
 
@@ -75,8 +70,8 @@ const PdfViewer = memo(({ DocumentName, title, hideHeader = false }: { DocumentN
       )}
 
       <div className="w-full min-h-[600px] h-[85vh] rounded-3xl overflow-hidden border border-gray-100 bg-white relative">
-        <AnimatePresence mode="wait">
-          {loading && isPdf && (
+        <AnimatePresence>
+          {loading && (
             <motion.div 
               key="loading"
               initial={{ opacity: 0 }}
@@ -95,29 +90,12 @@ const PdfViewer = memo(({ DocumentName, title, hideHeader = false }: { DocumentN
           )}
         </AnimatePresence>
         
-        {isPdf ? (
-            <iframe
-                src={`${DocumentName}#toolbar=0`}
-                className="w-full h-full border-none"
-                onLoad={() => setLoading(false)}
-                title={displayTitle}
-            />
-        ) : (
-            <div className="w-full h-full doc-viewer-wrapper">
-                <DocViewer
-                    documents={docs}
-                    pluginRenderers={DocViewerRenderers}
-                    config={{
-                        header: {
-                            disableHeader: true,
-                            disableFileName: true,
-                        },
-                        pdfVerticalScrollByDefault: true,
-                    }}
-                    style={{ height: "100%" }}
-                />
-            </div>
-        )}
+        <iframe
+            src={`https://docs.google.com/viewer?embedded=true&url=${encodeURIComponent(DocumentName)}`}
+            className="w-full h-full border-none"
+            onLoad={() => setLoading(false)}
+            title={displayTitle}
+        />
       </div>
       
       <style jsx global>{`

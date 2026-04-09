@@ -8,10 +8,17 @@ import PdfViewer from "@/components/shared/pdf-viewer";
 interface DocumentAccordionProps {
   fileUrl: string;
   name: string;
+  showViewer?: boolean;
+  defaultOpen?: boolean;
 }
 
-const DocumentAccordion: React.FC<DocumentAccordionProps> = ({ fileUrl, name }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const DocumentAccordion: React.FC<DocumentAccordionProps> = ({ 
+  fileUrl, 
+  name, 
+  showViewer = true,
+  defaultOpen = false 
+}) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
     <div className="w-full bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm transition-all hover:shadow-md mb-4">
@@ -40,15 +47,17 @@ const DocumentAccordion: React.FC<DocumentAccordionProps> = ({ fileUrl, name }) 
           >
             <Download className="w-5 h-5" />
           </a>
-          <button 
-            className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all ${
-              isOpen 
-                ? "bg-[#ff8400] text-white shadow-lg shadow-[#ff840020]" 
-                : "bg-[#00057308] text-[#000573] hover:bg-[#00057310]"
-            }`}
-          >
-            {isOpen ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-          </button>
+          {showViewer && (
+            <button 
+              className={`w-10 h-10 flex items-center justify-center rounded-lg transition-all ${
+                isOpen 
+                  ? "bg-[#ff8400] text-white shadow-lg shadow-[#ff840020]" 
+                  : "bg-[#00057308] text-[#000573] hover:bg-[#00057310]"
+              }`}
+            >
+              {isOpen ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          )}
         </div>
       </div>
 

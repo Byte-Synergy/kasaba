@@ -33,7 +33,7 @@ const PPage = async ({
         <div className="flex flex-col gap-10">
           {(menu.data.content || []).map((block: any, index: number) => (
             <div key={`${block.type}-${index}`} className="w-full">
-              <Content content={block} lang={lang as any} files={null} />
+              <Content content={block} lang={lang as any} files={null} defaultOpen={true} />
             </div>
           ))}
         </div>

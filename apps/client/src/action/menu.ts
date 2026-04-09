@@ -2,16 +2,7 @@
 
 import { getDirectusClient } from "@/utils/directus";
 import { readItems } from "@directus/sdk";
-
-export type MenuItem = {
-  id: string;
-  title: string;
-  path: string;
-  docCount?: number;
-  sub_menu: MenuItem[];
-  type?: string;
-  newsType?: string;
-};
+import { MenuItem } from "@/types";
 
 function normalizeLang(lang: string) {
   const mapping: Record<string, string> = {

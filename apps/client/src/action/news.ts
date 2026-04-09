@@ -114,7 +114,7 @@ function mapNewsItem(item: any, lang: string) {
   
   // Thumbnail resolving (it's in the translation record)
   const thumbnail = translation?.thumbnail;
-  const thumbUrl = thumbnail ? `${process.env.NEXT_PUBLIC_API_URL}/assets/${thumbnail.id || thumbnail}` : null;
+  const thumbUrl = thumbnail ? `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${thumbnail.id || thumbnail}` : null;
 
   // Blocks mapping (nested in translation)
   const content: any[] = [];
@@ -131,30 +131,21 @@ function mapNewsItem(item: any, lang: string) {
           content.push({ type: "video-url", value: iframeMatch[1] });
         }
 
-        // Extract all <img> tags — photo news images are stored embedded in richtext HTML
-        if (typeof bContent === "string") {
-          const imgRegex = /<img[^>]+src=["']([^"']+)["']/g;
-          let match;
-          while ((match = imgRegex.exec(bContent)) !== null) {
-            content.push({ type: "photo", fileUrl: match[1] });
-          }
-        }
       }
     } else if (b.collection === "block_images" && b.item?.image) {
       const img = b.item.image;
       content.push({
         type: "photo",
         fileId: img.id,
-        fileUrl: `${process.env.NEXT_PUBLIC_API_URL}/assets/${img.id}`,
+        fileUrl: `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${img.id}`,
       });
     } else if (b.collection === "block_galleries" && b.item) {
       const images = b.item.files?.map((img: any) => {
         const file = img.directus_files_id;
         if (!file) return null;
         return {
-          id: typeof file === "string" ? file : file.id,
-          url: `${process.env.NEXT_PUBLIC_API_URL}/assets/${typeof file === "string" ? file : file.id}`,
-          title: typeof file === "object" ? (file.title || file.filename_download) : "Image"
+          href: `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${typeof file === "string" ? file : file.id}`,
+          name: typeof file === "object" ? (file.title || file.filename_download) : "Gallery Image"
         };
       }).filter(Boolean) || [];
       content.push({
@@ -166,7 +157,7 @@ function mapNewsItem(item: any, lang: string) {
       content.push({
         type: "document",
         fileId: file.id || file,
-        fileUrl: `${process.env.NEXT_PUBLIC_API_URL}/assets/${file.id || file}`,
+        fileUrl: `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${file.id || file}`,
         docName: file.title || file.filename_download || "Hujjat"
       });
     }
@@ -195,7 +186,7 @@ function mapNewsItem(item: any, lang: string) {
         extension: thumbnail?.filename_download?.split('.').pop() || "jpg"
       }] : []),
       ...content.filter(c => c.type === "photo").map(c => ({
-        href: c.fileUrl || `${process.env.NEXT_PUBLIC_API_URL}/assets/${c.fileId}`,
+        href: c.fileUrl || `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${c.fileId}`,
         name: c.fileId || "image",
         mimeType: "image/jpeg",
         extension: "jpg"

@@ -15,7 +15,11 @@ export default function proxy(request: NextRequest) {
   }
 
   // ✅ 2. maintenance redirect
-  if (isMaintenance) {
+  const userAgent = request.headers.get("user-agent") || "";
+  const isBot = /bot|googlebot|crawler|spider|robot|crawling|telegrambot|facebookexternalhit|twitterbot/i.test(userAgent);
+  const isNewsPage = pathname.includes("/news/");
+
+  if (isMaintenance && !isBot && !isNewsPage) {
     return NextResponse.redirect(new URL("/maintenance", request.url));
   }
 

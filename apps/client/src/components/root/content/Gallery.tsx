@@ -41,8 +41,10 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
         modules={[FreeMode, Navigation, Thumbs, Autoplay]}
         className="w-full aspect-video rounded-lg overflow-hidden"
       >
-        {images.map((image, idx) => (
-          <SwiperSlide key={idx}>
+        {images.map((image, idx) => {
+          if (!image.href) return null;
+          return (
+            <SwiperSlide key={idx}>
             <div className="relative w-full h-full">
               <Image
                 src={image.href}
@@ -53,7 +55,8 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
               />
             </div>
           </SwiperSlide>
-        ))}
+          );
+        })}
       </Swiper>
 
       <Swiper
@@ -65,8 +68,10 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
         modules={[FreeMode, Navigation, Thumbs]}
         className="w-full !mt-2 sm:!mt-4 h-20 sm:h-24 md:h-28"
       >
-        {images.map((image, idx) => (
-          <SwiperSlide key={idx} className="cursor-pointer rounded-md overflow-hidden opacity-50 [.swiper-slide-thumb-active&]:opacity-100 transition-opacity">
+        {images.map((image, idx) => {
+          if (!image.href) return null;
+          return (
+            <SwiperSlide key={idx} className="cursor-pointer rounded-md overflow-hidden opacity-50 [.swiper-slide-thumb-active&]:opacity-100 transition-opacity">
             <div className="relative w-full h-full">
               <Image
                 src={image.href}
@@ -77,7 +82,8 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
               />
             </div>
           </SwiperSlide>
-        ))}
+          );
+        })}
       </Swiper>
     </div>
   );

@@ -38,6 +38,9 @@ export async function generateMetadata({
     openGraph: {
       title,
       description,
+      url: `https://davlat.kasaba.uz/${lang}/news/${news.type}/${id}`,
+      siteName: "O'zbekiston kasaba uyushmalari Federatsiyasi",
+      type: "article",
       images: news.files?.[0] ? [{ url: news.files[0].href }] : [],
     },
     twitter: {

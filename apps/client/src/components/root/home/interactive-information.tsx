@@ -6,6 +6,7 @@ import { useTranslations } from "@/utils/translation-provider";
 import { Building2, ChevronDown, ChevronLeft, Clock, EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
+import { MappedAreaType } from "./interactive-places";
 
 const InteractiveInformation = ({
   selectedArea,
@@ -13,14 +14,20 @@ const InteractiveInformation = ({
   onBackHandler,
   regionTitle
 }: {
-  selectedArea: { region: string | null, placeId: number | null, placeData: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"] } | null;
-  setSelectedArea: React.Dispatch<React.SetStateAction<{ region: string | null, placeId: number | null, placeData: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"] } | null>>;
+  selectedArea: { region: string | null, placeId: number | null, placeData: MappedAreaType[] } | null;
+  setSelectedArea: React.Dispatch<React.SetStateAction<{ region: string | null, placeId: number | null, placeData: MappedAreaType[] } | null>>;
   onBackHandler: () => void;
   regionTitle?: string;
 }) => {
   const [findPlace, setFindPlace] = useState<{
+    id: number;
     address: string;
     membersCount: number;
+    email?: string | null;
+    phoneNumber?: string | null;
+    workingTime?: string | null;
+    chairmanFullName?: string | null;
+    chairmanPhoto?: string | null;
     employees?: { id: number; fullName: string; position: string; phoneNumber: string; email: string; image: string | null }[];
   } | null>(null);
 

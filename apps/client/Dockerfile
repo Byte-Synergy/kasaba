@@ -1,5 +1,5 @@
 # 1. Base image
-FROM oven/bun:1.4-alpine AS base
+FROM oven/bun:1.1-alpine AS base
 
 # 2. Prune stage: Monorepo'dan faqat 'client' app va uning dependencylarini ajratib olamiz
 FROM base AS pruner
@@ -50,4 +50,4 @@ COPY --from=builder --chown=new_user:new_group /app/apps/client/.next/static ./a
 COPY --from=builder --chown=new_user:new_group /app/apps/client/public ./apps/client/public
 
 # Standalone server'ni ishga tushirish
-CMD ["bun", "run", "--smol", "apps/client/server.js"]
+CMD ["bun", "run", "apps/client/server.js"]

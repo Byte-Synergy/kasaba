@@ -88,6 +88,27 @@ function mapArea(item: any, lang: string) {
   };
 }
 
+export type MappedAreaType = {
+  id: number;
+  name: string;
+  title: string;
+  address: string;
+  membersCount: number;
+  chairmanFullName: string;
+  phoneNumber: string;
+  email: string;
+  workingTime: string;
+  chairmanPhoto: string | null;
+  employees: {
+    id: number;
+    fullName: string;
+    position: string;
+    phoneNumber: string;
+    email: string;
+    image: string | null;
+  }[];
+};
+
 const InteractivePlaces = ({
   lang,
   regions
@@ -95,10 +116,14 @@ const InteractivePlaces = ({
   lang: Locale;
   regions: { id: number, name?: string, areasCount: number, title: string }[] | []
 }) => {
-  const [selectedArea, setSelectedArea] = useState<{ region: string | null, placeId: number | null, placeData: AppType["~Routes"]["api"]["rest"]["places"][":placeId"]["interactive_areas"]["get"]["response"]["200"]["data"] } | null>({
-    region: null,  // region nomi === region.name
-    placeId: null,  // tanlagan region ichidagi tanlangan place id === place.id
-    placeData: []   // tanlangan region ichidagi barcha place ma'lumotlari
+  const [selectedArea, setSelectedArea] = useState<{ 
+    region: string | null, 
+    placeId: number | null, 
+    placeData: MappedAreaType[] 
+  } | null>({
+    region: null,
+    placeId: null,
+    placeData: []
   })
 
   const t = useTranslations()
@@ -114,7 +139,7 @@ const InteractivePlaces = ({
       if (!findSelectedRegion?.id) {
         console.log("Siz izlayotgan viloyat bo'yicha ma'lumot topilmadi...");
         setSelectedArea((prev) => ({
-          ...prev,
+          region: prev?.region || null,
           placeId: null,
           placeData: []
         }))
@@ -129,7 +154,6 @@ const InteractivePlaces = ({
         if (places && Array.isArray(places.data)) {
           const mapped = places.data.map((item: any) => mapArea(item, lang));
           setSelectedArea((prev) => ({
-            ...prev,
             region: prev?.region || null,
             placeId: prev?.placeId || null,
             placeData: mapped
@@ -137,7 +161,8 @@ const InteractivePlaces = ({
         } else {
           console.log("Ma'lumot olishda xatolik: ", fetchError);
           setSelectedArea((prev) => ({
-            ...prev,
+            region: prev?.region || null,
+            placeId: prev?.placeId || null,
             placeData: []
           }));
         }

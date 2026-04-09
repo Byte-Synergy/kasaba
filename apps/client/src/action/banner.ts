@@ -9,9 +9,9 @@ export async function getBanners() {
     const response = await client.request(
       readSingleton("banners", {
         fields: [
-          "main_banners.directus_files_id",
-          "level_1_banners.directus_files_id",
-          "level_2_banners.directus_files_id",
+          "main.directus_files_id",
+          "level_1.directus_files_id",
+          "level_2.directus_files_id",
         ],
       })
     );
@@ -19,7 +19,7 @@ export async function getBanners() {
     // Map to the format the frontend expects (array of objects with file.href)
     const adsArr: any[] = [];
     
-    (response.main_banners || []).forEach((b: any) => {
+    (response.main || []).forEach((b: any) => {
         if (!b.directus_files_id) return;
         adsArr.push({
             type: "full",
@@ -30,7 +30,7 @@ export async function getBanners() {
         });
     });
 
-    (response.level_1_banners || []).forEach((b: any) => {
+    (response.level_1 || []).forEach((b: any) => {
         if (!b.directus_files_id) return;
         adsArr.push({
             type: "hero1",
@@ -41,7 +41,7 @@ export async function getBanners() {
         });
     });
 
-    (response.level_2_banners || []).forEach((b: any) => {
+    (response.level_2 || []).forEach((b: any) => {
         if (!b.directus_files_id) return;
         adsArr.push({
             type: "hero2",

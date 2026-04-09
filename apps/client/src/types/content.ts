@@ -36,6 +36,7 @@ export type ContentType = (
         acceptanceDay?: string;
         workingTime?: string;
       }[];
+      card_style?: "vertical" | "horizontal";
     }
   | {
       type: "gallery";

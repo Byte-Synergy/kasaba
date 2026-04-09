@@ -2,7 +2,7 @@
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import { TopNews } from "@/components/root";
+import { TopNews, MainBanner } from "@/components/root";
 import InteractivePlaces from "@/components/root/home/interactive-places";
 import MediaNews from "@/components/root/home/media-news";
 import PopularNews from "@/components/root/home/popular-news";
@@ -72,29 +72,7 @@ const HomePage = ({
   return (
     <>
       <TopNews news={topNewsData} month_labels={month_labels} />
-      <Container className="py-2 max-md:py-5">
-        <ScrollAnimation>
-          <Swiper
-            modules={[Autoplay]}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-            }}
-            loop={true}
-            className="size-full"
-          >
-            {ads
-              .filter((ad) => ad.type === "full")
-              .map((ad, key) => (
-                <SwiperSlide key={key}>
-                  <a href={ad.url} target="_blank">
-                    <Ads src={ad.file.href} />
-                  </a>
-                </SwiperSlide>
-              ))}
-          </Swiper>
-        </ScrollAnimation>
-      </Container>
+      <MainBanner ads={ads} />
       <StandardNews
         lang={lang}
         all_label={all_label}

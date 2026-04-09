@@ -169,6 +169,7 @@ export async function getMenu(p: string | number, lang: string) {
             position: empTrans?.position || "",
             phoneNumber: emp.phone_number,
             email: emp.email,
+            acceptanceDay: empTrans?.work_time || "",
             fileId: emp.image?.id,
             href: emp.image
               ? `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${emp.image.id}`
@@ -177,7 +178,7 @@ export async function getMenu(p: string | number, lang: string) {
         }
       });
       if (members.length > 0) {
-        content.push({ type: "member", members });
+        content.push({ type: "member", members, card_style: trans.card_style || "vertical" });
       }
     }
 

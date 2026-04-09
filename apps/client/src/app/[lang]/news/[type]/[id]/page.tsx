@@ -11,6 +11,8 @@ import RelatedNews from "@/components/shared/related-news";
 import { getDictionary } from "@/utils/directory";
 import { Locale } from "@/configs/i18n";
 import { getNews, getNewsBySlug } from "@/action/news";
+import { getBanners } from "@/action/banner";
+import SecondaryBanner from "@/components/shared/secondary-banner";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -61,6 +63,8 @@ const SingleNewsPage = async ({
   const t = await getDictionary(lang);
 
   const { data: currentNews } = await getNewsBySlug(id, lang);
+  const { data: bannersResp } = await getBanners();
+  const banners = (bannersResp as any) || [];
 
   const { data: otherNewsResp } = await getNews({
     limit: 4,
@@ -165,6 +169,7 @@ const SingleNewsPage = async ({
           />
         )}
       </section>
+      <SecondaryBanner ads={banners} />
     </div>
   );
 };

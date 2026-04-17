@@ -22,7 +22,7 @@ export async function getMenuTree(lang: string) {
   try {
     const items = await client.request(
       readItems("menus", {
-        fields: ["*", "translations.*"],
+        fields: ["id", "status", "sort", "parent", "translations.*"],
         filter: {
           _and: [
             { status: { _eq: "published" } },
@@ -101,7 +101,10 @@ export async function getMenu(p: string | number, lang: string) {
     const items = await client.request(
       readItems("menus", {
         fields: [
-          "*",
+          "id",
+          "status",
+          "sort",
+          "parent",
           "translations.*",
           "translations.content_blocks.*",
           "translations.content_blocks.item:block_richtexts.*",
@@ -164,12 +167,19 @@ export async function getMenu(p: string | number, lang: string) {
           const empTrans =
             emp.translations?.find((et: any) => et.languages_code === nLang) ||
             emp.translations?.[0];
+          
+          // Fallback for work_time if current translation doesn't have it
+          const workTime = empTrans?.work_time || emp.translations?.find((et: any) => et.work_time)?.work_time || "";
+          
           members.push({
-            fullName: empTrans?.full_name || "",
-            position: empTrans?.position || "",
+            fullName: empTrans?.full_name || emp.translations?.[0]?.full_name || "",
+            position: empTrans?.position || emp.translations?.[0]?.position || "",
             phoneNumber: emp.phone_number,
             email: emp.email,
-            acceptanceDay: empTrans?.work_time || "",
+            acceptanceDay: workTime,
+            workingTime: workTime,
+            work_time: workTime,
+            debug_translations: emp.translations,
             fileId: emp.image?.id,
             href: emp.image
               ? `${process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz"}/assets/${emp.image.id}`

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import { Container } from "@/components/shared";
 import ScrollAnimation from "@/components/ui/scroll-animation";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -20,7 +20,7 @@ interface BannerProps {
 
 const MainBanner = ({ ads }: BannerProps) => {
   const combinedBanners = ads.filter(
-    (ad) => ad.type === "full" || ad.type === "hero1"
+    (ad) => ad.type === "full" || ad.type === "hero1",
   );
 
   if (combinedBanners.length === 0) return null;

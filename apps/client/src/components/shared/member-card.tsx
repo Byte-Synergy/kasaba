@@ -7,6 +7,8 @@ import { cn } from "@/libs/utils";
 const MemberCardVertical = ({ data, imgSrc }: { data: any; imgSrc: string }) => {
   const hasPhone = data.phoneNumber && data.phoneNumber.trim().length > 0;
   const hasEmail = data.email && data.email.trim().length > 0;
+  const acceptance = (data.acceptanceDay || data.work_time || data.workingTime || "").trim();
+  const hasAcceptance = acceptance.length > 0;
 
   return (
     <div className="bg-white min-h-[500px] relative overflow-hidden group rounded-lg shadow-xl shrink-0 grow-0 h-full">
@@ -31,9 +33,25 @@ const MemberCardVertical = ({ data, imgSrc }: { data: any; imgSrc: string }) => 
             )}
             <hr className="border-2 mt-2 border-[#FF8500] w-full" />
           </div>
-          <div className="mt-3 text-sm opacity-90">
-            {hasPhone && <p>Tel: {data.phoneNumber}</p>}
-            {hasEmail && <p className="truncate">Email: {data.email}</p>}
+          <div className="mt-3 text-sm opacity-90 flex flex-col gap-1.5">
+            {hasPhone && (
+              <div className="flex items-center gap-2">
+                <FiPhone className="size-3.5 shrink-0" />
+                <p>Tel: {data.phoneNumber}</p>
+              </div>
+            )}
+            {hasEmail && (
+              <div className="flex items-center gap-2 overflow-hidden">
+                <FiMail className="size-3.5 shrink-0" />
+                <p className="truncate">Email: {data.email}</p>
+              </div>
+            )}
+            {hasAcceptance && (
+              <div className="flex items-start gap-2 mt-1 italic text-[#FF8500]">
+                <FiClock className="size-3.5 shrink-0 mt-0.5" />
+                <p className="leading-tight">{acceptance}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -42,10 +60,12 @@ const MemberCardVertical = ({ data, imgSrc }: { data: any; imgSrc: string }) => 
 };
 
 const MemberCardHorizontal = ({ data, imgSrc }: { data: any; imgSrc: string }) => {
+  console.log("MemberCardHorizontal Data:", data);
   const hasPhone = data.phoneNumber && data.phoneNumber.trim().length > 0;
   const hasEmail = data.email && data.email.trim().length > 0;
   const hasWebsite = data.website && data.website.trim().length > 0;
-  const hasAcceptance = data.acceptanceDay && data.acceptanceDay.trim().length > 0;
+  const acceptance = (data.acceptanceDay || data.work_time || data.workingTime || "").trim();
+  const hasAcceptance = acceptance.length > 0;
 
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6 flex flex-col md:flex-row gap-8 items-start md:items-center w-full min-h-[220px]">
@@ -106,7 +126,7 @@ const MemberCardHorizontal = ({ data, imgSrc }: { data: any; imgSrc: string }) =
               <div className="bg-[#00428D] p-1.5 rounded-full text-white shrink-0">
                 <FiClock className="size-4" />
               </div>
-              <span className="max-w-[240px] leading-snug">{data.acceptanceDay}</span>
+              <span className="max-w-[240px] leading-snug">{acceptance}</span>
             </div>
           )}
         </div>
@@ -140,9 +160,10 @@ const MemberCards = ({ data, files }: { data: any; files: any }) => {
         ? "flex flex-col gap-8" 
         : "grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-8"
     )}>
-      {data.members?.map((m: any, idx: number) => (
-        <MemberCard data={m} files={files} key={idx} style={style} />
-      ))}
+      {data.members?.map((m: any, idx: number) => {
+        console.log("Member in Card:", m.fullName, "acceptanceDay:", m.acceptanceDay);
+        return <MemberCard data={m} files={files} key={idx} style={style} />;
+      })}
     </div>
   );
 };

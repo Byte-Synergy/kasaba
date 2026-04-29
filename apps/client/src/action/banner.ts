@@ -15,7 +15,7 @@ export async function getBanners() {
           "level_2.directus_files_id.id",
           "level_2.item.*",
         ],
-      })
+      }),
     );
 
     // Handle both { data: { ... } } and { ... } formats
@@ -26,52 +26,62 @@ export async function getBanners() {
     }
 
     const adsArr: any[] = [];
-    
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://davadmin.kasaba.uz";
+
     // Process main_blocks (M2A)
-    (response.main_blocks || []).forEach((b: any) => {
-        const block = b.item;
-        if (!block || !block.file) return;
-        adsArr.push({
-            type: "full",
-            url: block.link || null,
-            file: {
-                href: `${process.env.NEXT_PUBLIC_API_URL}/assets/${block.file}`
-            }
-        });
+    (response.main_blocks || []).forEach((b: any, index: number) => {
+      const block = b.item;
+      if (!block) return;
+      const fileId = block.file?.id || block.file;
+      if (!fileId) return;
+
+      adsArr.push({
+        id: b.id || `main-${index}`,
+        type: "full",
+        url: block.link || null,
+        file: {
+          href: `${baseUrl}/assets/${fileId}`,
+        },
+      });
     });
 
     // Process level_1 (can be M2M or M2A)
-    (response.level_1 || []).forEach((b: any) => {
-        // Try M2A item first, then fallback to M2M directus_files_id
-        const block = b.item;
-        const fileId = block?.file || b.directus_files_id?.id || b.directus_files_id;
-        
-        if (!fileId) return;
+    (response.level_1 || []).forEach((b: any, index: number) => {
+      // Try M2A item first, then fallback to M2M directus_files_id
+      const block = b.item;
+      const fileId =
+        block?.file?.id || block?.file || b.directus_files_id?.id || b.directus_files_id;
 
-        adsArr.push({
-            type: "hero1",
-            url: block?.link || null,
-            file: {
-                href: `${process.env.NEXT_PUBLIC_API_URL}/assets/${fileId}`
-            }
-        });
+      if (!fileId) return;
+
+      adsArr.push({
+        id: b.id || `level1-${index}`,
+        type: "hero1",
+        url: block?.link || null,
+        file: {
+          href: `${baseUrl}/assets/${fileId}`,
+        },
+      });
     });
 
     // Process level_2 (can be M2M or M2A)
-    (response.level_2 || []).forEach((b: any) => {
-        const block = b.item;
-        const fileId = block?.file || b.directus_files_id?.id || b.directus_files_id;
-        
-        if (!fileId) return;
+    (response.level_2 || []).forEach((b: any, index: number) => {
+      const block = b.item;
+      const fileId =
+        block?.file?.id || block?.file || b.directus_files_id?.id || b.directus_files_id;
 
-        adsArr.push({
-            type: "hero2",
-            url: block?.link || null,
-            file: {
-                href: `${process.env.NEXT_PUBLIC_API_URL}/assets/${fileId}`
-            }
-        });
+      if (!fileId) return;
+
+      adsArr.push({
+        id: b.id || `level2-${index}`,
+        type: "hero2",
+        url: block?.link || null,
+        file: {
+          href: `${baseUrl}/assets/${fileId}`,
+        },
+      });
     });
+    console.log({ data: adsArr, error: null, status: 200 });
 
     return { data: adsArr, error: null, status: 200 };
   } catch (error) {

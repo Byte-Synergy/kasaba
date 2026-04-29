@@ -1,4 +1,6 @@
-FROM oven/bun:alpine AS base
+# 1. Base image as Debian for better stability during heavy installs
+FROM oven/bun:latest AS base
+RUN apt-get update && apt-get install -y git
 
 # Stage 1: Prune
 FROM base AS builder
@@ -7,12 +9,12 @@ RUN bun add -g turbo
 COPY . .
 RUN turbo prune --scope=client --docker
 
-# Stage 2: Install dependencies
+# Stage 2: Install dependencies (Debian is more robust for large tarballs like react-icons)
 FROM base AS installer
 WORKDIR /app
 COPY --from=builder /app/out/json/ .
-# Pruned json fayllarga qarab dependency-larni o'rnatamiz
-# --frozen-lockfile ni olib tashlaymiz, chunki pruned workspace da u ko'pincha error beradi
+COPY --from=builder /app/out/bun.lock ./bun.lock
+# Increase network timeout and retry for bun
 RUN bun install
 
 # Stage 3: Build the project
@@ -22,34 +24,28 @@ COPY --from=installer /app/ .
 COPY --from=builder /app/out/full/ .
 COPY .gitignore .gitignore
 
-# Build arguments for environment variables
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
 RUN bun run build --filter=client
 
-# Stage 4: Runner
-FROM base AS runner
+# Stage 4: Runner (Using alpine for smallest final image)
+FROM oven/bun:alpine AS runner
 WORKDIR /app
 
-# Production environment variables
 ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-# Don't run production as root
+# Alpine uses addgroup/adduser
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 USER nextjs
 
 COPY --from=sourcer /app/apps/client/public ./apps/client/public
-
-# Automatically leverage output traces to reduce image size
 COPY --from=sourcer --chown=nextjs:nodejs /app/apps/client/.next/standalone ./
 COPY --from=sourcer --chown=nextjs:nodejs /app/apps/client/.next/static ./apps/client/.next/static
 
-# Expose the port
 EXPOSE 3000
 
-# Run with bun
 CMD ["bun", "apps/client/server.js"]

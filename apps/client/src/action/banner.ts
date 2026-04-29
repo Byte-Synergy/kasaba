@@ -6,19 +6,28 @@ import { readSingleton } from "@directus/sdk";
 export async function getBanners() {
   const client = getDirectusClient();
   try {
-    const response = await client.request(
+    const rawResponse = await client.request(
       readSingleton("banners", {
         fields: [
           "main_blocks.item.*",
+          "level_1.directus_files_id.id",
           "level_1.item.*",
+          "level_2.directus_files_id.id",
           "level_2.item.*",
         ],
       })
     );
 
-    // Map to the format the frontend expects (array of objects with file.href)
+    // Handle both { data: { ... } } and { ... } formats
+    const response = (rawResponse as any).data || rawResponse;
+
+    if (!response) {
+      return { data: [], error: "No response data", status: 404 };
+    }
+
     const adsArr: any[] = [];
     
+    // Process main_blocks (M2A)
     (response.main_blocks || []).forEach((b: any) => {
         const block = b.item;
         if (!block || !block.file) return;
@@ -31,26 +40,35 @@ export async function getBanners() {
         });
     });
 
+    // Process level_1 (can be M2M or M2A)
     (response.level_1 || []).forEach((b: any) => {
+        // Try M2A item first, then fallback to M2M directus_files_id
         const block = b.item;
-        if (!block || !block.file) return;
+        const fileId = block?.file || b.directus_files_id?.id || b.directus_files_id;
+        
+        if (!fileId) return;
+
         adsArr.push({
             type: "hero1",
-            url: block.link || null,
+            url: block?.link || null,
             file: {
-                href: `${process.env.NEXT_PUBLIC_API_URL}/assets/${block.file}`
+                href: `${process.env.NEXT_PUBLIC_API_URL}/assets/${fileId}`
             }
         });
     });
 
+    // Process level_2 (can be M2M or M2A)
     (response.level_2 || []).forEach((b: any) => {
         const block = b.item;
-        if (!block || !block.file) return;
+        const fileId = block?.file || b.directus_files_id?.id || b.directus_files_id;
+        
+        if (!fileId) return;
+
         adsArr.push({
             type: "hero2",
-            url: block.link || null,
+            url: block?.link || null,
             file: {
-                href: `${process.env.NEXT_PUBLIC_API_URL}/assets/${block.file}`
+                href: `${process.env.NEXT_PUBLIC_API_URL}/assets/${fileId}`
             }
         });
     });

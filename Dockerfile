@@ -11,8 +11,9 @@ RUN turbo prune --scope=client --docker
 FROM base AS installer
 WORKDIR /app
 COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/bun.lock ./bun.lock
-RUN bun install --frozen-lockfile
+# Pruned json fayllarga qarab dependency-larni o'rnatamiz
+# --frozen-lockfile ni olib tashlaymiz, chunki pruned workspace da u ko'pincha error beradi
+RUN bun install
 
 # Stage 3: Build the project
 FROM base AS sourcer

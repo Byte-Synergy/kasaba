@@ -1,4 +1,4 @@
-FROM oven/bun:latest AS base
+FROM oven/bun:alpine AS base
 
 # Stage 1: Prune
 FROM base AS builder
@@ -33,8 +33,8 @@ WORKDIR /app
 
 # Production environment variables
 ENV NODE_ENV=production
-# Uncomment if you want to disable telemetry
-# ENV NEXT_TELEMETRY_DISABLED 1
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
@@ -44,14 +44,11 @@ USER nextjs
 COPY --from=sourcer /app/apps/client/public ./apps/client/public
 
 # Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=sourcer --chown=nextjs:nodejs /app/apps/client/.next/standalone ./
 COPY --from=sourcer --chown=nextjs:nodejs /app/apps/client/.next/static ./apps/client/.next/static
 
 # Expose the port
 EXPOSE 3000
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
 
 # Run with bun
 CMD ["bun", "apps/client/server.js"]

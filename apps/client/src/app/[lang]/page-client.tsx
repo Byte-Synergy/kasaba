@@ -49,7 +49,7 @@ const HomePage = ({
   month_labels: Record<string, string>;
   ads: Array<{
     id: string;
-    url: string;
+    url: string | null;
     type: string;
     file: {
       href: string;

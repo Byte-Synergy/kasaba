@@ -2,6 +2,7 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
+import Link from "next/link";
 import { Container } from "@/components/shared";
 import ScrollAnimation from "@/components/ui/scroll-animation";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -10,7 +11,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 interface BannerProps {
   ads: Array<{
     id: string;
-    url: string;
+    url: string | null;
     type: string;
     file: {
       href: string;
@@ -39,14 +40,10 @@ const MainBanner = ({ ads }: BannerProps) => {
             slidesPerView={1}
             className="w-full h-auto rounded-[15px] md:rounded-[30px] overflow-hidden"
           >
-            {combinedBanners.map((ad, index) => (
-              <SwiperSlide key={ad.id || index}>
-                <a
-                  href={ad.url}
-                  target={ad.url === "#" ? "_self" : "_blank"}
-                  rel="noopener noreferrer"
-                  className="block w-full aspect-[1729/394] overflow-hidden"
-                >
+            {combinedBanners.map((ad, index) => {
+              const isLink = !!ad.url;
+              const content = (
+                <div className="block w-full aspect-[1729/394] overflow-hidden">
                   <LazyLoadImage
                     src={ad.file.href}
                     alt="Main Banner"
@@ -56,9 +53,25 @@ const MainBanner = ({ ads }: BannerProps) => {
                     className="w-full h-full object-contain bg-gray-50"
                     wrapperClassName="w-full h-full"
                   />
-                </a>
-              </SwiperSlide>
-            ))}
+                </div>
+              );
+
+              return (
+                <SwiperSlide key={ad.id || index}>
+                  {isLink ? (
+                    <Link
+                      href={ad.url!}
+                      target={ad.url?.startsWith("http") ? "_blank" : "_self"}
+                      rel={ad.url?.startsWith("http") ? "noopener noreferrer" : undefined}
+                    >
+                      {content}
+                    </Link>
+                  ) : (
+                    content
+                  )}
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
         </div>
       </ScrollAnimation>
